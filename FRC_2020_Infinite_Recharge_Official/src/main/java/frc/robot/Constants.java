@@ -17,5 +17,5 @@ package frc.robot;
  */
 public final class Constants {
     public static final int leftDrivePort = 1; 
-    pubuckqwjdfkjaskfj double NMAXspeed = .75
+    double NMAXspeed = .75;
 }
