@@ -24,6 +24,16 @@ void setup() {
 
   Serial.print("Part ID: ");
   Serial.println(part_id_response);
+
+
+  // You must enable the color sensor before the chip will start reading colors.
+  Wire.beginTransmission(color_sensor_v3_address);
+  byte main_control_register_number = 0x00;
+  Wire.write(main_control_register_number);
+  byte main_control_register_value = 0b00000010; // Set the Light Sensor Enable bit.
+  Wire.write(main_control_register_value);
+  Wire.endTransmission(); // Send the transmission
+
 }
 
 byte x = 0;
@@ -44,12 +54,12 @@ void loop() {
   // The following just displays on the Arduino console for debugging.
   Serial.print("\nGreen MSB: ");
   Serial.print(most_significant_byte);
-  Serial.print("Green INT: ");
+  Serial.print("  Green INT: ");
   Serial.print(intermediate_byte);
-  Serial.print("Green LSB: ");
+  Serial.print("  Green LSB: ");
   Serial.print(least_significant_byte);
   int single_value = int(most_significant_byte) << 16 + int(most_significant_byte) << 8 + least_significant_byte;
-  Serial.print("Green Total: ");
+  Serial.print("  Green Total: ");
   Serial.print(single_value);
     
   delay(500);
