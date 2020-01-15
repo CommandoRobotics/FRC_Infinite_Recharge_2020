@@ -31,26 +31,26 @@ byte x = 0;
 void loop() {
   // Form a message to the sensor
   Wire.beginTransmission(color_sensor_v3_address);
-  byte green_register = 0x0D;
+  byte green_register = 0x0F;
   Wire.write(green_register); // Request the green value.
   Wire.endTransmission(); // Send the transmission
 
   // Read the response (should be three bytes)
-  Wire.requestFrom(color_sensor_v3_address, 3);
+  Wire.requestFrom(color_sensor_v3_address, 1);
   byte least_significant_byte = Wire.read();
   byte intermediate_byte = Wire.read();
   byte most_significant_byte = Wire.read();
 
   // The following just displays on the Arduino console for debugging.
   Serial.print("\nGreen MSB: ");
-  Serial.print(most_significant_byte);
+  Serial.println(most_significant_byte);
   Serial.print("Green INT: ");
-  Serial.print(intermediate_byte);
+  Serial.println(intermediate_byte);
   Serial.print("Green LSB: ");
-  Serial.print(least_significant_byte);
+  Serial.println(least_significant_byte);
   int single_value = int(most_significant_byte) << 16 + int(most_significant_byte) << 8 + least_significant_byte;
   Serial.print("Green Total: ");
   Serial.print(single_value);
     
-  delay(500);
+  delay(2000);
 }
