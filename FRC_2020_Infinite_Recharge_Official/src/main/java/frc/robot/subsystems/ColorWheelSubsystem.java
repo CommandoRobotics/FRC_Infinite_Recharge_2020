@@ -7,13 +7,19 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.ColorSensorV3;
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ExampleSubsystem extends SubsystemBase {
-  /**
-   * Creates a new ExampleSubsystem.
-   */
-  public ExampleSubsystem() {
+public class ColorWheelSubsystem extends SubsystemBase {
+  
+  Spark colorSensorTurner;
+  Encoder colorEncoder;
+  ColorSensorV3 colorSensor;
+
+  public ColorWheelSubsystem() {
 
   }
 
