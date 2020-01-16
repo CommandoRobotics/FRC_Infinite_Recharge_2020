@@ -16,6 +16,36 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final int leftDrivePort = 1; 
-    double NMAXspeed = .75;
+    
+    //Constants used to determine ports for constructors or other constants for setting variables
+
+    //PORTS
+    //Sparks
+    public static final int leftDrivePort = 0; 
+    public static final int rightDrivePort = 1;
+    public static final int shooterPort = 2;
+    public static final int rotaterPort = 3;
+    public static final int anglerPort = 4;
+    public static final int shooterLoaderPort = 4;
+    public static final int colorWheelPort = 5;
+    public static final int intakePort = 6;
+    public static final int indexMotorOne = 7;
+    public static final int indexMotorTwo = 8;
+    public static final int indexMotorThree = 9;
+
+    //Solenoids 
+    public static final int intakeLifterPort = 0;
+    public static final int colorWheelLifterPort = 1;
+
+    //Sensors
+    public static final int gyroPort = 0;
+    public static final int leftDriveEncAPort = 0;
+    public static final int leftDriveEncBPort = 0;
+    public static final int rightDriveEncAPort = 0;
+    public static final int rightDriveEncBPort = 0;
+
+
+    //VARIABLES
+    public static final int driveDisPerPulse = 0;
+    
 }
