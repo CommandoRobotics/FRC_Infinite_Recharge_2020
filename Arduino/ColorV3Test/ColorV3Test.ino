@@ -21,7 +21,7 @@ void setup() {
   // Read the response (1 byte long)
   Wire.requestFrom(color_sensor_v3_address, 1);
   byte part_id_response = Wire.read();
-
+  Serial.begin(9600);
   Serial.print("Part ID: ");
   Serial.println(part_id_response);
 
