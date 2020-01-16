@@ -48,7 +48,4 @@ public final class Constants {
     //VARIABLES
     public static final int driveDisPerPulse = 0;
     
-    
-
-    
 }
