@@ -1,9 +1,9 @@
 #include <Wire.h>
 
 const int colorSensorAddress = 0x52;
-const int redRegisterValue = 0x15;
-const int greenRegisterValue = 0x0F;
-const int blueRegisterValue = 0x12;
+const int redRegisterValue = 0x13;
+const int greenRegisterValue = 0x0D;
+const int blueRegisterValue = 0x10;
 const int mainControlRegisterValue = 0x00;
 
 void setup() {
@@ -58,10 +58,10 @@ void loop() {
     int blueTotal = int(blueHundredsPlace) << 16 + int(blueTensPlace) << 8 + int(blueOnesPlace);
 
     Serial.println("Red value : ");
-    Serial.print(redTotal);
+    Serial.println(redHundredsPlace);
     Serial.println("Green value : ");
-    Serial.print(greenTotal);
+    Serial.println(greenHundredsPlaceTotal);
     Serial.println("Blue value : ");
-    Serial.print(blueTotal);
+    Serial.println(blueHundredsPlace);
     delay(1000);
 }
