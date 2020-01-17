@@ -41,12 +41,12 @@ byte x = 0;
 void loop() {
   // Form a message to the sensor
   Wire.beginTransmission(color_sensor_v3_address);
-  byte green_register = 0x0D;
+  byte green_register = 0x0F;
   Wire.write(green_register); // Request the green value.
   Wire.endTransmission(); // Send the transmission
 
   // Read the response (should be three bytes)
-  Wire.requestFrom(color_sensor_v3_address, 3);
+  Wire.requestFrom(color_sensor_v3_address, 1);
   byte least_significant_byte = Wire.read();
   byte intermediate_byte = Wire.read();
   byte most_significant_byte = Wire.read();
@@ -62,5 +62,6 @@ void loop() {
   Serial.print("  Green Total: ");
   Serial.print(single_value);
     
-  delay(500);
+  delay(2000);
 }
+
