@@ -31,7 +31,7 @@ void loop() {
     byte redLeastSignificantByte = Wire.read();
     byte redIntermediateByte = Wire.read();
     byte redMostSignificantByte = Wire.read();
-    int redTotal = int(redMostSignificantByte) << 16 + int(redIntermediateByte) << 8 + int(redLeastSignificantByte);
+    int redTotal = int(redMostSignificantByte)*255*255+int(redIntermediateByte)*255+redLeastSignificantByte;
 
     // Form a request for the green color values
     Wire.beginTransmission(colorSensorAddress);
@@ -43,7 +43,7 @@ void loop() {
     byte greenLeastSignificantByte = Wire.read();
     byte greenIntermediateByte = Wire.read();
     byte greenMostSignificantByte = Wire.read();
-    int greenTotal = int(greenMostSignificantByte) << 16 + int(greenIntermediateByte) << 8 + int(greenLeastSignificantByte);
+    int greenTotal = int(greenMostSignificantByte)*255*255+int(greenIntermediateByte)*255+greenLeastSignificantByte;
 
     // Form a request for the blue color values
     Wire.beginTransmission(colorSensorAddress);
@@ -55,13 +55,13 @@ void loop() {
     byte blueLeastSignificantByte = Wire.read();
     byte blueIntermediateByte = Wire.read();
     byte blueMostSignificantByte = Wire.read();
-    int blueTotal = int(blueMostSignificantByte) << 16 + int(blueIntermediateByte) << 8 + int(blueLeastSignificantByte);
+    int blueTotal = int(blueMostSignificantByte)*255*255+int(blueIntermediateByte)*255+blueLeastSignificantByte;
 
     Serial.println("Red value : ");
-    Serial.println(redMostSignificantByte);
+    Serial.println(redTotal);
     Serial.println("Green value : ");
-    Serial.println(greenMostSignificantByteTotal);
+    Serial.println(greenTotal);
     Serial.println("Blue value : ");
-    Serial.println(blueMostSignificantByte);
+    Serial.println(blueTotal);
     delay(1000);
 }
