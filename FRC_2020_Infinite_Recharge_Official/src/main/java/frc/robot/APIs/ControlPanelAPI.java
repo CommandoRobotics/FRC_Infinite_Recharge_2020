@@ -34,17 +34,17 @@ public class ControlPanelAPI {
 
     public static final double THRESHOLD_RANGE = 5;
 
-    double distanceFromCenter = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
+    double distanceFromCenterInInches = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
     double motorMaxSpeed = 0; // This is the speed that the motor will spin at to align the wheel
     int gearboxRatio = 1; // The ratio of the gearbox the motor is using as x:1
-    double wheelDiameter = 2; // The diameter of the wheel touching the control panel given in inches
+    double wheelDiameterInInches = 2; // The diameter of the wheel touching the control panel given in inches
     int countsPerRevolution = 1000; // The amount of encoder counts per revolution of the motor
 
-    public ControlPanelAPI(double inputDistanceFromCenter, double inputMotorMaxSpeed, int inputGearboxRatio, double inputWheelDiameter, int inputCountsPerRevolution) {
-        distanceFromCenter = inputDistanceFromCenter; // The distance from the center of the control panel to the wheel rotating the control panel given in inches
+    public ControlPanelAPI(double inputdistanceFromCenterInInches, double inputMotorMaxSpeed, int inputGearboxRatio, double inputwheelDiameterInInches, int inputCountsPerRevolution) {
+        distanceFromCenterInInches = inputdistanceFromCenterInInches; // The distance from the center of the control panel to the wheel rotating the control panel given in inches
         motorMaxSpeed = inputMotorMaxSpeed;
         gearboxRatio = inputGearboxRatio;
-        wheelDiameter = inputWheelDiameter;
+        wheelDiameterInInches = inputwheelDiameterInInches;
         countsPerRevolution = inputCountsPerRevolution;
     }
 
@@ -152,17 +152,17 @@ public class ControlPanelAPI {
 
         //  Calculate distances based on the target color
         if(targetColor == COLOR_RED) {
-            compensatedSpinDistance = (redDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (redDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         } else if(targetColor == COLOR_YELLOW) {
-            compensatedSpinDistance = (yellowDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (yellowDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         } else if(targetColor == COLOR_BLUE) {
-            compensatedSpinDistance = (blueDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (blueDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         } else if(targetColor == COLOR_GREEN) {
-            compensatedSpinDistance = (greenDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (greenDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         }
 
         motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
@@ -221,17 +221,17 @@ public class ControlPanelAPI {
 
         //  Calculate distances based on the target color
         if(targetColor == COLOR_RED) {
-            compensatedSpinDistance = (redDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (redDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         } else if(targetColor == COLOR_YELLOW) {
-            compensatedSpinDistance = (yellowDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (yellowDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         } else if(targetColor == COLOR_BLUE) {
-            compensatedSpinDistance = (blueDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (blueDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         } else if(targetColor == COLOR_GREEN) {
-            compensatedSpinDistance = (greenDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            compensatedSpinDistance = (greenDistance*distanceFromCenterInInches)/16;
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameterInInches)*gearboxRatio)*countsPerRevolution;
         }
 
         motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
