@@ -28,10 +28,10 @@ void loop() {
 
     // Read the message
     Wire.requestFrom(colorSensorAddress, 3);
-    byte redOnesPlace = Wire.read();
-    byte redTensPlace = Wire.read();
-    byte redHundredsPlace = Wire.read();
-    int redTotal = int(redHundredsPlace) << 16 + int(redTensPlace) << 8 + int(redOnesPlace);
+    byte redLeastSignificantByte = Wire.read();
+    byte redIntermediateByte = Wire.read();
+    byte redMostSignificantByte = Wire.read();
+    int redTotal = int(redMostSignificantByte) << 16 + int(redIntermediateByte) << 8 + int(redLeastSignificantByte);
 
     // Form a request for the green color values
     Wire.beginTransmission(colorSensorAddress);
@@ -40,10 +40,10 @@ void loop() {
 
     // Read the message
     Wire.requestFrom(colorSensorAddress, 3);
-    byte greenOnesPlace = Wire.read();
-    byte greenTensPlace = Wire.read();
-    byte greenHundredsPlace = Wire.read();
-    int greenTotal = int(greenHundredsPlace) << 16 + int(greenTensPlace) << 8 + int(greenOnesPlace);
+    byte greenLeastSignificantByte = Wire.read();
+    byte greenIntermediateByte = Wire.read();
+    byte greenMostSignificantByte = Wire.read();
+    int greenTotal = int(greenMostSignificantByte) << 16 + int(greenIntermediateByte) << 8 + int(greenLeastSignificantByte);
 
     // Form a request for the blue color values
     Wire.beginTransmission(colorSensorAddress);
@@ -52,16 +52,16 @@ void loop() {
 
     // Read the message
     Wire.requestFrom(colorSensorAddress, 3);
-    byte blueOnesPlace = Wire.read();
-    byte blueTensPlace = Wire.read();
-    byte blueHundredsPlace = Wire.read();
-    int blueTotal = int(blueHundredsPlace) << 16 + int(blueTensPlace) << 8 + int(blueOnesPlace);
+    byte blueLeastSignificantByte = Wire.read();
+    byte blueIntermediateByte = Wire.read();
+    byte blueMostSignificantByte = Wire.read();
+    int blueTotal = int(blueMostSignificantByte) << 16 + int(blueIntermediateByte) << 8 + int(blueLeastSignificantByte);
 
     Serial.println("Red value : ");
-    Serial.println(redHundredsPlace);
+    Serial.println(redMostSignificantByte);
     Serial.println("Green value : ");
-    Serial.println(greenHundredsPlaceTotal);
+    Serial.println(greenMostSignificantByteTotal);
     Serial.println("Blue value : ");
-    Serial.println(blueHundredsPlace);
+    Serial.println(blueMostSignificantByte);
     delay(1000);
 }
