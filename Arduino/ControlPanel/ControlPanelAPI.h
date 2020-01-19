@@ -168,7 +168,7 @@ double calculateEnemySide(char targetColorAsChar) {
     double yellowDistance = 0;
     double blueDistance = 0;
     double greenDistance = 0;
-    double motorSpinDistanceInRotations =0;
+    double motorSpinDistanceInRotations = 0;
 
     // Sets the distances of each color relative to the wheel's current location
     if(currentRobotColor == COLOR_RED) {
