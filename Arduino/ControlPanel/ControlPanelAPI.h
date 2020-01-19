@@ -154,15 +154,7 @@ double calculateOurSide(char targetColorAsChar) {
 
     motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
 
-    if(motorSpinDistanceInRotations > 0){
-        outputMotorSpeed = motorMaxSpeed;
-    } else if(motorSpinDistanceInRotations < 0){
-        outputMotorSpeed = -motorMaxSpeed;
-    } else {
-        outputMotorSpeed = 0;
-    }
-
-    return outputMotorSpeed;
+    return motorSpinDistanceInRotations;
 }
 
 double calculateEnemySide(char targetColorAsChar) {
@@ -222,15 +214,7 @@ double calculateEnemySide(char targetColorAsChar) {
 
     motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
 
-    if(motorSpinDistanceInRotations > 0){
-        outputMotorSpeed = motorMaxSpeed;
-    } else if(motorSpinDistanceInRotations < 0){
-        outputMotorSpeed = -motorMaxSpeed;
-    } else {
-        outputMotorSpeed = 0;
-    }
-
-    return outputMotorSpeed;
+    return motorSpinDistanceInRotations;
 }
 
 #endif

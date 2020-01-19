@@ -122,7 +122,7 @@ public class ControlPanelAPI {
         double blueDistance = 0;
         double greenDistance = 0;
         double motorSpinDistanceInRotations = 0;
-
+        
         // Sets the distances of each color relative to the wheel's current location
         if(currentRobotColor == COLOR_RED) {
             currentWheelColor = COLOR_BLUE;
@@ -167,15 +167,7 @@ public class ControlPanelAPI {
 
         motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
 
-        if(motorSpinDistanceInRotations > 0){
-            outputMotorSpeed = motorMaxSpeed;
-        } else if(motorSpinDistanceInRotations < 0){
-            outputMotorSpeed = -motorMaxSpeed;
-        } else {
-            outputMotorSpeed = 0;
-        }
-
-        return outputMotorSpeed;
+        return motorSpinDistanceInRotations;
     }
 
     // Calculate method for if we are on our enemies side of the color wheel
@@ -236,15 +228,7 @@ public class ControlPanelAPI {
 
         motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
 
-        if(motorSpinDistanceInRotations > 0){
-            outputMotorSpeed = motorMaxSpeed;
-        } else if(motorSpinDistanceInRotations < 0){
-            outputMotorSpeed = -motorMaxSpeed;
-        } else {
-            outputMotorSpeed = 0;
-        }
-
-        return outputMotorSpeed;
+        return motorSpinDistanceInRotations;
     }
 
 }
