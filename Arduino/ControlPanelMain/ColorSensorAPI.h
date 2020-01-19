@@ -8,6 +8,8 @@ const int redRegisterValue = 0x13;
 const int greenRegisterValue = 0x0D;
 const int blueRegisterValue = 0x10;
 const int mainControlRegisterValue = 0x00;
+const int startingRegisterValue = 0x0D;
+const int colorSwitcherRegisterValue = 0x19;
 
 // Set up the color senor
 static void setupColorSensor() {
@@ -22,6 +24,12 @@ static void setupColorSensor() {
 }
 
 static int getRed() {
+    // Switch color to red
+    Wire.beginTransmission(colorSensorAddress);
+    Wire.write(colorSwitcherRegisterValue);
+    Wire.write(0b00100000);
+    Wire.endTransmission();
+
     // Form a request for the red color values
     Wire.beginTransmission(colorSensorAddress);
     Wire.write(redRegisterValue); // Request the red value
@@ -37,6 +45,12 @@ static int getRed() {
 }
 
 static int getGreen() {
+    // Switch color to green
+    Wire.beginTransmission(colorSensorAddress);
+    Wire.write(colorSwitcherRegisterValue);
+    Wire.write(0b00010000);
+    Wire.endTransmission();
+
     // Form a request for the green color values
     Wire.beginTransmission(colorSensorAddress);
     Wire.write(greenRegisterValue); // Request the green value
@@ -52,6 +66,12 @@ static int getGreen() {
 }
 
 static int getBlue() {
+    // Switch color to blue
+    Wire.beginTransmission(colorSensorAddress);
+    Wire.write(colorSwitcherRegisterValue);
+    Wire.write(0b00110000);
+    Wire.endTransmission();
+
     // Form a request for the blue color values
     Wire.beginTransmission(colorSensorAddress);
     Wire.write(blueRegisterValue); // Request the blue value

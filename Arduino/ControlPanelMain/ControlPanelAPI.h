@@ -1,6 +1,7 @@
 #ifndef _ControlPanelAPI_H
 #define _ControlPanelAPI_H
 
+#include "ColorSensorAPI.h"
 
 // Declare some constants
 static int DIAMETER = 32; // The diameter of the control panel in inches
@@ -102,7 +103,7 @@ double calculateOurSide(char targetColorAsChar) {
     double compensatedSpinDistance = 0;
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
     int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
+    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue());
     int currentWheelColor = 0;
     double redDistance = 0;
     double yellowDistance = 0;
@@ -162,7 +163,7 @@ double calculateEnemySide(char targetColorAsChar) {
     double compensatedSpinDistance = 0;
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
     int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
+    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue());
     int currentWheelColor = 0;
     double redDistance = 0;
     double yellowDistance = 0;
