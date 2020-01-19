@@ -48,7 +48,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   //Drives in Arcade Mode with direct inputs
   public void driveArcade(double power, double rotation) {
-    drive.arcadeDrive(power, rotation);
+    drive.arcadeDrive(power, rotation);   
   }
   
   //Stops the drive motors
