@@ -1,3 +1,5 @@
+/*This file is intended to offer a testing ground for the ColorSensorAPI and the ControlPanelAPI*/
+
 #include "ColorSensorAPI.h"
 
 void setup() {
