@@ -13,7 +13,6 @@ const int mainControlRegisterValue = 0x00;
 static void setupColorSensor() {
     // Start listening to the I2C bus
     Wire.begin();
-    Serial.begin(9600);
 
     // Enable the color sensor
     Wire.beginTransmission(colorSensorAddress);
