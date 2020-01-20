@@ -10,6 +10,19 @@ const int blueRegisterValue = 0x10;
 const int mainControlRegisterValue = 0x00;
 const int startingRegisterValue = 0x0D;
 const int colorSwitcherRegisterValue = 0x19;
+const int multiplexerAddress = 0x70;
+
+// Switch which color sensor we are talking to
+static void selectColorSensor(int sensorSelected) {
+    // Make sure that the queried sensor actually existed
+    if(sensorSelected > 7) {
+        return;
+    }
+    // Send the multiplexer a message saying which color senor to use
+    Wire.beginTransmission(multiplexerAddress);
+    Wire.write(1 << sensorSelected);
+    Wire.endTransmission();
+}
 
 // Set up the color senor
 static void setupColorSensor() {
@@ -23,7 +36,43 @@ static void setupColorSensor() {
     Wire.endTransmission();
 }
 
-static int getRed() {
+static void setupAllColorSensors() {
+    // Select color sensor 1
+    selectColorSensor(1);
+
+    // Setup sensor 1
+    setupColorSensor();
+
+    // Select color sensor 2
+    selectColorSensor(2);
+
+    // Setup sensor 2
+    setupColorSensor();
+
+    // Select color sensor 3
+    selectColorSensor(3);
+
+    // Setup sensor 3
+    setupColorSensor();
+
+    // Select color sensor 4
+    selectColorSensor(4);
+
+    // Setup sensor 4
+    setupColorSensor();
+
+    // Select color sensor 5
+    selectColorSensor(5);
+
+    // Setup sensor 5
+    setupColorSensor();
+}
+
+static int getRed(int colorSensorToReadFrom) {
+
+    //Select what color sensor to use
+    selectColorSensor(colorSensorToReadFrom);
+
     // Switch color to red
     Wire.beginTransmission(colorSensorAddress);
     Wire.write(colorSwitcherRegisterValue);
@@ -44,7 +93,11 @@ static int getRed() {
     return redTotal;
 }
 
-static int getGreen() {
+static int getGreen(int colorSensorToReadFrom) {
+
+    // Select which color sensor to use
+    selectColorSensor(colorSensorToReadFrom);
+
     // Switch color to green
     Wire.beginTransmission(colorSensorAddress);
     Wire.write(colorSwitcherRegisterValue);
@@ -65,7 +118,11 @@ static int getGreen() {
     return greenTotal;
 }
 
-static int getBlue() {
+static int getBlue(int colorSensorToReadFrom) {
+
+    // Select which color sensor to use
+    selectColorSensor(colorSensorToReadFrom);
+
     // Switch color to blue
     Wire.beginTransmission(colorSensorAddress);
     Wire.write(colorSwitcherRegisterValue);
