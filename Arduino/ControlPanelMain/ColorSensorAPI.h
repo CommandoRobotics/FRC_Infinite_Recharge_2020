@@ -38,31 +38,31 @@ static void setupColorSensor() {
 
 static void setupAllColorSensors() {
     // Select color sensor 1
-    selectColorSensor(1);
+    selectColorSensor(0);
 
     // Setup sensor 1
     setupColorSensor();
 
     // Select color sensor 2
-    selectColorSensor(2);
+    selectColorSensor(1);
 
     // Setup sensor 2
     setupColorSensor();
 
     // Select color sensor 3
-    selectColorSensor(3);
+    selectColorSensor(2);
 
     // Setup sensor 3
     setupColorSensor();
 
     // Select color sensor 4
-    selectColorSensor(4);
+    selectColorSensor(3);
 
     // Setup sensor 4
     setupColorSensor();
 
     // Select color sensor 5
-    selectColorSensor(5);
+    selectColorSensor(4);
 
     // Setup sensor 5
     setupColorSensor();
