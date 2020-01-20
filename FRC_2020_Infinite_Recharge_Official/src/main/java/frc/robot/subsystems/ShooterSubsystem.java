@@ -9,15 +9,15 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.ConstantsPorts;
 
 public class ShooterSubsystem extends SubsystemBase {
   Spark loader;
   Spark shooter;
 
   public ShooterSubsystem() {
-    loader = new Spark(Constants.shooterLoaderPort);
-    shooter = new Spark(Constants.shooterPort);
+    loader = new Spark(ConstantsPorts.shooterLoaderPort);
+    shooter = new Spark(ConstantsPorts.shooterPort);
   }
 
   public void setShooter(double speed) {

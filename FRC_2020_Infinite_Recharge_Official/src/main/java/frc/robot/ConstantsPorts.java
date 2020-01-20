@@ -15,17 +15,17 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public final class ConstantsPorts {
     
-    //Constants used to determine ports for constructors or other constants for setting variables
+    //Constants used to determine ports for constructors
 
     //PORTS
     //Sparks
     public static final int leftDrivePort = 0; 
     public static final int rightDrivePort = 1;
     public static final int shooterPort = 2;
-    public static final int rotaterPort = 3;
-    public static final int anglerPort = 4;
+    public static final int panPort = 3;
+    public static final int tiltPort = 4;
     public static final int shooterLoaderPort = 4;
     public static final int colorWheelPort = 5;
     public static final int intakePort = 6;
@@ -43,9 +43,8 @@ public final class Constants {
     public static final int leftDriveEncBPort = 0;
     public static final int rightDriveEncAPort = 0;
     public static final int rightDriveEncBPort = 0;
-
-
-    //VARIABLES
-    public static final int driveDisPerPulse = 0;
-    
+    public static final int tiltEncAPort = 0;
+    public static final int tiltEncBPort = 0;
+    public static final int panEncAPort = 0;
+    public static final int panEncBPort = 0;
 }
