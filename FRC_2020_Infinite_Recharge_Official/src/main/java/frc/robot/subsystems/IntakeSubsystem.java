@@ -9,14 +9,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.ConstantsPorts;
 
 public class IntakeSubsystem extends SubsystemBase {
 
   Spark intakeMotor;
 
   public IntakeSubsystem() {
-    intakeMotor = new Spark(Constants.intakePort);
+    intakeMotor = new Spark(ConstantsPorts.intakePort);
   }
 
   public void setIntakeMotor(double speed) {

@@ -9,14 +9,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.ConstantsPorts;
 
 public class LifterSubsystem extends SubsystemBase {
 
   Solenoid intakeSolenoid;
 
   public LifterSubsystem() {
-    intakeSolenoid = new Solenoid(Constants.intakeLifterPort);
+    intakeSolenoid = new Solenoid(ConstantsPorts.intakeLifterPort);
   }
 
   public void setLifter(boolean set) {

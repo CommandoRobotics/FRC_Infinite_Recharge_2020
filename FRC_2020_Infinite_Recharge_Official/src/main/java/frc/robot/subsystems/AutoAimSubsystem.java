@@ -7,25 +7,32 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.ConstantsPorts;
 
 public class AutoAimSubsystem extends SubsystemBase {
-  Spark angler;
-  Spark rotator;
+  Spark tilt;
+  Spark pan;
+
+  Encoder tiltEncoder;
+  Encoder panEncoder;
 
   public AutoAimSubsystem() {
-    angler = new Spark(Constants.anglerPort);
-    rotator = new Spark(Constants.rotaterPort);
+    tilt = new Spark(ConstantsPorts.tiltPort);
+    pan = new Spark(ConstantsPorts.panPort);
+    boolean reverseDirection = false;
+    tiltEncoder = new Encoder(ConstantsPorts.tiltEncAPort, ConstantsPorts.tiltEncBPort);
+    panEncoder = new Encoder(ConstantsPorts.panEncAPort, ConstantsPorts.panEncBPort, reverseDirection);
   }
 
   public void setRotator(double speed) {
-    rotator.setSpeed(speed);
+    tilt.setSpeed(speed);
   }
 
   public void setAngler(double speed) {
-    angler.setSpeed(speed);
+    pan.setSpeed(speed);
   }
 
   @Override

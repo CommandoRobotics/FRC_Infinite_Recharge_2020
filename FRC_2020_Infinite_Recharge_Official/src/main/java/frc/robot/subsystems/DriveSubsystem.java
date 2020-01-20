@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.ConstantsPorts;
+import frc.robot.ConstantsValues;
 
 public class DriveSubsystem extends SubsystemBase {
 
@@ -28,16 +29,16 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   public DriveSubsystem() {
-    leftMotors = new Spark(Constants.leftDrivePort);
-    rightMotors = new Spark(Constants.rightDrivePort);
+    leftMotors = new Spark(ConstantsPorts.leftDrivePort);
+    rightMotors = new Spark(ConstantsPorts.rightDrivePort);
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
-    leftDriveEncoder = new Encoder(Constants.leftDriveEncAPort, Constants.leftDriveEncBPort, true);
-    rightDriveEncoder =  new Encoder(Constants.rightDriveEncAPort, Constants.rightDriveEncBPort);
-    leftDriveEncoder.setDistancePerPulse(Constants.driveDisPerPulse);
-    rightDriveEncoder.setDistancePerPulse(Constants.driveDisPerPulse);
+    leftDriveEncoder = new Encoder(ConstantsPorts.leftDriveEncAPort, ConstantsPorts.leftDriveEncBPort, true);
+    rightDriveEncoder =  new Encoder(ConstantsPorts.rightDriveEncAPort, ConstantsPorts.rightDriveEncBPort);
+    leftDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
+    rightDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
 
-    gyro = new AnalogGyro(Constants.gyroPort);
+    gyro = new AnalogGyro(ConstantsPorts.gyroPort);
 
   }
   

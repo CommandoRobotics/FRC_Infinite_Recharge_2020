@@ -35,18 +35,18 @@ public class RobotContainer {
   //private final TankDriveCommand tankDriveCommand;
 
   //Controllers
-  private XboxController driver1Controller;
-  private XboxController driver2Controller; 
+  private XboxController driverController;
+  private XboxController operatorController; 
 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer(XboxController ctrl1, XboxController ctrl2) {
-    driver1Controller = ctrl1;
-    driver2Controller = ctrl2;
+    driverController = ctrl1;
+    operatorController = ctrl2;
 
-    driveSubsystem.setDefaultCommand(new TankDriveCommand(ctrl1.getRawAxis(1), ctrl1.getRawAxis(4),driveSubsystem));
+    driveSubsystem.setDefaultCommand(new TankDriveCommand(driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),driveSubsystem));
     configureButtonBindings();  
   }
 
@@ -67,6 +67,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TankDriveCommand(driver1Controller.getRawAxis(0), driver1Controller.getRawAxis(1),driveSubsystem);
+    return new TankDriveCommand(driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),driveSubsystem);
   }
 }
