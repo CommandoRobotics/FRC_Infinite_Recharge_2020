@@ -19,7 +19,7 @@ static void setupColorSensor() {
     // Enable the color sensor
     Wire.beginTransmission(colorSensorAddress);
     Wire.write(mainControlRegisterValue);
-    Wire.write(0b00000010); // Set the light sensor enable bit
+    Wire.write(0b00000110); // Set the light sensor enable bit
     Wire.endTransmission();
 }
 
