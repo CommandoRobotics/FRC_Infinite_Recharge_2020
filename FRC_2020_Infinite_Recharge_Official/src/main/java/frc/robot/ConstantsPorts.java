@@ -26,12 +26,12 @@ public final class ConstantsPorts {
     public static final int shooterPort = 2;
     public static final int panPort = 3;
     public static final int tiltPort = 4;
-    public static final int shooterLoaderPort = 4;
-    public static final int colorWheelPort = 5;
-    public static final int intakePort = 6;
-    public static final int indexMotorOne = 7;
-    public static final int indexMotorTwo = 8;
-    public static final int indexMotorThree = 9;
+    public static final int shooterLoaderPort = 5;
+    public static final int colorWheelPort = 6;
+    public static final int intakePort = 7;
+    public static final int indexMotorOne = 8;
+    public static final int indexMotorTwo = 9;
+    public static final int indexMotorThree = 10;
 
     //Solenoids 
     public static final int intakeLifterPort = 0;
@@ -39,12 +39,12 @@ public final class ConstantsPorts {
 
     //Sensors
     public static final int gyroPort = 0;
-    public static final int leftDriveEncAPort = 0;
-    public static final int leftDriveEncBPort = 0;
-    public static final int rightDriveEncAPort = 0;
-    public static final int rightDriveEncBPort = 0;
-    public static final int tiltEncAPort = 0;
-    public static final int tiltEncBPort = 0;
-    public static final int panEncAPort = 0;
-    public static final int panEncBPort = 0;
+    public static final int leftDriveEncAPort = 1;
+    public static final int leftDriveEncBPort = 2;
+    public static final int rightDriveEncAPort = 3;
+    public static final int rightDriveEncBPort = 4;
+    public static final int tiltEncAPort = 5;
+    public static final int tiltEncBPort = 6;
+    public static final int panEncAPort = 7;
+    public static final int panEncBPort = 8;
 }

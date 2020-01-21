@@ -20,12 +20,12 @@ public final class ConstantsOI {
     //Constants for each controller related mostly to ports etc.
 
     //Driver Controller
+    public static final int driverPort = 0;
     //AXES
     public static final int driverLeftDriveAxis = 1;
-    public static final int driverRightDriveAxis = 4;
+    public static final int driverRightDriveAxis = 5;
 
     //Operator Controller
+    public static final int operatorPort = 1;
 
-
-    
 }

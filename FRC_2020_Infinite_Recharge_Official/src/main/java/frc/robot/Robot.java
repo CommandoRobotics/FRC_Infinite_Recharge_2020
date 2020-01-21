@@ -24,10 +24,6 @@ public class Robot extends TimedRobot {
  
   private RobotContainer m_robotContainer;
 
-  //Controllers
-  XboxController driverController;
-  XboxController operatorController;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -36,9 +32,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    driverController = new XboxController(0);
-    operatorController = new XboxController(1);
-    m_robotContainer = new RobotContainer(driverController, operatorController);
+    m_robotContainer = new RobotContainer();
   }
 
   @Override

@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -17,14 +19,16 @@ public class TankDriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private DriveSubsystem driveSubsystem;
-  double leftPower;
-  double rightPower;
+  DoubleSupplier leftPower;
+  DoubleSupplier rightPower;
 
   
-  public TankDriveCommand (double m_leftPower, double m_rightPower, DriveSubsystem m_driveSubsystem) {
+  public TankDriveCommand (DoubleSupplier m_leftPower, DoubleSupplier m_rightPower, DriveSubsystem m_driveSubsystem) {
     driveSubsystem = m_driveSubsystem;
     leftPower = m_leftPower;
     rightPower = m_rightPower;
+    System.out.println(leftPower.getAsDouble());
+    System.out.println(rightPower.getAsDouble());
     //Subsystem Requirements
     addRequirements(m_driveSubsystem);
   }
@@ -37,7 +41,9 @@ public class TankDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.driveTank(leftPower, rightPower);
+    driveSubsystem.driveTank(leftPower.getAsDouble(), rightPower.getAsDouble());
+    System.out.println(leftPower.getAsDouble());
+    System.out.println(rightPower.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

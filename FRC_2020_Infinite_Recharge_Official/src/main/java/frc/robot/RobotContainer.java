@@ -27,7 +27,7 @@ public class RobotContainer {
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem intakeSubsystem =  new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 
@@ -35,22 +35,24 @@ public class RobotContainer {
   //private final TankDriveCommand tankDriveCommand;
 
   //Controllers
-  private XboxController driverController;
-  private XboxController operatorController; 
+  private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
+  private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
+  
 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer(XboxController ctrl1, XboxController ctrl2) {
-    driverController = ctrl1;
-    operatorController = ctrl2;
+  public RobotContainer() {
 
-    driveSubsystem.setDefaultCommand(new TankDriveCommand(driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),driveSubsystem));
+    driveSubsystem.setDefaultCommand(new TankDriveCommand(
+      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
+      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
+      driveSubsystem));
     configureButtonBindings();  
   }
 
-  /**
+  /** 
    * Use this method to define your button->command mappings.  Buttons can be created by
    * instantiating a {@link GenericHID} or one of its subclasses ({@link
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
@@ -67,6 +69,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TankDriveCommand(driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),driveSubsystem);
+    return null;
   }
 }
