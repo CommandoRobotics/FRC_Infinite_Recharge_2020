@@ -7,28 +7,27 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class TankDriveCommand extends CommandBase {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+public class DriveStraightTime extends CommandBase {
 
   private DriveSubsystem driveSubsystem;
-  DoubleSupplier leftPower;
-  DoubleSupplier rightPower;
+  double startTime;
+  double time;
+  double rightPower;
+  double leftPower;
+  boolean finished = false;
 
   
-  public TankDriveCommand (DoubleSupplier m_leftPower, DoubleSupplier m_rightPower, DriveSubsystem m_driveSubsystem) {
+  public DriveStraightTime(double m_time, double m_leftPower, double m_rightPower, DriveSubsystem m_driveSubsystem) {
     driveSubsystem = m_driveSubsystem;
+    time = m_time;
     leftPower = m_leftPower;
     rightPower = m_rightPower;
-    System.out.println(leftPower.getAsDouble());
-    System.out.println(rightPower.getAsDouble());
     //Subsystem Requirements
     addRequirements(m_driveSubsystem);
   }
@@ -36,14 +35,18 @@ public class TankDriveCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    startTime = System.nanoTime();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.driveTank(leftPower.getAsDouble(), rightPower.getAsDouble());
-    System.out.println(leftPower.getAsDouble());
-    System.out.println(rightPower.getAsDouble());
+    if((System.nanoTime() - startTime) <= time) {
+      driveSubsystem.driveTank(leftPower, rightPower);
+      finished = false;
+    } else {
+      finished = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -55,6 +58,6 @@ public class TankDriveCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return finished;
   }
 }

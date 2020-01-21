@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
+import frc.robot.ConstantsValues;
 
 public class IntakeSubsystem extends SubsystemBase {
 
@@ -19,8 +20,12 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor = new Spark(ConstantsPorts.intakePort);
   }
 
-  public void setIntakeMotor(double speed) {
+  public void setIntake(double speed) {
     intakeMotor.setSpeed(speed);
+  }
+
+  public void intakeCells() {
+    intakeMotor.setSpeed(ConstantsValues.intakeSpeed);
   }
 
   public void stopIntake() {

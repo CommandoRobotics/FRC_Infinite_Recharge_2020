@@ -21,5 +21,7 @@ public final class ConstantsValues {
     
     //VARIABLES
     public static final int driveDisPerPulse = 0;
+    public static final double intakeSpeed = 0.5;
+    public static final double axisThreshold = .08;
     
 }

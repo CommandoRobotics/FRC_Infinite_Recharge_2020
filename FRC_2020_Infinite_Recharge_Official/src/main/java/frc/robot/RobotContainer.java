@@ -45,7 +45,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
 
-    driveSubsystem.setDefaultCommand(new TankDriveCommand(
+    driveSubsystem.setDefaultCommand(new DriveTank(
       () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
       () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
       driveSubsystem));
