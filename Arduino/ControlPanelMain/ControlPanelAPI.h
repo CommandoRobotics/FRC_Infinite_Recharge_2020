@@ -1,6 +1,8 @@
 #ifndef _ControlPanelAPI_H
 #define _ControlPanelAPI_H
 
+// Find all code with "To-do" and replace it's values
+
 #include "ColorSensorAPI.h"
 
 // Declare some constants
@@ -14,24 +16,27 @@ static int COLOR_RED = 3;
 static int COLOR_YELLOW = 4;
 
 // RGB values for red color
-static double RED_THRESHOLD_RED = 255;
-static double GREEN_THRESHOLD_RED = 255;
-static double BLUE_THRESHOLD_RED = 255;
+static double RED_THRESHOLD_RED = 255; // To-do : change this value to the proper value after testing
+static double GREEN_THRESHOLD_RED = 255; // To-do : change this value to the proper value after testing
+static double BLUE_THRESHOLD_RED = 255; // To-do : change this value to the proper value after testing
 
 // RGB values for yellow color
-static double RED_THRESHOLD_YELLOW = 255;
-static double GREEN_THRESHOLD_YELLOW = 255;
-static double BLUE_THRESHOLD_YELLOW = 255;
+static double RED_THRESHOLD_YELLOW = 255; // To-do : change this value to the proper value after testing
+static double GREEN_THRESHOLD_YELLOW = 255; // To-do : change this value to the proper value after testing
+static double BLUE_THRESHOLD_YELLOW = 255; // To-do : change this value to the proper value after testing
 
 // RGB values for blue color
-static double RED_THRESHOLD_BLUE = 255;
-static double GREEN_THRESHOLD_BLUE = 255;
-static double BLUE_THRESHOLD_BLUE = 255;
+static double RED_THRESHOLD_BLUE = 255; // To-do : change this value to the proper value after testing
+static double GREEN_THRESHOLD_BLUE = 255; // To-do : change this value to the proper value after testing
+static double BLUE_THRESHOLD_BLUE = 255; // To-do : change this value to the proper value after testing
 
 // RGB values for green color
-static double RED_THRESHOLD_GREEN = 255;
-static double GREEN_THRESHOLD_GREEN = 255;
-static double BLUE_THRESHOLD_GREEN = 255;
+static double RED_THRESHOLD_GREEN = 255; // To-do : change this value to the proper value after testing
+static double GREEN_THRESHOLD_GREEN = 255; // To-do : change this value to the proper value after testing
+static double BLUE_THRESHOLD_GREEN = 255; // To-do : change this value to the proper value after testing
+
+// Set the range of values
+static double THRESHOLD_RANGE = 10; // To-do : change this value to the proper value after testing
 
 double distanceFromCenterInInches = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
 double motorMaxSpeed = 0; // This is the speed that the motor will spin at to align the wheel
@@ -103,7 +108,7 @@ double calculateOurSide(char targetColorAsChar) {
     double compensatedSpinDistance = 0;
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
     int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue());
+    int currentRobotColor = calculateCurrentColor();
     int currentWheelColor = 0;
     double redDistance = 0;
     double yellowDistance = 0;
@@ -163,7 +168,7 @@ double calculateEnemySide(char targetColorAsChar) {
     double compensatedSpinDistance = 0;
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
     int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue());
+    int currentRobotColor = calculateCurrentColor();
     int currentWheelColor = 0;
     double redDistance = 0;
     double yellowDistance = 0;

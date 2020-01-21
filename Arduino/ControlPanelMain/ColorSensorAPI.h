@@ -1,6 +1,8 @@
 #ifndef _ColorSensorAPI_H
 #define _ColorsSensorAPI_H
 
+// Find all code with "To-do" and replace it's values
+
 #include <Wire.h>
 
 const int colorSensorAddress = 0x52;
@@ -36,6 +38,8 @@ static void setupColorSensor() {
     Wire.endTransmission();
 }
 
+// Set up all color sensors
+// To-do : Change the amount and port of these color sensors
 static void setupAllColorSensors() {
     // Select color sensor 1
     selectColorSensor(0);
