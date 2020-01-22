@@ -23,5 +23,7 @@ public final class ConstantsValues {
     public static final int driveDisPerPulse = 0;
     public static final double intakeSpeed = 0.5;
     public static final double axisThreshold = .08;
+    public static final double shooterMinSpeed = .1;
+    public static final double loaderMinSpeed = .1;
     
 }

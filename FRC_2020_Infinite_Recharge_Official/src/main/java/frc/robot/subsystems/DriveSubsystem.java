@@ -41,35 +41,59 @@ public class DriveSubsystem extends SubsystemBase {
     gyro = new AnalogGyro(ConstantsPorts.gyroPort);
 
   }
-  
-  //Drives in Tank Drive for direct input control
+  /**Drives in Tank Drive with direct input controls for left and right power */
   public void driveTank(double leftPower, double rightPower) {
     drive.tankDrive(leftPower, rightPower);
   }
 
-  //Drives in Arcade Mode with direct inputs
+  /**Drives in Arcade Mode with direct inputs */
   public void driveArcade(double power, double rotation) {
     drive.arcadeDrive(power, rotation);   
   }
   
-  //Stops the drive motors
+  //There might be coffee btw
+
+  /**Stops all the drive motors */
   public void stopDrive() {
     drive.tankDrive(0,0);
   }
 
-  //Retrieves the gyro's raw angle
+  /**Returns the the raw angle from the drive trains's gyro 
+   * 
+   * @return the current gyro value in degrees. This is continuous and 
+   *         and will go past 360
+  */
   public double getAngle() {
     return gyro.getAngle();
   }
 
-  //Retrieveies the average drive Encoder Distance
+  /**Resets the gyro back to 0 degrees (basically re-centers it) */
+  public void resetGyro() {
+    gyro.reset();
+  }
+
+  /**Retrieves the average distance driven from the drive encoders 
+   * 
+   * @return the distance in inches from each left and right encoders added together
+   *         and then divided by 2 to achieve an average distance
+  */
   public double getDistance() {
     return (leftDriveEncoder.getDistance() + rightDriveEncoder.getDistance())/2;
   }
 
-  //Retrieveies the raw drive Encoder values
+  /** Retrieves the average raw counts from the drive encoders 
+   * 
+   * @return the raw output (PPR) from each left and right encoders added together
+   *         and then divided by 2 to achieve an average distance
+  */
   public double getRawEncoderVal() {
     return (leftDriveEncoder.getRaw() + rightDriveEncoder.getRaw())/2;
+  }
+
+  /**Resets the drive encoders back to 0 */
+  public void resetEncoders() {
+    leftDriveEncoder.reset();
+    rightDriveEncoder.reset();
   }
 
   @Override

@@ -47,4 +47,6 @@ public final class ConstantsPorts {
     public static final int tiltEncBPort = 6;
     public static final int panEncAPort = 7;
     public static final int panEncBPort = 8;
+    public static final int shooterEncAPort = 9;
+    public static final int shooterEncBPort = 10;
 }

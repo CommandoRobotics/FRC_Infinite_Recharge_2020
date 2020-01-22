@@ -20,14 +20,22 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor = new Spark(ConstantsPorts.intakePort);
   }
 
+  /**Sets the speed of the intake motor from an inputted speed */
   public void setIntake(double speed) {
     intakeMotor.setSpeed(speed);
   }
 
+  /**Sets the intake motor to a set speed for intaking, which 
+   * is pre-determined and set in ConstantsValues 
+   * */
   public void intakeCells() {
     intakeMotor.setSpeed(ConstantsValues.intakeSpeed);
   }
 
+  /**In case you were confused, this stops the intake motor
+   * 
+   * Cosmic Brownies are not as good as you think they are
+   */
   public void stopIntake() {
     intakeMotor.stopMotor();
   }

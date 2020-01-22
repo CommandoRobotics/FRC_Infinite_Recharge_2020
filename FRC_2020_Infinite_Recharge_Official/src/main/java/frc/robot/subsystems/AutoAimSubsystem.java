@@ -7,6 +7,11 @@
 
 package frc.robot.subsystems;
 
+import javax.naming.LimitExceededException;
+
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,9 +27,10 @@ public class AutoAimSubsystem extends SubsystemBase {
   public AutoAimSubsystem() {
     tilt = new Spark(ConstantsPorts.tiltPort);
     pan = new Spark(ConstantsPorts.panPort);
+
     boolean reverseDirection = false;
     tiltEncoder = new Encoder(ConstantsPorts.tiltEncAPort, ConstantsPorts.tiltEncBPort);
-    panEncoder = new Encoder(ConstantsPorts.panEncAPort, ConstantsPorts.panEncBPort, reverseDirection);
+    panEncoder = new Encoder(ConstantsPorts.panEncAPort, ConstantsPorts.panEncBPort, reverseDirection);   
   }
 
   public void setRotator(double speed) {
