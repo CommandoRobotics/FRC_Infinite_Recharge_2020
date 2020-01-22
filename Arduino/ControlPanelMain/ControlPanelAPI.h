@@ -36,7 +36,7 @@ static double BLUE_THRESHOLD_GREEN = 255;
 double distanceFromCenterInInches = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
 double motorMaxSpeed = 0; // This is the speed that the motor will spin at to align the wheel
 int gearboxRatio = 1; // The ratio of the gearbox the motor is using as x:1
-double wheelDiameterInInches = 2; // The diameter of the wheel touching the control panel given in inches
+double wheelDiameterInInches = 3; // The diameter of the wheel touching the control panel given in inches
 int countsPerRevolution = 1000; // The amount of encoder counts per revolution of the motor
 
 int convertColorToInt(char colorAsChar) {
