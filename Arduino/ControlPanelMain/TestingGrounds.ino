@@ -14,5 +14,6 @@ void loop() {
     Serial.println(getGreen());
     Serial.println("Blue :");
     Serial.println(getBlue());
+    Serial.println("==========");
     delay(1000);
 }
