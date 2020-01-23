@@ -20,10 +20,24 @@ public final class ConstantsValues {
     //Constants used as variables for things like speeds etc.
     
     //VARIABLES
+    //Distance Per Pulses
     public static final int driveDisPerPulse = 0;
-    public static final double intakeSpeed = 0.5;
-    public static final double axisThreshold = .08;
+    public static final double shooterInDisPerPulse = 0;
+    public static final double shooterMeterDisPerPulse = 0;
+    public static final double tiltDisPerPulse = 0;
+    public static final double panDisPerPulse = 0;
+
+    //Min speeds
+    public static final double genericMinSpeed = .1;
     public static final double shooterMinSpeed = .1;
     public static final double loaderMinSpeed = .1;
+    public static final double panMinSpeed = .1;
+    public static final double tiltMinSpeed = .1;
+
+
+    //Misc.
+    public static final double intakeSpeed = 0.5;
+    public static final double axisThreshold = .08;
+    
     
 }

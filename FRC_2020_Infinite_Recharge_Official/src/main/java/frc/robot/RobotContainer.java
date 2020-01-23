@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.*;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
+
   //Subsystems
   private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
@@ -37,14 +39,11 @@ public class RobotContainer {
   //Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
-  
-
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-
     driveSubsystem.setDefaultCommand(new DriveTank(
       () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
       () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),

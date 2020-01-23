@@ -19,7 +19,7 @@ public class DriveTank extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private DriveSubsystem driveSubsystem;
-  DoubleSupplier leftPower; //the power to the left side
+  DoubleSupplier leftPower;
   DoubleSupplier rightPower;
 
   

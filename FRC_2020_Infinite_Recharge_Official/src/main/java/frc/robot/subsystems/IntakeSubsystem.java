@@ -13,7 +13,7 @@ import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
 
 public class IntakeSubsystem extends SubsystemBase {
-
+  
   Spark intakeMotor;
 
   public IntakeSubsystem() {
@@ -25,9 +25,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.setSpeed(speed);
   }
 
-  /**Sets the intake motor to a set speed for intaking, which 
-   * is pre-determined and set in ConstantsValues 
-   * */
+  /**Sets the intake motor to a set speed for intaking, which is pre-determined and set in ConstantsValues */
   public void intakeCells() {
     intakeMotor.setSpeed(ConstantsValues.intakeSpeed);
   }

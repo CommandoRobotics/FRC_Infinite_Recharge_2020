@@ -14,6 +14,7 @@ import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
 
 public class ShooterSubsystem extends SubsystemBase {
+
   Spark loader;
   Spark shooter;
 
@@ -22,17 +23,23 @@ public class ShooterSubsystem extends SubsystemBase {
   double shooterMinSpeed;
   double loaderMinSpeed;
 
+  public int INCH_MODE = 0;
+  public int METER_MODE = 1;
+
   public ShooterSubsystem() {
     loader = new Spark(ConstantsPorts.shooterLoaderPort);
     shooter = new Spark(ConstantsPorts.shooterPort);
 
     shooterEnc = new Encoder(ConstantsPorts.shooterEncAPort, ConstantsPorts.shooterEncBPort);
+    shooterEnc.setDistancePerPulse(ConstantsValues.shooterInDisPerPulse);
 
     loaderMinSpeed = ConstantsValues.loaderMinSpeed;
     shooterMinSpeed = ConstantsValues.shooterMinSpeed;
   }
 
-  //Set the shooter to a certain inputted speed, given > minPower
+  /**Set the shooter to a certain inputted speed
+   * given that the input speed is greater than the minSpeed
+   */
   public void setShooter(double speed) {
     if (speed > shooterMinSpeed) {
       shooter.setSpeed(speed);
@@ -41,7 +48,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  //Sets the loader/flywheel to a certain inputted speed, given > minPower
+  /**Sets the loader/flywheel to a certain inputted speed 
+   * given that the input speed is greater than the minSpeed
+  */
   public void setLoader(double speed) {
     if (speed > loaderMinSpeed) {
       loader.setSpeed(speed);
@@ -50,32 +59,71 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
-  //Stops all action on the shooter motors
+  /**Stops the shooter motors */
   public void stopShooter() {
     shooter.stopMotor();
   }
 
-  //Stops all action on the loader/flywheel motors
+  /**Stops the loader/flywheel motors */
   public void stopLoader() {
     loader.stopMotor();
   }
 
-  //Returns the current set speed of the shooter motor
+  /**Returns the current set speed of the shooter motor 
+   * 
+   * @return set speed as double from -1 to 1
+  */
   public double getShooterSetSpeed() {
     return shooter.get();
   }
 
-  //Returns the raw counts recived from the shooter encoder
+  /**Returns the raw counts recieved from the shooter encoder 
+   * 
+   * @return Current raw output from the shooter encoder 
+   *         since the last reset
+  */
   public double getShooterEncRaw() {
+    return shooterEnc.getRaw();
+  }
+
+  /**Gets the current rate of the shooter encoder.
+   * Will be in in/sec in default mode, and m/sec in meter mode
+   * 
+   * @return The rate at which the shooter encoder is spinning
+   *         either in in/sec or m/sec
+   */
+  public double getShooterEncRate() {
     return shooterEnc.getRate();
   }
 
-  //Sets the minimum speed the shooter will run
+  /**Resets the Shooter encoder back to zero */
+  public void resetShooterEnc() {
+    shooterEnc.reset();
+  }
+
+  /**Overrides the distance per pulse of the shooter encoder */
+  public void setShooterDisPerPulse(double disPerPulse) {
+    shooterEnc.setDistancePerPulse(disPerPulse);
+  }
+
+  /**Sets the disPerPulse to either meters (Physics) or inches (AMERCICA)
+   * 
+   * @param mode Input METER_MODE for meters. Input INCH_MODE for inches
+  */
+  public void setShooterEncoderMode(int mode) {
+    if (mode == METER_MODE) {
+      shooterEnc.setDistancePerPulse(ConstantsValues.shooterMeterDisPerPulse);
+    } else if (mode == INCH_MODE) {
+      shooterEnc.setDistancePerPulse(ConstantsValues.shooterInDisPerPulse);
+    }
+  }
+
+  /**Overrides the minimum speed the shooter will run */
   public void setMinShooterSpeed(double speed) {
     shooterMinSpeed = speed;
   }
   
-  //Sets the min speed the loader will run
+  /**Overrides the min speed the loader will run */
   public void setMinLoaderSpeed(double speed) {
     loaderMinSpeed = speed;
   }

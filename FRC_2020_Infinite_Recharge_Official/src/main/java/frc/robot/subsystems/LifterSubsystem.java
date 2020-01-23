@@ -21,7 +21,7 @@ public class LifterSubsystem extends SubsystemBase {
 
   /** Sets the lifter solenoid to an inputted value 
    * 
-   * @param set  True will set the solenoid to on
+   * @param set  True will set the solenoid to on.
    *             False will set the solenoid to off
   */
   public void setLifter(boolean set) {
@@ -47,13 +47,15 @@ public class LifterSubsystem extends SubsystemBase {
 
   /**Returns the current state of the lifter 
    * 
-   * @return returns either true or false
+   * @return either true or false
    *         true = on
    *         false = off
   */
   public boolean getCurrentState() { 
     return intakeSolenoid.get();
   }
+
+  //Dont forget to run this mechanism into the wall! Because, progress!
 
   @Override
   public void periodic() {
