@@ -7,25 +7,24 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class DriveStraightTimeCommand extends CommandBase {
+public class DriveTank extends CommandBase {
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
   private DriveSubsystem driveSubsystem;
-  double startTime;
-  double time;
-  double rightPower;
-  double leftPower;
-  boolean finished = false;
+  DoubleSupplier leftPower;
+  DoubleSupplier rightPower;
 
   
-  public DriveStraightTimeCommand(double m_time, double m_leftPower, double m_rightPower, DriveSubsystem m_driveSubsystem) {
+  public DriveTank (DoubleSupplier m_leftPower, DoubleSupplier m_rightPower, DriveSubsystem m_driveSubsystem) {
     driveSubsystem = m_driveSubsystem;
-    time = m_time;
     leftPower = m_leftPower;
     rightPower = m_rightPower;
     //Subsystem Requirements
@@ -35,18 +34,12 @@ public class DriveStraightTimeCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startTime = System.nanoTime();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if((System.nanoTime() - startTime) <= time) {
-      driveSubsystem.driveTank(leftPower, rightPower);
-      finished = false;
-    } else {
-      finished = true;
-    }
+    driveSubsystem.driveTank(leftPower.getAsDouble(), rightPower.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
@@ -58,6 +51,6 @@ public class DriveStraightTimeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finished;
+    return false;
   }
 }
