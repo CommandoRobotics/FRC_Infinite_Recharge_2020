@@ -23,8 +23,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  //Limelights and Network Tables
+  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+
   //Subsystems
-  private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem();
+  private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem(limelight);
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
@@ -40,6 +43,7 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
 
+ 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -48,6 +52,8 @@ public class RobotContainer {
       () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
       () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
       driveSubsystem));
+
+    autoAimSubsystem.setDefaultCommand(new ReadLimelight(autoAimSubsystem));
     configureButtonBindings();  
   }
 

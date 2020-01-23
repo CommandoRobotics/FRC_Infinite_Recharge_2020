@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,7 +24,9 @@ public class AutoAimSubsystem extends SubsystemBase {
   double panMinSpeed = ConstantsValues.panMinSpeed;
   double tiltMinSpeed = ConstantsValues.tiltMinSpeed;
 
-  public AutoAimSubsystem() {
+  NetworkTable limelight;
+
+  public AutoAimSubsystem(NetworkTable m_limelight) {
     tilt = new Spark(ConstantsPorts.tiltPort);
     pan = new Spark(ConstantsPorts.panPort);
 
@@ -32,6 +35,7 @@ public class AutoAimSubsystem extends SubsystemBase {
     panEnc = new Encoder(ConstantsPorts.panEncAPort, ConstantsPorts.panEncBPort);
     panEnc.setDistancePerPulse(ConstantsValues.panDisPerPulse);
 
+    limelight = m_limelight;
   }
 
   /**Sets the tilter to a given speed */
@@ -41,7 +45,6 @@ public class AutoAimSubsystem extends SubsystemBase {
     } else {
       tilt.stopMotor();
     }
-
   }
 
   /**Sets the Panner to a given speed */
@@ -51,7 +54,6 @@ public class AutoAimSubsystem extends SubsystemBase {
     } else {
       pan.stopMotor();
     }
-    
   }
 
   /**Stops the Tilter motor */
@@ -116,6 +118,10 @@ public class AutoAimSubsystem extends SubsystemBase {
     panEnc.reset();
   }
 
+  //LIMELIGHT THINGS
+  public void printLimelight() {
+    System.out.println(limelight.getEntry("tx").getDouble(0));
+  }
 
   @Override
   public void periodic() {
