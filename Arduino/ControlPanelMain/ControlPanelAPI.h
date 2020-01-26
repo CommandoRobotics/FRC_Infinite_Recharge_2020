@@ -8,30 +8,33 @@ static int DIAMETER = 32; // The diameter of the control panel in inches
 static double CIRCUMFERENCE = 100.541; // The circumference of the control panel in inches
 
 // Sets names of colors for easy progrmming. DO NOT CHANGE
-static int COLOR_BLUE = 1;
-static int COLOR_GREEN = 2;
-static int COLOR_RED = 3;
-static int COLOR_YELLOW = 4;
+static int COLOR_BLUE = 1; // Int for the color blue
+static int COLOR_GREEN = 2; // Int for the color green
+static int COLOR_RED = 3; // Int for the color red
+static int COLOR_YELLOW = 4; // Int for the color yellow
+static int COLOR_NONE = 5; // Int for no color
 
 // RGB values for red color
-static double RED_THRESHOLD_RED = 255;
-static double GREEN_THRESHOLD_RED = 255;
-static double BLUE_THRESHOLD_RED = 255;
+static double RED_THRESHOLD_RED = 255; // Red threshold for the control panel color red
+static double GREEN_THRESHOLD_RED = 255; // Green threshold for the control panel color red
+static double BLUE_THRESHOLD_RED = 255; // Blue threshold for the control panel color red
 
 // RGB values for yellow color
-static double RED_THRESHOLD_YELLOW = 255;
-static double GREEN_THRESHOLD_YELLOW = 255;
-static double BLUE_THRESHOLD_YELLOW = 255;
+static double RED_THRESHOLD_YELLOW = 255; // Red threshold for the control panel color yellow
+static double GREEN_THRESHOLD_YELLOW = 255; // Green threshold for the control panel color yellow
+static double BLUE_THRESHOLD_YELLOW = 255; // Blue threshold for the control panel color yellow
 
 // RGB values for blue color
-static double RED_THRESHOLD_BLUE = 255;
-static double GREEN_THRESHOLD_BLUE = 255;
-static double BLUE_THRESHOLD_BLUE = 255;
+static double RED_THRESHOLD_BLUE = 255; // Red threshold for the control panel color blue
+static double GREEN_THRESHOLD_BLUE = 255; // Green threshold for the control panel color blue
+static double BLUE_THRESHOLD_BLUE = 255; // Blue threshold for the control panel color blue
 
 // RGB values for green color
-static double RED_THRESHOLD_GREEN = 255;
-static double GREEN_THRESHOLD_GREEN = 255;
-static double BLUE_THRESHOLD_GREEN = 255;
+static double RED_THRESHOLD_GREEN = 255; // Red threshold for the control panel color green
+static double GREEN_THRESHOLD_GREEN = 255; // Green threshold for the control panel color green
+static double BLUE_THRESHOLD_GREEN = 255; // Blue threshold for the control panel color green
+
+static double THRESHOLD_RANGE = 5; // The +/- range that the values can vary from their set values
 
 double distanceFromCenterInInches = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
 double motorMaxSpeed = 0; // This is the speed that the motor will spin at to align the wheel
@@ -39,6 +42,7 @@ int gearboxRatio = 1; // The ratio of the gearbox the motor is using as x:1
 double wheelDiameterInInches = 3; // The diameter of the wheel touching the control panel given in inches
 int countsPerRevolution = 1000; // The amount of encoder counts per revolution of the motor
 
+// Convert color as char to an int
 int convertColorToInt(char colorAsChar) {
     int colorAsInt = 0;
     if(colorAsChar == 'b') {
@@ -53,6 +57,7 @@ int convertColorToInt(char colorAsChar) {
     return colorAsInt;
 }
 
+// Calculate the current color visible using RGB inputs
 int calculateCurrentColor(double red, double green, double blue) {
     int color = 0;
     // See if the RGB values match those of the color RED
@@ -65,7 +70,6 @@ int calculateCurrentColor(double red, double green, double blue) {
         }
     }
 
-    // Copy the above logic for the other colors
     //See if the RGB values match those of the color YELLOW
     if(red >= (RED_THRESHOLD_YELLOW-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
         if(green >= (GREEN_THRESHOLD_YELLOW-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
@@ -95,21 +99,24 @@ int calculateCurrentColor(double red, double green, double blue) {
             }
         }
     }
+    // Since we are not seeing a color that's actually on the color wheel, we can set the color to none
+    color = COLOR_NONE;
     return color;
 }
 
+// Calculate distance to spin the motor if we are on our side of the field
 double calculateOurSide(char targetColorAsChar) {
-    double outputMotorSpeed = 0;
-    double compensatedSpinDistance = 0;
+    double outputMotorSpeed = 0; // The speed that is actually outputed to the motor
+    double compensatedSpinDistance = 0; // Distance to spin after we account for the mechanism's distance from the center of the control panel
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
-    int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue());
-    int currentWheelColor = 0;
-    double redDistance = 0;
-    double yellowDistance = 0;
-    double blueDistance = 0;
-    double greenDistance = 0;
-    double motorSpinDistanceInRotations = 0;
+    int targetColor = convertColorToInt(targetColorAsChar); // The color we are trying to spin to     
+    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue()); // The current color the robot's sensor sees
+    int currentWheelColor = 0; // The current color that the FMS sensor sees
+    double redDistance = 0; // The distance that we need to spin to put the red color underneath the FMS sensor
+    double yellowDistance = 0; // The distance that we need to spin to put the yellow color underneath the FMS sensor
+    double blueDistance = 0; // The distance that we need to spin to put the blue color underneath the FMS sensor
+    double greenDistance = 0; // The distance that we need to spin to put the green color underneath the FMS sensor
+    double motorSpinDistanceInRotations = 0; // The distance that the motor needs to spin in rotations
 
     // Sets the distances of each color relative to the wheel's current location
     if(currentRobotColor == COLOR_RED) {
@@ -158,18 +165,19 @@ double calculateOurSide(char targetColorAsChar) {
     return motorSpinDistanceInRotations;
 }
 
+// Calculate distance to spin the motor if we are on our enemie's side of the field
 double calculateEnemySide(char targetColorAsChar) {
-    double outputMotorSpeed = 0;
-    double compensatedSpinDistance = 0;
+    double outputMotorSpeed = 0; // The speed that is actually outputed to the motor
+    double compensatedSpinDistance = 0; // Distance to spin after we account for the mechanism's distance from the center of the control panel
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
-    int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue());
-    int currentWheelColor = 0;
-    double redDistance = 0;
-    double yellowDistance = 0;
-    double blueDistance = 0;
-    double greenDistance = 0;
-    double motorSpinDistanceInRotations = 0;
+    int targetColor = convertColorToInt(targetColorAsChar); // The color we are trying to spin to     
+    int currentRobotColor = calculateCurrentColor(getRed(), getGreen(), getBlue()); // The current color the robot's sensor sees
+    int currentWheelColor = 0; // The current color that the FMS sensor sees
+    double redDistance = 0; // The distance that we need to spin to put the red color underneath the FMS sensor
+    double yellowDistance = 0; // The distance that we need to spin to put the yellow color underneath the FMS sensor
+    double blueDistance = 0; // The distance that we need to spin to put the blue color underneath the FMS sensor
+    double greenDistance = 0; // The distance that we need to spin to put the green color underneath the FMS sensor
+    double motorSpinDistanceInRotations = 0; // The distance that the motor needs to spin in rotations
 
     // Sets the distances of each color relative to the wheel's current location
     if(currentRobotColor == COLOR_RED) {
