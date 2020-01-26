@@ -1,5 +1,7 @@
 package frc.robot.APIs;
 
+import frc.robot.APIs.*;
+
 public class ControlPanelAPI {
 
     // Declare some constants
@@ -12,27 +14,27 @@ public class ControlPanelAPI {
     public static final int COLOR_RED = 3;
     public static final int COLOR_YELLOW = 4;
 
-    // RGB values for the red color
-    public static final double RED_THRESHOLD_RED = 255;
-    public static final double GREEN_THRESHOLD_RED = 0;
-    public static final double BLUE_THRESHOLD_RED = 0;
+    /* Sets the ratios used to determine what color the color sensor is seeing
+    To-do : Change these ratios to fit the actual sensors
+    Format is [color one]_TO_[color two]_RATIO_[color on control panel]*/
+    public static double RED_TO_GREEN_RATIO_RED = 0; // The ratio of red to green for the red control panel color
+    public static double RED_TO_BLUE_RATIO_RED = 0; // The ratio of red to blue for the red control panel color
+    public static double BLUE_TO_GREEN_RATIO_RED = 0; // The ratio of blue to green for the red control panel color
 
-    // RGB values for the yellow color
-    public static final double RED_THRESHOLD_YELLOW = 255;
-    public static final double GREEN_THRESHOLD_YELLOW = 255;
-    public static final double BLUE_THRESHOLD_YELLOW = 255;
+    public static double RED_TO_GREEN_RATIO_GREEN = 0; // The ratio of red to green for the green control panel color
+    public static double RED_TO_BLUE_RATIO_GREEN = 0; // The ratio of red to blue for the green control panel color
+    public static double BLUE_TO_GREEN_RATIO_GREEN = 0; // The ratio of blue to green for the green control panel color
 
-    // RGB values for the blue color
-    public static final double RED_THRESHOLD_BLUE = 255;
-    public static final double GREEN_THRESHOLD_BLUE = 255;
-    public static final double BLUE_THRESHOLD_BLUE = 255;
+    public static double RED_TO_GREEN_RATIO_BLUE = 0; // The ratio of red to green for the blue control panel color
+    public static double RED_TO_BLUE_RATIO_BLUE = 0; // The ratio of red to blue for the blue control panel color
+    public static double BLUE_TO_GREEN_RATIO_BLUE = 0; // The ratio of blue to green for the blue control panel color
 
-    // RGB values for the green color
-    public static final double RED_THRESHOLD_GREEN = 255;
-    public static final double GREEN_THRESHOLD_GREEN = 255;
-    public static final double BLUE_THRESHOLD_GREEN = 255;
+    public static double RED_TO_GREEN_RATIO_YELLOW = 0; // The ratio of red to green for the yellow control panel color
+    public static double RED_TO_BLUE_RATIO_YELLOW = 0; // The ratio of red to blue for the yellow control panel color
+    public static double BLUE_TO_GREEN_RATIO_YELLOW = 0; // The ratio of blue to green for the yellow control panel color
 
-    public static final double THRESHOLD_RANGE = 5;
+    // Set the +/- range that the threshold valuse can have
+    static double THRESHOLD_RANGE = 10; // To-do : change this value to the proper value after testing
 
     double distanceFromCenter = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
     double motorMaxSpeed = 0; // This is the speed that the motor will spin at to align the wheel
@@ -46,6 +48,15 @@ public class ControlPanelAPI {
         gearboxRatio = inputGearboxRatio;
         wheelDiameter = inputWheelDiameter;
         countsPerRevolution = inputCountsPerRevolution;
+    }
+
+    // Check to see if the current colors fit in a ratio
+    boolean checkRatio(double inputColor1, double inputColor2, double ratioToCheck) {
+        if(inputColor1/inputColor2 > ratioToCheck-THRESHOLD_RANGE && inputColor1/inputColor2 < ratioToCheck+THRESHOLD_RANGE) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     // Change the color from a char to an int
@@ -63,49 +74,59 @@ public class ControlPanelAPI {
         return colorAsInt;
     }
 
-    // Calculate what color we are on based on RGB inputs
-    public static int calculateCurrentColor(double red, double green, double blue){
+    public int calculateCurrentColor(double red, double green, double blue) {
         int color = 0;
-        // See if the RGB values match those of the color RED
-        if(red >= (RED_THRESHOLD_RED-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_RED+THRESHOLD_RANGE)) {
-            if(green >= (GREEN_THRESHOLD_RED-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_RED+THRESHOLD_RANGE)) {
-                if(blue >= (BLUE_THRESHOLD_RED-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_RED+THRESHOLD_RANGE)) {
+        
+        // See if the red/green ratio is true for the red color
+        if(checkRatio(red, green, RED_TO_GREEN_RATIO_RED)) {
+            // See if the red/blue ratio is true for the red color
+            if(checkRatio(red, blue, RED_TO_BLUE_RATIO_RED)) {
+                // See if the blue/green ratio is true for the red color
+                if(checkRatio(blue, green, BLUE_TO_GREEN_RATIO_RED)) {
                     color = COLOR_RED;
                     return color;
                 }
             }
         }
 
-        // Copy the above logic for the other colors
-        //See if the RGB values match those of the color YELLOW
-        if(red >= (RED_THRESHOLD_YELLOW-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
-            if(green >= (GREEN_THRESHOLD_YELLOW-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
-                if(blue >= (BLUE_THRESHOLD_YELLOW-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
-                    color = COLOR_YELLOW;
+        // See if the red/green ratio is true for the green color
+        if(checkRatio(red, green, RED_TO_GREEN_RATIO_GREEN)) {
+            // See if the red/blue ratio is true for the green color
+            if(checkRatio(red, blue, RED_TO_BLUE_RATIO_GREEN)) {
+                // See if the blue/green ratio is true for the green color
+                if(checkRatio(blue, green, BLUE_TO_GREEN_RATIO_GREEN)) {
+                    color = COLOR_GREEN;
                     return color;
                 }
             }
         }
 
-        //See if the RGB values match those of the color BLUE
-        if(red >= (RED_THRESHOLD_BLUE-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
-            if(green >= (GREEN_THRESHOLD_BLUE-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
-                if(blue >= (BLUE_THRESHOLD_BLUE-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
+        // See if the red/green ratio is true for the blue color
+        if(checkRatio(red, green, RED_TO_GREEN_RATIO_BLUE)) {
+            // See if the red/blue ratio is true for the blue color
+            if(checkRatio(red, blue, RED_TO_BLUE_RATIO_BLUE)) {
+                // See if the blue/green ratio is true for the blue color
+                if(checkRatio(blue, green, BLUE_TO_GREEN_RATIO_BLUE)) {
                     color = COLOR_BLUE;
                     return color;
                 }
             }
         }
 
-        //See if the RGB values match those of the color GREEN
-        if(red >= (RED_THRESHOLD_GREEN-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
-            if(green >= (GREEN_THRESHOLD_GREEN-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
-                if(blue >= (BLUE_THRESHOLD_GREEN-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
-                    color = COLOR_GREEN;
+        // See if the red/green ratio is true for the yellow color
+        if(checkRatio(red, green, RED_TO_GREEN_RATIO_YELLOW)) {
+            // See if the red/blue ratio is true for the yellow color
+            if(checkRatio(red, blue, RED_TO_BLUE_RATIO_YELLOW)) {
+                // See if the blue/green ratio is true for the yellow color
+                if(checkRatio(blue, green, BLUE_TO_GREEN_RATIO_YELLOW)) {
+                    color = COLOR_YELLOW;
                     return color;
                 }
             }
         }
+
+        // If the color does not match that of any on the control panel, and thus has not been picked yet
+        color = COLOR_NONE;
         return color;
     }
 
