@@ -10,10 +10,16 @@ static int DIAMETER = 32; // The diameter of the control panel in inches
 static double CIRCUMFERENCE = 100.541; // The circumference of the control panel in inches
 
 // Sets names of colors for easy progrmming. DO NOT CHANGE
-static int COLOR_BLUE = 1;
-static int COLOR_GREEN = 2;
-static int COLOR_RED = 3;
-static int COLOR_YELLOW = 4;
+static int COLOR_BLUE = 1; // Number for the color Blue
+static int COLOR_GREEN = 2; // Number for the color Green
+static int COLOR_RED = 3; // Number for the color Red
+static int COLOR_YELLOW = 4; // Number for the color Yellow
+static int COLOR_NONE = 5; // Number for a color that isn't on the control panel
+
+// Declare some error numbers
+static int ERROR_NOT_ENOUGH_SENSORS = 100; // Error number for when we don't have atleast 3 sensors picking up the color wheel
+static int ERROR_COLOR_SENSORS_NOT_ADJACENT = 101; // Error number for when color sensors are not adjacent
+static int ERROR_NO_CALCULABLE_COLOR = 102; // Error number for when cant't determine what color we are seeing
 
 // RGB values for red color
 static double RED_THRESHOLD_RED = 255; // To-do : change this value to the proper value after testing
@@ -45,7 +51,7 @@ double wheelDiameterInInches = 2; // The diameter of the wheel touching the cont
 int countsPerRevolution = 1000; // The amount of encoder counts per revolution of the motor
 
 int convertColorToInt(char colorAsChar) {
-    int colorAsInt = 0;
+    int colorAsInt = 0; // Color as an integer
     if(colorAsChar == 'b') {
         colorAsInt = COLOR_BLUE;
     } else if(colorAsChar == 'g') {
@@ -58,7 +64,8 @@ int convertColorToInt(char colorAsChar) {
     return colorAsInt;
 }
 
-int calculateCurrentColor(double red, double green, double blue) {
+// Calculate what color on the wheel the sensor is seeing
+int calculateColor(double red, double green, double blue) {
     int color = 0;
     // See if the RGB values match those of the color RED
     if(red >= (RED_THRESHOLD_RED-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_RED+THRESHOLD_RANGE)) {
@@ -68,53 +75,176 @@ int calculateCurrentColor(double red, double green, double blue) {
                 return color;
             }
         }
-    }
-
-    // Copy the above logic for the other colors
-    //See if the RGB values match those of the color YELLOW
-    if(red >= (RED_THRESHOLD_YELLOW-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
+    // See if the RGB values match those of the color YELLOW
+    } else if(red >= (RED_THRESHOLD_YELLOW-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
         if(green >= (GREEN_THRESHOLD_YELLOW-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
             if(blue >= (BLUE_THRESHOLD_YELLOW-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
                 color = COLOR_YELLOW;
                 return color;
             }
         }
-    }
-
-    //See if the RGB values match those of the color BLUE
-    if(red >= (RED_THRESHOLD_BLUE-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
+    // See if the RGB values match those of the color BLUE
+    } else if(red >= (RED_THRESHOLD_BLUE-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
         if(green >= (GREEN_THRESHOLD_BLUE-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
             if(blue >= (BLUE_THRESHOLD_BLUE-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
                 color = COLOR_BLUE;
                 return color;
             }
         }
-    }
-
-    //See if the RGB values match those of the color GREEN
-    if(red >= (RED_THRESHOLD_GREEN-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
+    // See if the RGB values match those of the color GREEN
+    } else if(red >= (RED_THRESHOLD_GREEN-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
         if(green >= (GREEN_THRESHOLD_GREEN-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
             if(blue >= (BLUE_THRESHOLD_GREEN-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
                 color = COLOR_GREEN;
                 return color;
             }
         }
+    } else {
+        color = COLOR_NONE;
+        return color;
     }
-    return color;
 }
 
+// Calculate what color the robot is currently on using the correction system
+// To-do : Change the numbers within the "calculateColor()" method to match the ports on the multiplexer that we are trying to access
+int calculateCurrentRobotColor() {
+    int color = 0; // The 
+    // Calculate what color each sensor is seeing, if they are seeing a color
+    int colorSensor1Color = calculateColor(getRed(1), getGreen(1), getBlue(1));
+    int colorSensor2Color = calculateColor(getRed(2), getGreen(2), getBlue(2));
+    int colorSensor3Color = calculateColor(getRed(3), getGreen(3), getBlue(3));
+    int colorSensor4Color = calculateColor(getRed(4), getGreen(4), getBlue(4));
+    int colorSensor5Color = calculateColor(getRed(5), getGreen(5), getBlue(5));
+
+    bool canColorSensor1SeeControlPanel = false; // True if color sensor can see a control 
+    bool canColorSensor2SeeControlPanel = false;
+    bool canColorSensor3SeeControlPanel = false;
+    bool canColorSensor4SeeControlPanel = false;
+    bool canColorSensor5SeeControlPanel = false;
+
+    // Calculate how many sensors are seeing the control panel
+    int howManySensorsSeeTheControlPanel = 0;
+    if(colorSensor1Color > 0 && colorSensor1Color < 5) {
+        howManySensorsSeeTheControlPanel++;
+        canColorSensor1SeeControlPanel = true;
+    }
+    if(colorSensor2Color > 0 && colorSensor2Color < 5) {
+        howManySensorsSeeTheControlPanel++;
+        canColorSensor2SeeControlPanel = true;
+    }
+    if(colorSensor3Color > 0 && colorSensor3Color < 5) {
+        howManySensorsSeeTheControlPanel++;
+        canColorSensor3SeeControlPanel = true;
+    }
+    if(colorSensor4Color > 0 && colorSensor4Color < 5) {
+        howManySensorsSeeTheControlPanel++;
+        canColorSensor4SeeControlPanel = true;
+    }
+    if(colorSensor5Color > 0 && colorSensor5Color < 5) {
+        howManySensorsSeeTheControlPanel++;
+        canColorSensor5SeeControlPanel = true;
+    }
+
+    // Exit program with error 100 if we can not see the control panel with at least 3 sensors
+    if(howManySensorsSeeTheControlPanel < 3) {
+        return ERROR_NOT_ENOUGH_SENSORS;
+    }
+
+    bool areColorSensorsAdjacent = false; // True if there are atleast 3 adjacent color sensors detecting a color on the control panel
+    int adjacentColorSensorStart = 0; // What sensor number the row of adjacent sensors begins from
+    int adjacentColorSensorEnd = 0; // What sensor number the row of adjacent sensors ends at
+
+    // Determine if color sensors that are seeing values are adjacent by making sure that there are at least 3 color sensors with a color reading in a row, without interruption by a "no-color" reading.
+    if(canColorSensor1SeeControlPanel) {
+        if(canColorSensor2SeeControlPanel) {
+            if(canColorSensor3SeeControlPanel) {
+                areColorSensorsAdjacent = true;
+                // Check to see if 5 can see the control panel. If it can't, we already have 3 in a row, so we are all clear. If we can, we need to check and make sure that 4 is visible, as well.
+                if(canColorSensor5SeeControlPanel) {
+                    if(canColorSensor4SeeControlPanel) {
+                        areColorSensorsAdjacent = true;
+                    } else {
+                        areColorSensorsAdjacent = false;
+                    }
+                }
+            }
+        }
+    // Since we only checked for sensor 1, we need to check for sensor 2 given sensor 1 is not activated
+    } else if(canColorSensor2SeeControlPanel) {
+        if(canColorSensor3SeeControlPanel) {
+            if(canColorSensor4SeeControlPanel) {
+                // We can determine that we have 3 color sensors adjacent to one another since the last one that we need to check is 5, and it can't interrupt any line of 3
+                areColorSensorsAdjacent = true;
+            }
+        }
+    // Since we checked for both sensor 1 and sensor 2, we now need to check for sensor 3 given, both 1 and 2 are not activated
+    } else if(canColorSensor3SeeControlPanel) {
+        if(canColorSensor4SeeControlPanel) {
+            if(canColorSensor5SeeControlPanel) {
+                areColorSensorsAdjacent = true;
+            }
+        }
+    }
+
+    // If sensors are not next to each other, exit program with error 101 (color sensors are not adjacent)
+    if(areColorSensorsAdjacent == false) {
+        return ERROR_COLOR_SENSORS_NOT_ADJACENT;
+    }
+
+    // Determine what color sensor is the first in the array
+    if(canColorSensor1SeeControlPanel) {
+        adjacentColorSensorStart = 1;
+    } else if(canColorSensor2SeeControlPanel) {
+        adjacentColorSensorStart = 2;
+    } else if(canColorSensor3SeeControlPanel) {
+        adjacentColorSensorStart = 3;
+    }
+
+    // Determine what color sensor is last in the array
+    if(canColorSensor5SeeControlPanel) {
+        adjacentColorSensorEnd = 5;
+    } else if(canColorSensor4SeeControlPanel) {
+        adjacentColorSensorEnd = 4;
+    } else if(canColorSensor3SeeControlPanel) {
+        adjacentColorSensorEnd = 3;
+    }
+
+    // See if we are too far to the right. If we are, see if there is a color that is the same for 2 sensors furthest to the left (1 and 2). 
+    if(adjacentColorSensorStart == 1 && adjacentColorSensorEnd == 3) {
+        if(colorSensor1Color == colorSensor2Color) {
+            return colorSensor1Color;
+        }
+    }
+
+    // See if we are to far to the left. If we are, see if there is a color that is the same for 2 sensors furthest to the right (4 and 5).
+    if(adjacentColorSensorStart == 3 && adjacentColorSensorEnd == 5) {
+        if(colorSensor4Color == colorSensor45Color) {
+            return colorSensor4Color;
+        }
+    }
+
+    // See if we are in the center of the color wheel. If we are, see what color is in the center
+    if(adjacentColorSensorStart == 2 && adjacentColorSensorEnd == 4) {
+        return colorSensor3Color;
+    }
+
+    // If we have not yet determiend that we are seeing a color, exit with error 102 (no calculable color)
+    return ERROR_NO_CALCULABLE_COLOR;
+}
+
+// Calculate distance to move the control panel, assuming we are on our side of the field
 double calculateOurSide(char targetColorAsChar) {
-    double outputMotorSpeed = 0;
-    double compensatedSpinDistance = 0;
+    double outputMotorSpeed = 0; // Speed of the motor that's given to the motor
+    double compensatedSpinDistance = 0; // Distance to spin the wheel after taking into account the mechanism's distance from the center of the control panel
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
-    int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor();
-    int currentWheelColor = 0;
-    double redDistance = 0;
-    double yellowDistance = 0;
-    double blueDistance = 0;
-    double greenDistance = 0;
-    double motorSpinDistanceInRotations = 0;
+    int targetColor = convertColorToInt(targetColorAsChar); // Color that we are attempting to put underneath the FMS sensor
+    int currentRobotColor = calculateCurrentColor(); // Color the robot is currently detecting
+    int currentWheelColor = 0; // The current color deteced from the FMS sensor's point of view
+    double redDistance = 0; // Rotations we need to spin to get the red color (frome the FMS sensor's point of view)
+    double yellowDistance = 0; // Rotations we need to spin to get the yellow color (frome the FMS sensor's point of view)
+    double blueDistance = 0; // Rotations we need to spin to get the blue color (frome the FMS sensor's point of view)
+    double greenDistance = 0; // Rotations we need to spin to get the green color (frome the FMS sensor's point of view)
+    double motorSpinDistanceInRotations = 0; // How many rotations the motor needs to spin
 
     // Sets the distances of each color relative to the wheel's current location
     if(currentRobotColor == COLOR_RED) {
@@ -163,18 +293,19 @@ double calculateOurSide(char targetColorAsChar) {
     return motorSpinDistanceInRotations;
 }
 
+// Calculate distance to move the control panel, assuming we are on our enemie's side of the field
 double calculateEnemySide(char targetColorAsChar) {
-    double outputMotorSpeed = 0;
-    double compensatedSpinDistance = 0;
+    double outputMotorSpeed = 0; // Speed of the motor that's given to the motor
+    double compensatedSpinDistance = 0; // Distance to spin the wheel after taking into account the mechanism's distance from the center of the control panel
     double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
-    int targetColor = convertColorToInt(targetColorAsChar);        
-    int currentRobotColor = calculateCurrentColor();
-    int currentWheelColor = 0;
-    double redDistance = 0;
-    double yellowDistance = 0;
-    double blueDistance = 0;
-    double greenDistance = 0;
-    double motorSpinDistanceInRotations = 0;
+    int targetColor = convertColorToInt(targetColorAsChar); // Color that we are attempting to put underneath the FMS sensor
+    int currentRobotColor = calculateCurrentColor(); // Color the robot is currently detecting
+    int currentWheelColor = 0; // The current color deteced from the FMS sensor's point of view
+    double redDistance = 0; // Rotations we need to spin to get the red color (frome the FMS sensor's point of view)
+    double yellowDistance = 0; // Rotations we need to spin to get the yellow color (frome the FMS sensor's point of view)
+    double blueDistance = 0; // Rotations we need to spin to get the blue color (frome the FMS sensor's point of view)
+    double greenDistance = 0; // Rotations we need to spin to get the green color (frome the FMS sensor's point of view)
+    double motorSpinDistanceInRotations = 0; // How many rotations the motor needs to spin
 
     // Sets the distances of each color relative to the wheel's current location
     if(currentRobotColor == COLOR_RED) {
