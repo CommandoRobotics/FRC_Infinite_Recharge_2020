@@ -19,21 +19,21 @@ static int COLOR_NONE = 5;
 /* Sets the ratios used to determine what color the color sensor is seeing
 To-do : Change these ratios to fit the actual sensors
 Format is [color one]_TO_[color two]_RATIO_[color on control panel]*/
-static RED_TO_GREEN_RATIO_RED = 0; // The ratio of red to green for the red control panel color
-static RED_TO_BLUE_RATIO_RED = 0; // The ratio of red to blue for the red control panel color
-static BLUE_TO_GREEN_RATIO_RED = 0; // The ratio of blue to green for the red control panel color
+static double RED_TO_GREEN_RATIO_RED = 0; // The ratio of red to green for the red control panel color
+static double RED_TO_BLUE_RATIO_RED = 0; // The ratio of red to blue for the red control panel color
+static double BLUE_TO_GREEN_RATIO_RED = 0; // The ratio of blue to green for the red control panel color
 
-static RED_TO_GREEN_RATIO_GREEN = 0; // The ratio of red to green for the green control panel color
-static RED_TO_BLUE_RATIO_GREEN = 0; // The ratio of red to blue for the green control panel color
-static BLUE_TO_GREEN_RATIO_GREEN = 0; // The ratio of blue to green for the green control panel color
+static double RED_TO_GREEN_RATIO_GREEN = 0; // The ratio of red to green for the green control panel color
+static double RED_TO_BLUE_RATIO_GREEN = 0; // The ratio of red to blue for the green control panel color
+static double BLUE_TO_GREEN_RATIO_GREEN = 0; // The ratio of blue to green for the green control panel color
 
-static RED_TO_GREEN_RATIO_BLUE = 0; // The ratio of red to green for the blue control panel color
-static RED_TO_BLUE_RATIO_BLUE = 0; // The ratio of red to blue for the blue control panel color
-static BLUE_TO_GREEN_RATIO_BLUE = 0; // The ratio of blue to green for the blue control panel color
+static double RED_TO_GREEN_RATIO_BLUE = 0; // The ratio of red to green for the blue control panel color
+static double RED_TO_BLUE_RATIO_BLUE = 0; // The ratio of red to blue for the blue control panel color
+static double BLUE_TO_GREEN_RATIO_BLUE = 0; // The ratio of blue to green for the blue control panel color
 
-static RED_TO_GREEN_RATIO_YELLOW = 0; // The ratio of red to green for the yellow control panel color
-static RED_TO_BLUE_RATIO_YELLOW = 0; // The ratio of red to blue for the yellow control panel color
-static BLUE_TO_GREEN_RATIO_YELLOW = 0; // The ratio of blue to green for the yellow control panel color
+static double RED_TO_GREEN_RATIO_YELLOW = 0; // The ratio of red to green for the yellow control panel color
+static double RED_TO_BLUE_RATIO_YELLOW = 0; // The ratio of red to blue for the yellow control panel color
+static double BLUE_TO_GREEN_RATIO_YELLOW = 0; // The ratio of blue to green for the yellow control panel color
 
 // Set the +/- range that the threshold valuse can have
 static double THRESHOLD_RANGE = 10; // To-do : change this value to the proper value after testing
