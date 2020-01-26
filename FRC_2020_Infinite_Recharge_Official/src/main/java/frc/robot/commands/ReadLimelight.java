@@ -8,9 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.APIs.ProjectileMathAPI;
 import frc.robot.subsystems.AutoAimSubsystem;
 
+
 public class ReadLimelight extends CommandBase {
+
+  private ProjectileMathAPI projectileMath; 
 
   AutoAimSubsystem autoAimSubsystem;
   public ReadLimelight(AutoAimSubsystem m_autoAimSubsystem) {
@@ -22,12 +26,13 @@ public class ReadLimelight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    projectileMath = new ProjectileMathAPI();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    autoAimSubsystem.printLimelight();
+    System.out.println(projectileMath.calculateInitialVelocityAndAngle(5, 2));
   }
 
   // Called once the command ends or is interrupted.
