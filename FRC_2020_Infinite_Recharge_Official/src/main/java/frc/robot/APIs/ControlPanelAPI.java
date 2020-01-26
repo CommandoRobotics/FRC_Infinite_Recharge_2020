@@ -1,5 +1,9 @@
 package frc.robot.APIs;
 
+// DO THIS: Find every "To-do" and change those values
+
+import frc.robot.APIs.*;
+
 public class ControlPanelAPI {
 
     // Declare some constants
@@ -11,28 +15,35 @@ public class ControlPanelAPI {
     public static final int COLOR_GREEN = 2;
     public static final int COLOR_RED = 3;
     public static final int COLOR_YELLOW = 4;
+    public static final int COLOR_NONE = 5;
 
-    // RGB values for the red color
-    public static final double RED_THRESHOLD_RED = 255;
-    public static final double GREEN_THRESHOLD_RED = 0;
-    public static final double BLUE_THRESHOLD_RED = 0;
+    // Declare some error numbers
+    public static int ERROR_NOT_ENOUGH_SENSORS = 100; // Error number for when we don't have atleast 3 sensors picking up the color wheel
+    public static int ERROR_COLOR_SENSORS_NOT_ADJACENT = 101; // Error number for when color sensors are not adjacent
+    public static int ERROR_NO_CALCULABLE_COLOR = 102; // Error number for when cant't determine what color we are seeing
 
-    // RGB values for the yellow color
-    public static final double RED_THRESHOLD_YELLOW = 255;
-    public static final double GREEN_THRESHOLD_YELLOW = 255;
-    public static final double BLUE_THRESHOLD_YELLOW = 255;
+    // RGB values for red color
+    public static double RED_THRESHOLD_RED = 255; // To-do : change this value to the proper value after testing
+    public static double GREEN_THRESHOLD_RED = 255; // To-do : change this value to the proper value after testing
+    public static double BLUE_THRESHOLD_RED = 255; // To-do : change this value to the proper value after testing
 
-    // RGB values for the blue color
-    public static final double RED_THRESHOLD_BLUE = 255;
-    public static final double GREEN_THRESHOLD_BLUE = 255;
-    public static final double BLUE_THRESHOLD_BLUE = 255;
+    // RGB values for yellow color
+    public static double RED_THRESHOLD_YELLOW = 255; // To-do : change this value to the proper value after testing
+    public static double GREEN_THRESHOLD_YELLOW = 255; // To-do : change this value to the proper value after testing
+    public static double BLUE_THRESHOLD_YELLOW = 255; // To-do : change this value to the proper value after testing
 
-    // RGB values for the green color
-    public static final double RED_THRESHOLD_GREEN = 255;
-    public static final double GREEN_THRESHOLD_GREEN = 255;
-    public static final double BLUE_THRESHOLD_GREEN = 255;
+    // RGB values for blue color
+    public static double RED_THRESHOLD_BLUE = 255; // To-do : change this value to the proper value after testing
+    public static double GREEN_THRESHOLD_BLUE = 255; // To-do : change this value to the proper value after testing
+    public static double BLUE_THRESHOLD_BLUE = 255; // To-do : change this value to the proper value after testing
 
-    public static final double THRESHOLD_RANGE = 5;
+    // RGB values for green color
+    public static double RED_THRESHOLD_GREEN = 255; // To-do : change this value to the proper value after testing
+    public static double GREEN_THRESHOLD_GREEN = 255; // To-do : change this value to the proper value after testing
+    public static double BLUE_THRESHOLD_GREEN = 255; // To-do : change this value to the proper value after testing
+
+    // Set the range of values
+    public static double THRESHOLD_RANGE = 10; // To-do : change this value to the proper value after testing
 
     double distanceFromCenter = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
     double motorMaxSpeed = 0; // This is the speed that the motor will spin at to align the wheel
@@ -63,8 +74,8 @@ public class ControlPanelAPI {
         return colorAsInt;
     }
 
-    // Calculate what color we are on based on RGB inputs
-    public static int calculateCurrentColor(double red, double green, double blue){
+    // Calculate what color on the wheel the sensor is seeing
+    public static int calculateColor(double red, double green, double blue) {
         int color = 0;
         // See if the RGB values match those of the color RED
         if(red >= (RED_THRESHOLD_RED-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_RED+THRESHOLD_RANGE)) {
@@ -75,9 +86,8 @@ public class ControlPanelAPI {
                 }
             }
         }
-
-        // Copy the above logic for the other colors
-        //See if the RGB values match those of the color YELLOW
+        
+        // See if the RGB values match those of the color YELLOW
         if(red >= (RED_THRESHOLD_YELLOW-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
             if(green >= (GREEN_THRESHOLD_YELLOW-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
                 if(blue >= (BLUE_THRESHOLD_YELLOW-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_YELLOW+THRESHOLD_RANGE)) {
@@ -86,8 +96,8 @@ public class ControlPanelAPI {
                 }
             }
         }
-
-        //See if the RGB values match those of the color BLUE
+        
+        // See if the RGB values match those of the color BLUE
         if(red >= (RED_THRESHOLD_BLUE-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
             if(green >= (GREEN_THRESHOLD_BLUE-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
                 if(blue >= (BLUE_THRESHOLD_BLUE-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_BLUE+THRESHOLD_RANGE)) {
@@ -97,7 +107,7 @@ public class ControlPanelAPI {
             }
         }
 
-        //See if the RGB values match those of the color GREEN
+        // See if the RGB values match those of the color GREEN
         if(red >= (RED_THRESHOLD_GREEN-THRESHOLD_RANGE) && red <= (RED_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
             if(green >= (GREEN_THRESHOLD_GREEN-THRESHOLD_RANGE) && green <= (GREEN_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
                 if(blue >= (BLUE_THRESHOLD_GREEN-THRESHOLD_RANGE) && blue <= (BLUE_THRESHOLD_GREEN+THRESHOLD_RANGE)) {
@@ -106,8 +116,136 @@ public class ControlPanelAPI {
                 }
             }
         }
+
+        color = COLOR_NONE;
         return color;
     }
+
+    public int calculateCurrentColor() {
+        int color = 0; // The 
+        // Calculate what color each sensor is seeing, if they are seeing a color
+        int colorSensor1Color = calculateColor(); // To-do : add methods for get red, get green, and get blue
+        int colorSensor2Color = calculateColor(); // To-do : add methods for get red, get green, and get blue
+        int colorSensor3Color = calculateColor(); // To-do : add methods for get red, get green, and get blue
+        int colorSensor4Color = calculateColor(); // To-do : add methods for get red, get green, and get blue
+        int colorSensor5Color = calculateColor(); // To-do : add methods for get red, get green, and get blue
+
+        boolean canColorSensor1SeeControlPanel = false; // True if color sensor 1 sees a control panel color
+        boolean canColorSensor2SeeControlPanel = false; // True if color sensor 2 sees a control panel color
+        boolean canColorSensor3SeeControlPanel = false; // True if color sensor 3 sees a control panel color
+        boolean canColorSensor4SeeControlPanel = false; // True if color sensor 4 sees a control panel color
+        boolean canColorSensor5SeeControlPanel = false; // True if color sensor 5 sees a control panel color
+
+        // Calculate how many sensors are seeing the control panel
+        int howManySensorsSeeTheControlPanel = 0;
+        if(colorSensor1Color > 0 && colorSensor1Color < 5) {
+            howManySensorsSeeTheControlPanel++;
+            canColorSensor1SeeControlPanel = true;
+        }
+        if(colorSensor2Color > 0 && colorSensor2Color < 5) {
+            howManySensorsSeeTheControlPanel++;
+            canColorSensor2SeeControlPanel = true;
+        }
+        if(colorSensor3Color > 0 && colorSensor3Color < 5) {
+            howManySensorsSeeTheControlPanel++;
+            canColorSensor3SeeControlPanel = true;
+        }
+        if(colorSensor4Color > 0 && colorSensor4Color < 5) {
+            howManySensorsSeeTheControlPanel++;
+            canColorSensor4SeeControlPanel = true;
+        }
+        if(colorSensor5Color > 0 && colorSensor5Color < 5) {
+            howManySensorsSeeTheControlPanel++;
+            canColorSensor5SeeControlPanel = true;
+        }
+
+        // Exit program with error 100 if we can not see the control panel with at least 3 sensors
+        if(howManySensorsSeeTheControlPanel < 3) {
+            return ERROR_NOT_ENOUGH_SENSORS;
+        }
+
+        boolean areColorSensorsAdjacent = false; // True if there are atleast 3 adjacent color sensors detecting a color on the control panel
+        int adjacentColorSensorStart = 0; // What sensor number the row of adjacent sensors begins from
+        int adjacentColorSensorEnd = 0; // What sensor number the row of adjacent sensors ends at
+
+        // Determine if color sensors that are seeing values are adjacent by making sure that there are at least 3 color sensors with a color reading in a row, without interruption by a "no-color" reading.
+        if(canColorSensor1SeeControlPanel) {
+            if(canColorSensor2SeeControlPanel) {
+                if(canColorSensor3SeeControlPanel) {
+                    areColorSensorsAdjacent = true;
+                    // Check to see if 5 can see the control panel. If it can't, we already have 3 in a row, so we are all clear. If we can, we need to check and make sure that 4 is visible, as well.
+                    if(canColorSensor5SeeControlPanel) {
+                        if(canColorSensor4SeeControlPanel) {
+                            areColorSensorsAdjacent = true;
+                        } else {
+                            areColorSensorsAdjacent = false;
+                        }
+                    }
+                }
+            }
+        // Since we only checked for sensor 1, we need to check for sensor 2 given sensor 1 is not activated
+        } else if(canColorSensor2SeeControlPanel) {
+            if(canColorSensor3SeeControlPanel) {
+                if(canColorSensor4SeeControlPanel) {
+                    // We can determine that we have 3 color sensors adjacent to one another since the last one that we need to check is 5, and it can't interrupt any line of 3
+                    areColorSensorsAdjacent = true;
+                }
+            }
+        // Since we checked for both sensor 1 and sensor 2, we now need to check for sensor 3 given, both 1 and 2 are not activated
+        } else if(canColorSensor3SeeControlPanel) {
+            if(canColorSensor4SeeControlPanel) {
+                if(canColorSensor5SeeControlPanel) {
+                    areColorSensorsAdjacent = true;
+                }
+            }
+        }
+
+        // If sensors are not next to each other, exit program with error 101 (color sensors are not adjacent)
+        if(areColorSensorsAdjacent == false) {
+            return ERROR_COLOR_SENSORS_NOT_ADJACENT;
+        }
+
+        // Determine what color sensor is the first in the array
+        if(canColorSensor1SeeControlPanel) {
+            adjacentColorSensorStart = 1;
+        } else if(canColorSensor2SeeControlPanel) {
+            adjacentColorSensorStart = 2;
+        } else if(canColorSensor3SeeControlPanel) {
+            adjacentColorSensorStart = 3;
+        }
+
+        // Determine what color sensor is last in the array
+        if(canColorSensor5SeeControlPanel) {
+            adjacentColorSensorEnd = 5;
+        } else if(canColorSensor4SeeControlPanel) {
+            adjacentColorSensorEnd = 4;
+        } else if(canColorSensor3SeeControlPanel) {
+            adjacentColorSensorEnd = 3;
+        }
+
+        // See if we are too far to the right. If we are, see if there is a color that is the same for 2 sensors furthest to the left (1 and 2). 
+        if(adjacentColorSensorStart == 1 && adjacentColorSensorEnd == 3) {
+            if(colorSensor1Color == colorSensor2Color) {
+                return colorSensor1Color;
+            }
+        }
+
+        // See if we are to far to the left. If we are, see if there is a color that is the same for 2 sensors furthest to the right (4 and 5).
+        if(adjacentColorSensorStart == 3 && adjacentColorSensorEnd == 5) {
+            if(colorSensor4Color == colorSensor45Color) {
+                return colorSensor4Color;
+            }
+        }
+
+        // See if we are in the center of the color wheel. If we are, see what color is in the center
+        if(adjacentColorSensorStart == 2 && adjacentColorSensorEnd == 4) {
+            return colorSensor3Color;
+        }
+
+        // If we have not yet determiend that we are seeing a color, exit with error 102 (no calculable color)
+        return ERROR_NO_CALCULABLE_COLOR;
+    }
+
 
     //Calculate method for if we are on our side of the color wheel
     public double calculateOurSide(char targetColorAsChar) {
