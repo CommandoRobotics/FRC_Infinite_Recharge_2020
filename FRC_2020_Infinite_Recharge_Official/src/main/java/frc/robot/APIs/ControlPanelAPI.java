@@ -57,9 +57,8 @@ public class ControlPanelAPI {
      * @param inputWheelDiameter The diameter of the wheel that is spinning the control panel
      * @param inputCountsPerRevolution The amount of encoder ticks per revolution of the motor (before gearbox ratio)
      */
-    public ControlPanelAPI(double inputDistanceFromCenter, double inputMotorMaxSpeed, int inputGearboxRatio, double inputWheelDiameter, int inputCountsPerRevolution) {
+    public ControlPanelAPI(double inputDistanceFromCenter, int inputGearboxRatio, double inputWheelDiameter, int inputCountsPerRevolution) {
         distanceFromCenter = inputDistanceFromCenter; // The distance from the center of the control panel to the wheel rotating the control panel given in inches
-        motorMaxSpeed = inputMotorMaxSpeed;
         gearboxRatio = inputGearboxRatio;
         wheelDiameter = inputWheelDiameter;
         countsPerRevolution = inputCountsPerRevolution;
@@ -281,17 +280,15 @@ public class ControlPanelAPI {
      * @return The amount of ticks to spin the motor, as a double.
      */
     public double calculateOurSide(char targetColorAsChar) {
-        double outputMotorSpeed = 0;
         double compensatedSpinDistance = 0;
         double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
-        int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
+        int currentRobotColor = calculateCurrentColor();
         int currentWheelColor = 0;
         double redDistance = 0;
         double yellowDistance = 0;
         double blueDistance = 0;
         double greenDistance = 0;
-        double motorSpinDistanceInRotations = 0;
 
         // Sets the distances of each color relative to the wheel's current location
         if(currentRobotColor == COLOR_RED) {
@@ -335,17 +332,7 @@ public class ControlPanelAPI {
             motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
         }
 
-        motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
-
-        if(motorSpinDistanceInRotations > 0){
-            outputMotorSpeed = motorMaxSpeed;
-        } else if(motorSpinDistanceInRotations < 0){
-            outputMotorSpeed = -motorMaxSpeed;
-        } else {
-            outputMotorSpeed = 0;
-        }
-
-        return outputMotorSpeed;
+        return motorSpinDistanceInEncoders;
     }
 
     /**
@@ -354,17 +341,15 @@ public class ControlPanelAPI {
      * @return The amount of ticks to spin the motor, as a double.
      */
     public double calculateEnemySide(char targetColorAsChar) {
-        double outputMotorSpeed = 0;
         double compensatedSpinDistance = 0;
         double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
-        int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
+        int currentRobotColor = calculateCurrentColor();
         int currentWheelColor = 0;
         double redDistance = 0;
         double yellowDistance = 0;
         double blueDistance = 0;
         double greenDistance = 0;
-        double motorSpinDistanceInRotations =0;
 
         // Sets the distances of each color relative to the wheel's current location
         if(currentRobotColor == COLOR_RED) {
@@ -408,17 +393,7 @@ public class ControlPanelAPI {
             motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
         }
 
-        motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
-
-        if(motorSpinDistanceInRotations > 0){
-            outputMotorSpeed = motorMaxSpeed;
-        } else if(motorSpinDistanceInRotations < 0){
-            outputMotorSpeed = -motorMaxSpeed;
-        } else {
-            outputMotorSpeed = 0;
-        }
-
-        return outputMotorSpeed;
+        return motorSpinDistanceInEncoders;
     }
 
 }
