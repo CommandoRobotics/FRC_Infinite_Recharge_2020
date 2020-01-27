@@ -106,7 +106,7 @@ public class ControlPanelAPI {
                 }
             }
         }
-        return color;
+        return color; hi
     }
 
     //Calculate method for if we are on our side of the color wheel
