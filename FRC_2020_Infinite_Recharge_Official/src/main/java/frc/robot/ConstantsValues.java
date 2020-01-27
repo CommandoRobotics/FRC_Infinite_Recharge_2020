@@ -20,12 +20,14 @@ public final class ConstantsValues {
     //Constants used as variables for things like speeds etc.
     
     //VARIABLES
-    //Distance Per Pulses
+    //Distance Per Pulses and PPR
     public static final int driveDisPerPulse = 0;
     public static final double shooterInDisPerPulse = 0;
     public static final double shooterMeterDisPerPulse = 0;
     public static final double tiltDisPerPulse = 0;
     public static final double panDisPerPulse = 0;
+    public static final double tiltEncPPR = 2000;
+    public static final double panEncPPR = 2000;
 
     //Min speeds
     public static final double genericMinSpeed = .1;
@@ -34,11 +36,24 @@ public final class ConstantsValues {
     public static final double panMinSpeed = .1;
     public static final double tiltMinSpeed = .1;
 
+    //PID AutoAim
+    public static final double kPanP = .1;
+    public static final double kPanI = 0;
+    public static final double kPanD = 0;
+    public static final double kTiltP = .1;
+    public static final double kTiltI = 0;
+    public static final double kTiltD = 0;
+    public static final double tiltTolerance = 5;
+    public static final double panTolerance = 5;
 
     //Misc.
     public static final double intakeSpeed = 0.5;
     public static final double axisThreshold = .08;
     public static final double acceleration = -9.8; 
     public static final double negativeTargetVelocity = -.5;    
+    public static final double targetHeightLowered = 2;
+    public static final double targetHeightLifted = 1.9;
+    public static final double limlightAngleLow = 20;
+    public static final double limlightAngleHigh = 20;
     
 }

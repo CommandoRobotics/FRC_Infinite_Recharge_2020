@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
@@ -26,6 +27,8 @@ public class AutoAimSubsystem extends SubsystemBase {
 
   NetworkTable limelight;
 
+  Servo limelightServo;
+
   public AutoAimSubsystem(NetworkTable m_limelight) {
     tilt = new Spark(ConstantsPorts.tiltPort);
     pan = new Spark(ConstantsPorts.panPort);
@@ -36,6 +39,7 @@ public class AutoAimSubsystem extends SubsystemBase {
     panEnc.setDistancePerPulse(ConstantsValues.panDisPerPulse);
 
     limelight = m_limelight;
+    limelightServo = new Servo(ConstantsPorts.limelightServoPort);
   }
 
   /**Sets the tilter to a given speed */
@@ -95,6 +99,16 @@ public class AutoAimSubsystem extends SubsystemBase {
     return tiltEnc.getDistance();
   }
 
+  /**
+   * This takes the current raw enc value for the tilt encoder and gets the 
+   * angle by finding the proportion of rotations and then converting to degrees
+   * 
+   * @return The angle at which the motor has rotated from start or reset
+   */
+  public double getTiltAngle() {
+    return (tiltEnc.getRaw()/ConstantsValues.tiltEncPPR) * 360;
+  }
+
   /**Resets the Tilter encoder back to zero */
   public void resetTilterEnc() {
     tiltEnc.reset();
@@ -113,14 +127,41 @@ public class AutoAimSubsystem extends SubsystemBase {
     return panEnc.getDistance();
   }
 
+  /**
+   * This takes the current raw enc value for the pan encoder and gets the 
+   * angle by finding the proportion of rotations and then converting to degrees
+   * 
+   * @return The angle at which the motor has rotated from the last start or reset
+   */
+  public double getPanAngle() {
+    return (panEnc.getRaw()/ConstantsValues.panEncPPR) * 360;
+  }
+
   /**Resets the Panner encoder back to zero */
   public void resetPannerEnc() {
     panEnc.reset();
   }
 
   //LIMELIGHT THINGS
-  public void printLimelight() {
-    System.out.println(limelight.getEntry("tx").getDouble(0));
+
+  public double getLimelightXOffset() {
+    return limelight.getEntry("tx").getDouble(0);
+  }
+
+  public double getLimelightYOffset() {
+    return limelight.getEntry("ty").getDouble(0);
+  }
+
+  /**
+   * Gets the distance directly to the target straight from the limlight using
+   * right triangles
+   * @param targetHeight The height of the target realtive to the current shooter
+   *                     height. This input affects the unit of measurement outputted
+   * @return The distance directly to the target in the same unit of measurement as the
+   *         targetHeight
+   */
+  public double getLimelightDis(double targetHeight) {
+    return targetHeight/Math.sin(ConstantsValues.limlightAngleLow + limelight.getEntry("ty").getDouble(0));
   }
 
   @Override

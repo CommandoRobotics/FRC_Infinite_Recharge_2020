@@ -36,6 +36,10 @@ public final class ConstantsPorts {
     //Solenoids 
     public static final int intakeLifterPort = 0;
     public static final int colorWheelLifterPort = 1;
+    public static final int shooterRiserPort = 2;
+
+    //Servos
+    public static final int limelightServoPort = 11;
 
     //Sensors
     public static final int gyroPort = 0;
