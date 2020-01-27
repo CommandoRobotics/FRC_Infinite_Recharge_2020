@@ -118,11 +118,11 @@ int calculateCurrentRobotColor() {
     int colorSensor4Color = calculateColor(getRed(4), getGreen(4), getBlue(4));
     int colorSensor5Color = calculateColor(getRed(5), getGreen(5), getBlue(5));
 
-    bool canColorSensor1SeeControlPanel = false; // True if color sensor can see a control 
-    bool canColorSensor2SeeControlPanel = false;
-    bool canColorSensor3SeeControlPanel = false;
-    bool canColorSensor4SeeControlPanel = false;
-    bool canColorSensor5SeeControlPanel = false;
+    bool canColorSensor1SeeControlPanel = false; // True if color sensor 1 can see a control panel color, and false if it can not
+    bool canColorSensor2SeeControlPanel = false; // True if color sensor 2 can see a control panel color, and false if it can not
+    bool canColorSensor3SeeControlPanel = false; // True if color sensor 3 can see a control panel color, and false if it can not
+    bool canColorSensor4SeeControlPanel = false; // True if color sensor 4 can see a control panel color, and false if it can not
+    bool canColorSensor5SeeControlPanel = false; // True if color sensor 5 can see a control panel color, and false if it can not
 
     // Calculate how many sensors are seeing the control panel
     int howManySensorsSeeTheControlPanel = 0;
