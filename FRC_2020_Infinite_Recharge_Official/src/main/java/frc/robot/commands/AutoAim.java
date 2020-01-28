@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.ConstantsPID;
 import frc.robot.ConstantsValues;
 import frc.robot.APIs.ProjectileMathAPI;
 import frc.robot.subsystems.AutoAimSubsystem;
@@ -28,7 +29,7 @@ public class AutoAim extends PIDCommand {
   public AutoAim(AutoAimSubsystem m_AutoAimSubsystem) {
     super(
         //Create the controller
-        new PIDController(ConstantsValues.kPanP, ConstantsValues.kPanI, ConstantsValues.kPanD),
+        new PIDController(ConstantsPID.kPanP, ConstantsPID.kPanI, ConstantsPID.kPanD),
         //Give it the current value to get error from
         m_AutoAimSubsystem::getLimelightXOffset,
         //Give it the target setpoin
@@ -39,7 +40,7 @@ public class AutoAim extends PIDCommand {
         m_AutoAimSubsystem);
 
     //Creating the second PID Controller for the tilter
-    tiltPID = new PIDController(ConstantsValues.kTiltP, ConstantsValues.kTiltI, ConstantsValues.kTiltD);
+    tiltPID = new PIDController(ConstantsPID.kTiltP, ConstantsPID.kTiltI, ConstantsPID.kTiltD);
 
     //Create the math API and add the subsytem integration
     projectileMath = new ProjectileMathAPI();
@@ -51,28 +52,47 @@ public class AutoAim extends PIDCommand {
   @Override
   public void initialize() {
     //Set both of th tolerances for the PID loops saved in ConstantsValues (probably pretty small)
-    tiltPID.setTolerance(ConstantsValues.tiltTolerance);
-    getController().setTolerance(ConstantsValues.panTolerance);
+    tiltPID.setTolerance(ConstantsPID.tiltTolerance);
+    getController().setTolerance(ConstantsPID.panTolerance);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    if ()
-    /*
-    * Calculate the set angle the tilter should adjust to. This will look confusing, but
-    * basically all it's doing is calcualting the the velocity and angle using the limelight
-    * distance and the current target height (changes due to lifting pistions)
-    */
-    tiltPID.setSetpoint(
-      projectileMath.calculateInitialVelocityAndAngle(
-        autoAimSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered), 
-        ConstantsValues.targetHeightLowered)[1]
-        );
+    if (autoAimSubsystem.riserActive) {
+      /*
+      * Calculate the set angle the tilter should adjust to. This will look confusing, but
+      * basically all it's doing is calcualting the the velocity and angle using the limelight
+      * distance and the current target height (changes due to lifting pistions)
+      *
+      * CODE FOR WHEN RISER IS UP
+      */
+      tiltPID.setSetpoint(
+        projectileMath.calculateInitialVelocityAndAngle(
+          autoAimSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted), 
+          ConstantsValues.targetHeightLifted)[1]
+          );
 
-    //Set the tilter to the calculated PID value using encoder
-    autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+      //Set the tilter to the calculated PID value using encoder
+      autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+    } else {
+      /*
+      * Calculate the set angle the tilter should adjust to. This will look confusing, but
+      * basically all it's doing is calcualting the the velocity and angle using the limelight
+      * distance and the current target height (changes due to lifting pistions)
+      *
+      * CODE FOR WHEN RISER IS DOWN
+      */
+      tiltPID.setSetpoint(
+        projectileMath.calculateInitialVelocityAndAngle(
+          autoAimSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered), 
+          ConstantsValues.targetHeightLowered)[1]
+          );
+
+      //Set the tilter to the calculated PID value using encoder
+      autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+    }
   }
 
   // Called once the command ends or is interrupted.

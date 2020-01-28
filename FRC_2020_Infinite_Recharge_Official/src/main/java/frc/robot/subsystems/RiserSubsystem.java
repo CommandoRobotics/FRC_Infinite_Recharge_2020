@@ -11,13 +11,15 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
 
-public class ShooterRiserSubsystem extends SubsystemBase {
+public class RiserSubsystem extends SubsystemBase {
 
+  AutoAimSubsystem autoAimSubsystem;
 
- Solenoid riserSolenoid;
+  Solenoid riserSolenoid;
 
-  public ShooterRiserSubsystem() {
+  public RiserSubsystem(AutoAimSubsystem m_AutoAimSubsystem) {
     riserSolenoid = new Solenoid(ConstantsPorts.shooterRiserPort);
+    autoAimSubsystem = m_AutoAimSubsystem;
   }
 
   /** Sets the riser solenoid to an inputted value 
@@ -27,16 +29,23 @@ public class ShooterRiserSubsystem extends SubsystemBase {
   */
   public void setRiser(boolean set) {
     riserSolenoid.set(set);
+    if (set) {
+      autoAimSubsystem.riserActive = true;
+    } else {
+      autoAimSubsystem.riserActive = false;
+    }
   }
 
   /** Sets the riser to on/deployed (true) */
   public void deployRiser() {
     riserSolenoid.set(true);
+    autoAimSubsystem.riserActive = true;
   }
 
   /**Sets the riser to off/retracted (false) */
   public void retractRiser() {
     riserSolenoid.set(false);
+    autoAimSubsystem.riserActive = true;
   }
 
   /**Sets the riser to the opposite value of the current value 
@@ -44,6 +53,7 @@ public class ShooterRiserSubsystem extends SubsystemBase {
   */
   public void toggleRiser() {
     riserSolenoid.set(!riserSolenoid.get());
+    autoAimSubsystem.riserActive = !riserSolenoid.get();
   }
 
   /**Returns the current state of the riser 

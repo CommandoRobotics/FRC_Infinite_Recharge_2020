@@ -34,7 +34,9 @@ public class RobotContainer {
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
   private final IntakeSubsystem intakeSubsystem =  new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
+  private final RiserSubsystem shooterRiserSubsystem = new RiserSubsystem(autoAimSubsystem);
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  
 
   //Commands
   //private final TankDriveCommand tankDriveCommand;

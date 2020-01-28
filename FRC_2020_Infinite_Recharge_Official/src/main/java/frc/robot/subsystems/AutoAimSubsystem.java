@@ -29,6 +29,8 @@ public class AutoAimSubsystem extends SubsystemBase {
 
   Servo limelightServo;
 
+  public boolean riserActive = false;
+
   public AutoAimSubsystem(NetworkTable m_limelight) {
     tilt = new Spark(ConstantsPorts.tiltPort);
     pan = new Spark(ConstantsPorts.panPort);

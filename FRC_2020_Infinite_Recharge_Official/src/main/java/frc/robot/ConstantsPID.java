@@ -18,4 +18,14 @@ package frc.robot;
 public final class ConstantsPID {
     
     //Constants Used for PID and tuning
+
+    //AutoAim PID
+    public static final double kPanP = .1;
+    public static final double kPanI = 0;
+    public static final double kPanD = 0;
+    public static final double kTiltP = .1;
+    public static final double kTiltI = 0;
+    public static final double kTiltD = 0;
+    public static final double tiltTolerance = 5;
+    public static final double panTolerance = 5;
 }
