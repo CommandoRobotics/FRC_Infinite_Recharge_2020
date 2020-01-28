@@ -40,6 +40,9 @@ public final class ConstantsValues {
     public static final double intakeSpeed = 0.5;
     public static final double axisThreshold = .08;
     public static final double distanceFromCenterOfColorWheelInInches = 0;
+    public static final int colorWheelGearboxRatio = 1; // As x:1
+    public static final int colorWheelDiameterInInches = 3; // The diameter of the wheel that is touching the control panel, given in inches.
+    public static final int colorWheelEncoderCountsPerRevolution =1000;
     
     
 }

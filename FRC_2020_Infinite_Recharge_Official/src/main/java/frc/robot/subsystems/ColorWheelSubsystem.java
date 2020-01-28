@@ -32,6 +32,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
       colorWheelSensor = new ColorSensorV3(ConstantsPorts.colorWheelSensorPort);
       colorWheelEncoder = new Encoder(ConstantsPorts.colorWheelEncAPort, ConstantsPorts.colorWheelEncBPort);
       colorWheelEncoder.setDistancePerPulse(ConstantsValues.colorMotorDisPerPulse);
+      controlPanelAPI = new ControlPanelAPI(ConstantsValues.distanceFromCenterOfColorWheelInInches, ConstantsValues.colorWheelGearboxRatio, ConstantsValues.colorWheelDiameterInInches, ConstantsValues.colorWheelEncoderCountsPerRevolution);
     }
 
   /** Retract the piston that holds up the control panel mechanism */
@@ -128,6 +129,19 @@ public class ColorWheelSubsystem extends SubsystemBase {
    */
   public void spinMotorByRotations(double rotationsToSpin) {
 
+  }
+
+  /**
+   * This method calculates the distance to spin the motor to acheive the target color, assuming we are on our side of the field.
+   * @param targetColor The color we are trying to spin to (raw from the FMS), as a character.
+   * @return The amount of encoder ticks to spin, as an integer.
+   */
+  public int calculateSpinDistanceOurSide(char targetColor) {
+    return controlPanelAPI.calculateOurSide(targetColor);
+  }
+
+  public int calculateSpinDistanceEnemySide(char targetColor) {
+    return controlPanelAPI.calculateEnemySide(targetColor);
   }
 
   @Override
