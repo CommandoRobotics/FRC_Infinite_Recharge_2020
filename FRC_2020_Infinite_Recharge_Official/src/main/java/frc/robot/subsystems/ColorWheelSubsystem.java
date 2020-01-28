@@ -45,6 +45,14 @@ public class ColorWheelSubsystem extends SubsystemBase {
     colorWheelPiston.set(true);
   }
 
+  public void setColorPiston(boolean value) {
+    if(value) {
+      deployColorPiston();
+    } else {
+      retractColorPiston();
+    }
+  }
+
   /** Toggle the piston that holds up the control panel mechanism */
   public void toggleColorPiston() {
     if(colorWheelPiston.get()) {
