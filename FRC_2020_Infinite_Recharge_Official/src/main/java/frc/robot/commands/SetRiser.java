@@ -21,7 +21,7 @@ public class SetRiser extends CommandBase {
     setRiser = setValue;
     addRequirements(m_RiserSubsystem);
   }
-
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {

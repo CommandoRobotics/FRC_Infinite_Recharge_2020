@@ -19,6 +19,12 @@ import frc.robot.subsystems.AutoAimSubsystem;
 
 public class AutoAim extends PIDCommand {
 
+  /*TODO Add in overriding code in case we see more than one object
+  * TODO Add in overriding code to stop the shooter so that it doesnt pass a certain angle
+  * TODO Add in code to recenter the shooter to 0 when we dont see anything
+  * TODO (Maybe) Add in code re-center the shooter using limit switches?
+  */
+  
   AutoAimSubsystem autoAimSubsystem;
   PIDController tiltPID;
   ProjectileMathAPI projectileMath;
@@ -59,14 +65,15 @@ public class AutoAim extends PIDCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
+    
+    //Detect if the riser is up or down
     if (autoAimSubsystem.riserActive) {
       /*
+      * CODE FOR WHEN RISER IS UP
+      *
       * Calculate the set angle the tilter should adjust to. This will look confusing, but
       * basically all it's doing is calcualting the the velocity and angle using the limelight
       * distance and the current target height (changes due to lifting pistions)
-      *
-      * CODE FOR WHEN RISER IS UP
       */
       tiltPID.setSetpoint(
         projectileMath.calculateInitialVelocityAndAngle(
@@ -78,11 +85,11 @@ public class AutoAim extends PIDCommand {
       autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
     } else {
       /*
+      * CODE FOR WHEN RISER IS DOWN
+      *
       * Calculate the set angle the tilter should adjust to. This will look confusing, but
       * basically all it's doing is calcualting the the velocity and angle using the limelight
       * distance and the current target height (changes due to lifting pistions)
-      *
-      * CODE FOR WHEN RISER IS DOWN
       */
       tiltPID.setSetpoint(
         projectileMath.calculateInitialVelocityAndAngle(
