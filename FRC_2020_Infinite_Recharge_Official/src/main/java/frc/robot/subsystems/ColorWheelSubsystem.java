@@ -140,6 +140,11 @@ public class ColorWheelSubsystem extends SubsystemBase {
     return controlPanelAPI.calculateOurSide(targetColor);
   }
 
+  /**
+   * This method calculates the distance to spin the motor to acheive the target color, assuming we are on our enemy's side of the field.
+   * @param targetColor The color we are trying to spin to (raw from the FMS), as a character.
+   * @return The amount of encoder ticks to spin, as an integer.
+   */
   public int calculateSpinDistanceEnemySide(char targetColor) {
     return controlPanelAPI.calculateEnemySide(targetColor);
   }
