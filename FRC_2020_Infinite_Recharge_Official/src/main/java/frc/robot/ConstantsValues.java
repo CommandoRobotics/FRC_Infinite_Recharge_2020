@@ -26,6 +26,7 @@ public final class ConstantsValues {
     public static final double shooterMeterDisPerPulse = 0;
     public static final double tiltDisPerPulse = 0;
     public static final double panDisPerPulse = 0;
+    public static final double colorMotorDisPerPulse = 0;
 
     //Min speeds
     public static final double genericMinSpeed = .1;
@@ -38,6 +39,7 @@ public final class ConstantsValues {
     //Misc.
     public static final double intakeSpeed = 0.5;
     public static final double axisThreshold = .08;
+    public static final double distanceFromCenterOfColorWheelInInches = 0;
     
     
 }

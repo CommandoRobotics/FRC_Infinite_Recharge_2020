@@ -7,13 +7,18 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.I2C.Port;
+
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
- * declared globally (i.e. public static).  Do not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean constants. This class should not be used for any other
+ * purpose. All constants should be declared globally (i.e. public static). Do
+ * not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public final class ConstantsPorts {
     
@@ -35,7 +40,7 @@ public final class ConstantsPorts {
 
     //Solenoids 
     public static final int intakeLifterPort = 0;
-    public static final int colorWheelLifterPort = 1;
+    public static final int colorWheelPistonPort = 1;
 
     //Sensors
     public static final int gyroPort = 0;
@@ -49,4 +54,7 @@ public final class ConstantsPorts {
     public static final int panEncBPort = 8;
     public static final int shooterEncAPort = 9;
     public static final int shooterEncBPort = 10;
+    public static final int colorWheelEncAPort = 11;
+    public static final int colorWheelEncBPort = 12;
+    public static final I2C.Port colorWheelSensorPort = I2C.Port.kOnboard;
 }
