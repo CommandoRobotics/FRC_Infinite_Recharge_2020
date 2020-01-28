@@ -123,40 +123,6 @@ public class ColorWheelSubsystem extends SubsystemBase {
     return colorWheelEncoder.getRaw();
   }
 
-  /**
-   * This method spins the motor to a specified encoder value.
-   * @param positionToSpinTo The encoder value to spin to, as an integer.
-   */
-  public void spinMotorToPosition(int positionToSpinTo) {
-
-  }
-
-  /**
-   * This method spins the motor a specificed number of rotations.
-   * @param rotationsToSpin The amount of rotations to spin, as a double.
-   */
-  public void spinMotorByRotations(double rotationsToSpin) {
-
-  }
-
-  /**
-   * This method calculates the distance to spin the motor to acheive the target color, assuming we are on our side of the field.
-   * @param targetColor The color we are trying to spin to (raw from the FMS), as a character.
-   * @return The amount of encoder ticks to spin, as an integer.
-   */
-  public int calculateSpinDistanceOurSide(char targetColor) {
-    return controlPanelAPI.calculateOurSide(targetColor);
-  }
-
-  /**
-   * This method calculates the distance to spin the motor to acheive the target color, assuming we are on our enemy's side of the field.
-   * @param targetColor The color we are trying to spin to (raw from the FMS), as a character.
-   * @return The amount of encoder ticks to spin, as an integer.
-   */
-  public int calculateSpinDistanceEnemySide(char targetColor) {
-    return controlPanelAPI.calculateEnemySide(targetColor);
-  }
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
