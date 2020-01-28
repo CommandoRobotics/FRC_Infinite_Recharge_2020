@@ -129,7 +129,7 @@ public class ControlPanelAPI {
                 }
             }
         }
-        return color; hi
+        return color;
     }
 
     /**
