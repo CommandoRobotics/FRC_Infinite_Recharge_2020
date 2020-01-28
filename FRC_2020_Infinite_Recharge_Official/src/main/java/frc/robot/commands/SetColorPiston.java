@@ -12,12 +12,12 @@ import frc.robot.subsystems.ColorWheelSubsystem;
 
 public class SetColorPiston extends CommandBase {
   
-  ColorWheelSubsystem colorSub;
+  ColorWheelSubsystem colorWheelSubsystem;
   private boolean setColorPiston = false;
   private boolean finished = false;
 
   public SetColorPiston(boolean setValue, ColorWheelSubsystem sub) {
-    colorSub = sub;
+    colorWheelSubsystem = sub;
     setColorPiston = setValue;
   }
 
@@ -29,7 +29,7 @@ public class SetColorPiston extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    colorSub.setColorPiston(setColorPiston);
+    colorWheelSubsystem.setColorPiston(setColorPiston);
     finished = true;
   }
 
