@@ -34,21 +34,38 @@ public class ControlPanelAPI {
 
     public static final double THRESHOLD_RANGE = 5;
 
-    double distanceFromCenter = 0; // This takes the distance of the center of the contact from the edge of the control panel wheel
-    double motorMaxSpeed = 0; // This is the speed that the motor will spin at to align the wheel
-    int gearboxRatio = 1; // The ratio of the gearbox the motor is using as x:1
-    double wheelDiameter = 2; // The diameter of the wheel touching the control panel given in inches
-    int countsPerRevolution = 1000; // The amount of encoder counts per revolution of the motor
+    double distanceFromCenter = 0; // The distance between the center of the control panel and the contact point of the turning mechanism
+    int gearboxRatio = 1; // The ratio of the gearbox, as x:1
+    double wheelDiameter = 2; // The diameter of the wheel that is spinning the control panel
+    int countsPerRevolution = 1000; // The amount of encoder ticks per revolution of the motor (before gearbox ratio)
 
-    public ControlPanelAPI(double inputDistanceFromCenter, double inputMotorMaxSpeed, int inputGearboxRatio, double inputWheelDiameter, int inputCountsPerRevolution) {
+    /**
+     * 
+     * @param inputDistanceFromCenter The distance between the center of the control panel and the contact point of the turning mechanism
+     * @param inputGearboxRatio The ratio of the gearbox, as x:1
+     * @param inputWheelDiameter The diameter of the wheel that is spinning the control panel
+     * @param inputCountsPerRevolution The amount of encoder ticks per revolution of the motor (before gearbox ratio)
+     */
+    public ControlPanelAPI(double inputDistanceFromCenter, int inputGearboxRatio, double inputWheelDiameter, int inputCountsPerRevolution) {
         distanceFromCenter = inputDistanceFromCenter; // The distance from the center of the control panel to the wheel rotating the control panel given in inches
-        motorMaxSpeed = inputMotorMaxSpeed;
         gearboxRatio = inputGearboxRatio;
         wheelDiameter = inputWheelDiameter;
         countsPerRevolution = inputCountsPerRevolution;
     }
 
-    // Change the color from a char to an int
+    /**
+     * Set the distance between the center of the control panel and the contact point of the turning mechanism
+     * @param inputDistanceFromCenter The distance between the center of the control panel and the contact point of the turning mechanism in inches
+     */
+    public void setDistanceFromCenter(double inputDistanceFromCenter) {
+        distanceFromCenter = inputDistanceFromCenter;
+    }
+
+    /** 
+     * This method is used to convert a color, given as a character, to an integer.
+     * @param colorAsChar This is the color you want to convert, given as a character.
+     * @return An integer representing a color.
+    */
     public static int convertColorToInt(char colorAsChar) {
         int colorAsInt = 0;
         if(colorAsChar == 'b') {
@@ -63,7 +80,13 @@ public class ControlPanelAPI {
         return colorAsInt;
     }
 
-    // Calculate what color we are on based on RGB inputs
+    /**
+     * This method determines what color we are seeing, based on RGB values and previously established thresholds.
+     * @param red The red value (from RGB).
+     * @param green The green value (from RGB).
+     * @param blue The blue value (from RGB).
+     * @return The color we are seeing, represented by an integer.
+     */
     public static int calculateCurrentColor(double red, double green, double blue){
         int color = 0;
         // See if the RGB values match those of the color RED
@@ -109,9 +132,12 @@ public class ControlPanelAPI {
         return color; hi
     }
 
-    //Calculate method for if we are on our side of the color wheel
+    /**
+     * This method calculates the amount of ticks the motor needs to spin to land on the right color, assuming we are on our side of the field.
+     * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
+     * @return The amount of ticks to spin the motor, as a double.
+     */
     public double calculateOurSide(char targetColorAsChar) {
-        double outputMotorSpeed = 0;
         double compensatedSpinDistance = 0;
         double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
@@ -121,7 +147,6 @@ public class ControlPanelAPI {
         double yellowDistance = 0;
         double blueDistance = 0;
         double greenDistance = 0;
-        double motorSpinDistanceInRotations = 0;
 
         // Sets the distances of each color relative to the wheel's current location
         if(currentRobotColor == COLOR_RED) {
@@ -165,22 +190,15 @@ public class ControlPanelAPI {
             motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
         }
 
-        motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
-
-        if(motorSpinDistanceInRotations > 0){
-            outputMotorSpeed = motorMaxSpeed;
-        } else if(motorSpinDistanceInRotations < 0){
-            outputMotorSpeed = -motorMaxSpeed;
-        } else {
-            outputMotorSpeed = 0;
-        }
-
-        return outputMotorSpeed;
+        return motorSpinDistanceInEncoders;
     }
 
-    // Calculate method for if we are on our enemies side of the color wheel
+    /**
+     * This method calculates the amount of ticks the motor needs to spin to land on the right color, assuming we are on our side of the field.
+     * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
+     * @return The amount of ticks to spin the motor, as a double.
+     */
     public double calculateEnemySide(char targetColorAsChar) {
-        double outputMotorSpeed = 0;
         double compensatedSpinDistance = 0;
         double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
@@ -190,7 +208,6 @@ public class ControlPanelAPI {
         double yellowDistance = 0;
         double blueDistance = 0;
         double greenDistance = 0;
-        double motorSpinDistanceInRotations =0;
 
         // Sets the distances of each color relative to the wheel's current location
         if(currentRobotColor == COLOR_RED) {
@@ -234,17 +251,7 @@ public class ControlPanelAPI {
             motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
         }
 
-        motorSpinDistanceInRotations = motorSpinDistanceInRotations/countsPerRevolution;
-
-        if(motorSpinDistanceInRotations > 0){
-            outputMotorSpeed = motorMaxSpeed;
-        } else if(motorSpinDistanceInRotations < 0){
-            outputMotorSpeed = -motorMaxSpeed;
-        } else {
-            outputMotorSpeed = 0;
-        }
-
-        return outputMotorSpeed;
+        return motorSpinDistanceInEncoders;
     }
 
 }
