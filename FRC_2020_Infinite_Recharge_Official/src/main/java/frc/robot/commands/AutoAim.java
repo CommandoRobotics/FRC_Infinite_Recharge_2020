@@ -24,10 +24,12 @@ public class AutoAim extends PIDCommand {
   * TODO Add in code to recenter the shooter to 0 when we dont see anything
   * TODO (Maybe) Add in code re-center the shooter using limit switches?
   */
-  
+
   AutoAimSubsystem autoAimSubsystem;
   PIDController tiltPID;
   ProjectileMathAPI projectileMath;
+
+  //WE BUILD EACH OTHER UP LIKE WE BUILD OUR ROBOT ~ Dorian Head Programmer
 
   /**
    * Creates a new AutoAim.
