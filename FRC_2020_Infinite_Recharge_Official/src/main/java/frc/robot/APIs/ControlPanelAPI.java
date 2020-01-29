@@ -139,7 +139,7 @@ public class ControlPanelAPI {
      */
     public double calculateOurSide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
-        double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
+        double motorSpinDistanceFinal = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
         int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
         int currentWheelColor = 0;
@@ -178,19 +178,19 @@ public class ControlPanelAPI {
         //  Calculate distances based on the target color
         if(targetColor == COLOR_RED) {
             compensatedSpinDistance = (redDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         } else if(targetColor == COLOR_YELLOW) {
             compensatedSpinDistance = (yellowDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         } else if(targetColor == COLOR_BLUE) {
             compensatedSpinDistance = (blueDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         } else if(targetColor == COLOR_GREEN) {
             compensatedSpinDistance = (greenDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         }
 
-        return motorSpinDistanceInEncoders;
+        return motorSpinDistanceFinal;
     }
 
     /**
@@ -200,7 +200,7 @@ public class ControlPanelAPI {
      */
     public double calculateEnemySide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
-        double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
+        double motorSpinDistanceFinal = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
         int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
         int currentWheelColor = 0;
@@ -239,19 +239,19 @@ public class ControlPanelAPI {
         //  Calculate distances based on the target color
         if(targetColor == COLOR_RED) {
             compensatedSpinDistance = (redDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         } else if(targetColor == COLOR_YELLOW) {
             compensatedSpinDistance = (yellowDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         } else if(targetColor == COLOR_BLUE) {
             compensatedSpinDistance = (blueDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         } else if(targetColor == COLOR_GREEN) {
             compensatedSpinDistance = (greenDistance*distanceFromCenter)/16;
-            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+            motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         }
 
-        return motorSpinDistanceInEncoders;
+        return motorSpinDistanceFinal;
     }
 
 }
