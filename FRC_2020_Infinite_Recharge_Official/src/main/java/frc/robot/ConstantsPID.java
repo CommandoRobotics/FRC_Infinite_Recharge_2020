@@ -18,4 +18,8 @@ package frc.robot;
 public final class ConstantsPID {
     
     //Constants Used for PID and tuning
+    public static final double colorWheelP = 1;
+    public static final double colorWheelI = 1;
+    public static final double colorWheelD = 1;
+    public static final double colorWheelTolerance = 1;
 }
