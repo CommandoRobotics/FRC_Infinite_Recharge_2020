@@ -142,6 +142,10 @@ public class ColorWheelSubsystem extends PIDSubsystem {
     colorWheelEncoder.reset();
   }
 
+  public double getMotorSpeedPID(double target, double setPoint) {
+    return getController().calculate(target, setPoint);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
