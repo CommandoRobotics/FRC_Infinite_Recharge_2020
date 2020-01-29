@@ -137,9 +137,9 @@ public class ControlPanelAPI {
      * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
      * @return The amount of ticks to spin the motor, as a double.
      */
-    public int calculateOurSide(char targetColorAsChar) {
+    public double calculateOurSide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
-        int motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
+        double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
         int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
         int currentWheelColor = 0;
@@ -198,9 +198,9 @@ public class ControlPanelAPI {
      * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
      * @return The amount of ticks to spin the motor, as a double.
      */
-    public int calculateEnemySide(char targetColorAsChar) {
+    public double calculateEnemySide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
-        int motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
+        double motorSpinDistanceInEncoders = 0; // The amount of ticks the motor should spin
         int targetColor = convertColorToInt(targetColorAsChar);        
         int currentRobotColor = calculateCurrentColor(255, 0, 0); // Add methods to get the real RGB values
         int currentWheelColor = 0;
