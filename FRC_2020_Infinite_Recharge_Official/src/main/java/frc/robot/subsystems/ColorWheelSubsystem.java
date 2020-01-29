@@ -12,13 +12,16 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ConstantsPID;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
+import edu.wpi.first.wpilibj.controller.PIDController;
 
 import frc.robot.APIs.*;
 
-public class ColorWheelSubsystem extends SubsystemBase {
+public class ColorWheelSubsystem extends PIDSubsystem {
   
   Spark colorWheelMotor;
   Encoder colorWheelEncoder;
@@ -27,6 +30,7 @@ public class ColorWheelSubsystem extends SubsystemBase {
   ControlPanelAPI controlPanelAPI;
 
   public ColorWheelSubsystem() {
+      super(new PIDController(ConstantsPID.colorWheelP, ConstantsPID.colorWheelI, ConstantsPID.colorWheelD));
       colorWheelMotor = new Spark(ConstantsPorts.colorWheelPort);
       colorWheelPiston = new Solenoid(ConstantsPorts.colorWheelPistonPort);
       colorWheelSensor = new ColorSensorV3(ConstantsPorts.colorWheelSensorPort);
@@ -34,6 +38,16 @@ public class ColorWheelSubsystem extends SubsystemBase {
       colorWheelEncoder.setDistancePerPulse(ConstantsValues.colorMotorDisPerPulse);
       controlPanelAPI = new ControlPanelAPI(ConstantsValues.distanceFromCenterOfColorWheelInInches, ConstantsValues.colorWheelGearboxRatio, ConstantsValues.colorWheelDiameterInInches, ConstantsValues.colorWheelEncoderCountsPerRevolution);
     }
+
+  @Override
+  public void useOutput(double output, double setpoint) {
+    colorWheelMotor.setSpeed(output);
+  }
+
+  @Override
+  public double getMeasurement() {
+    return colorWheelEncoder.getRaw();
+  }
 
   /** Retract the piston that holds up the control panel mechanism */
   public void retractColorPiston() {
@@ -121,6 +135,11 @@ public class ColorWheelSubsystem extends SubsystemBase {
    */
   public int getRawEncoderValue() {
     return colorWheelEncoder.getRaw();
+  }
+
+  /** Resets the color wheel motor encoder. */
+  public void resetEncoder() {
+    colorWheelEncoder.reset();
   }
 
   @Override
