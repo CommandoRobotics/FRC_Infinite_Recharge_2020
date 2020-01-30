@@ -137,13 +137,24 @@ public class ColorWheelSubsystem extends PIDSubsystem {
     return colorWheelEncoder.getRaw();
   }
 
-  /** Resets the color wheel motor encoder. */
+  /** This method resets the color wheel motor encoder. */
   public void resetEncoder() {
     colorWheelEncoder.reset();
   }
 
-  public double getMotorSpeedPID(double target, double setPoint) {
-    return getController().calculate(target, setPoint);
+  /**
+   * This method gets the output of the PID controller.
+   * @param currentValue The current position of the motor.
+   * @param setPoint The target position of the motor.
+   * @return The speed to spin the motor, as a double.
+   */
+  public double getMotorSpeedPID(double currentValue, double setPoint) {
+    return getController().calculate(currentValue, setPoint);
+  }
+
+  /** This method resets the current PID calculation. */
+  public void resetPID() {
+    getController().reset();
   }
 
   @Override
