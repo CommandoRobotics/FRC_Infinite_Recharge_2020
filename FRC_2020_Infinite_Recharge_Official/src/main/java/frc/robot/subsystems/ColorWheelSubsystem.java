@@ -156,6 +156,7 @@ public class ColorWheelSubsystem extends PIDSubsystem {
     getController().reset();
   }
 
+  /** This method gets the encoder travel distance since the last reset (in rotations), and returns it as a double. */
   public double getCurrentEncoderRotations() {
     return colorWheelEncoder.getDistance();
   }
