@@ -8,23 +8,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ColorWheelSubsystem;
 
 public class ColorWheelRunToPosition extends CommandBase {
-  /**
-   * Creates a new ColorWheelRunToPosition.
-   */
-  public ColorWheelRunToPosition() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  
+  ColorWheelSubsystem colorWheelSubsystem;
+  double rotationsToRotate;
+
+  public ColorWheelRunToPosition(double rotationsToRotate, ColorWheelSubsystem sub) {
+    colorWheelSubsystem = sub;
+    this.rotationsToRotate = rotationsToRotate;
+    addRequirements(sub);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    colorWheelSubsystem.resetPID(); // Restarts the PID calculations
+    colorWheelSubsystem.resetEncoder(); // Reset the current encoder
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    colorWheelSubsystem.setColorMotorSpeed(colorWheelSubsystem.getMotorSpeedPID(colorWheelSubsystem.getCurrentEncoderRotations(), rotationsToRotate);); 
   }
 
   // Called once the command ends or is interrupted.
