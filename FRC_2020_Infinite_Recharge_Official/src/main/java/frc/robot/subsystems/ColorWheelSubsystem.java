@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPID;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
@@ -155,6 +154,10 @@ public class ColorWheelSubsystem extends PIDSubsystem {
   /** This method resets the current PID calculation. */
   public void resetPID() {
     getController().reset();
+  }
+
+  public double getCurrentEncoderRotations() {
+    return colorWheelEncoder.getDistance();
   }
 
   @Override
