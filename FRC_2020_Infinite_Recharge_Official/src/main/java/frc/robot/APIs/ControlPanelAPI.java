@@ -254,4 +254,15 @@ public class ControlPanelAPI {
         return motorSpinDistanceFinal;
     }
 
+    /**
+     * This method calculates how many rotations to spin the motor based on how many rotations you want to spin the control panel
+     * @param rotationsOfControlPanel The amount of rotations to spin the control panel, as a double.
+     * @return The rotations to spin the motor, as a double.
+     */
+    public double spinByRotations(double rotationsOfControlPanel) {
+        double compensatedSpinDistance = (rotationsOfControlPanel*distanceFromCenter)/16;
+        double motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
+        return motorSpinDistanceFinal;
+    }
+
 }
