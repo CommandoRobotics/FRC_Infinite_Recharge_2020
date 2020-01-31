@@ -37,7 +37,7 @@ public class ControlPanelAPI {
     double distanceFromCenter = 0; // The distance between the center of the control panel and the contact point of the turning mechanism
     int gearboxRatio = 1; // The ratio of the gearbox, as x:1
     double wheelDiameter = 2; // The diameter of the wheel that is spinning the control panel
-    int countsPerRevolution = 1000; // The amount of encoder ticks per revolution of the motor (before gearbox ratio)
+    double countsPerRevolution = 1000; // The amount of encoder ticks per revolution of the motor (before gearbox ratio)
 
     /**
      * 
@@ -46,7 +46,7 @@ public class ControlPanelAPI {
      * @param inputWheelDiameter The diameter of the wheel that is spinning the control panel
      * @param inputCountsPerRevolution The amount of encoder ticks per revolution of the motor (before gearbox ratio)
      */
-    public ControlPanelAPI(double inputDistanceFromCenter, int inputGearboxRatio, double inputWheelDiameter, int inputCountsPerRevolution) {
+    public ControlPanelAPI(double inputDistanceFromCenter, int inputGearboxRatio, double inputWheelDiameter, double inputCountsPerRevolution) {
         distanceFromCenter = inputDistanceFromCenter; // The distance from the center of the control panel to the wheel rotating the control panel given in inches
         gearboxRatio = inputGearboxRatio;
         wheelDiameter = inputWheelDiameter;
