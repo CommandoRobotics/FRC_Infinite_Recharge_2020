@@ -14,6 +14,7 @@ public class ColorWheelRunToPosition extends CommandBase {
   
   ColorWheelSubsystem colorWheelSubsystem;
   double rotationsToRotate;
+  boolean isFinished = false;
 
   public ColorWheelRunToPosition(double rotationsToRotate, ColorWheelSubsystem sub) {
     colorWheelSubsystem = sub;
@@ -31,17 +32,23 @@ public class ColorWheelRunToPosition extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    colorWheelSubsystem.setColorMotorSpeed(colorWheelSubsystem.getMotorSpeedPID(colorWheelSubsystem.getCurrentEncoderRotations(), rotationsToRotate);); 
+    double motorSpeed = colorWheelSubsystem.getMotorSpeedPID(colorWheelSubsystem.getCurrentEncoderRotations(), rotationsToRotate);
+    if(colorWheelSubsystem.atSetpoint()) {
+      isFinished = true;
+    } else {
+      colorWheelSubsystem.setColorMotorSpeed(motorSpeed); 
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    colorWheelSubsystem.stopColorMotor();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isFinished;
   }
 }
