@@ -45,7 +45,7 @@ public class ColorWheelSubsystem extends PIDSubsystem {
 
   @Override
   public double getMeasurement() {
-    return colorWheelEncoder.getRaw();
+    return colorWheelEncoder.getRaw()/ConstantsValues.colorWheelEncPPR;
   }
 
   /** Retract the piston that holds up the control panel mechanism */
@@ -68,11 +68,7 @@ public class ColorWheelSubsystem extends PIDSubsystem {
 
   /** Toggle the piston that holds up the control panel mechanism */
   public void toggleColorPiston() {
-    if(colorWheelPiston.get()) {
-      colorWheelPiston.set(false);
-    } else {
-      colorWheelPiston.set(true);
-    }
+    colorWheelPiston.set(!colorWheelPiston.get());
   }
 
   /**
