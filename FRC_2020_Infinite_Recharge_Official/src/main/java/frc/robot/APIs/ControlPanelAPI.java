@@ -133,9 +133,9 @@ public class ControlPanelAPI {
     }
 
     /**
-     * This method calculates the amount of ticks the motor needs to spin to land on the right color, assuming we are on our side of the field.
+     * This method calculates the amount of rotations the motor needs to spin to land on the right color, assuming we are on our side of the field.
      * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
-     * @return The amount of ticks to spin the motor, as a double.
+     * @return The amout of rotations to spin the motor, as a double.
      */
     public double calculateOurSide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
@@ -194,9 +194,9 @@ public class ControlPanelAPI {
     }
 
     /**
-     * This method calculates the amount of ticks the motor needs to spin to land on the right color, assuming we are on our side of the field.
+     * This method calculates the amount of rotations the motor needs to spin to land on the right color, assuming we are on our side of the field.
      * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
-     * @return The amount of ticks to spin the motor, as a double.
+     * @return The amount of rotations to spin the motor, as a double.
      */
     public double calculateEnemySide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
