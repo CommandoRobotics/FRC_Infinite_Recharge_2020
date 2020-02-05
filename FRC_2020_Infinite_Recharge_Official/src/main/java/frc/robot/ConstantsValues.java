@@ -27,6 +27,7 @@ public final class ConstantsValues {
     public static final double tiltDisPerPulse = 0;
     public static final double panDisPerPulse = 0;
     public static final double colorMotorDisPerPulse = 0;
+    public static final double colorWheelEncPPR = 1;
 
     //Min speeds
     public static final double genericMinSpeed = .1;

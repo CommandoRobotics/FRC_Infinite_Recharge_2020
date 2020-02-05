@@ -24,25 +24,24 @@ public class PositionControlPanel extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    colorWheelSubsystem.resetPID();
-    colorWheelSubsystem.resetEncoder();
+    colorWheelSubsystem.enable(); // Enable PID
+    colorWheelSubsystem.resetPID(); // Restarts the PID calculations
+    colorWheelSubsystem.resetEncoder(); // Reset the current encoder
+    colorWheelSubsystem.setSetpoint(ConstantsValues.colorWheelRotationsToSpinWhenPositioning);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double motorSpeed = colorWheelSubsystem.getMotorSpeedPID(colorWheelSubsystem.getCurrentEncoderRotations(), ConstantsValues.colorWheelRotationsToSpinWhenPositioning);
-    if(colorWheelSubsystem.atSetpoint()) {
+    if (colorWheelSubsystem.atSetpoint()) {
       isFinished = true;
-    } else {
-      colorWheelSubsystem.setColorMotorSpeed(motorSpeed);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    colorWheelSubsystem.stopColorMotor();
+    colorWheelSubsystem.disable();
   }
 
   // Returns true when the command should end.

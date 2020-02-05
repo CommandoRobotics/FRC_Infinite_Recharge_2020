@@ -19,6 +19,7 @@ public class SetColorPiston extends CommandBase {
   public SetColorPiston(boolean setValue, ColorWheelSubsystem sub) {
     colorWheelSubsystem = sub;
     setColorPiston = setValue;
+    addRequirements(sub);
   }
 
   // Called when the command is initially scheduled.

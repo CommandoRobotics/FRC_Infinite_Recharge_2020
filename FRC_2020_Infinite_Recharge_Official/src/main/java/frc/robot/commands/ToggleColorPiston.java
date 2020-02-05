@@ -17,6 +17,7 @@ public class ToggleColorPiston extends CommandBase {
 
   public ToggleColorPiston(ColorWheelSubsystem sub) {
     colorWheelSubsystem = sub;
+    addRequirements(sub);
   }
 
   // Called when the command is initially scheduled.

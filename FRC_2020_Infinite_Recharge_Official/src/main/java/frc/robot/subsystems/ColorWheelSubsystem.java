@@ -143,8 +143,8 @@ public class ColorWheelSubsystem extends PIDSubsystem {
    * @param setPoint The target position of the motor.
    * @return The speed to spin the motor, as a double.
    */
-  public double getMotorSpeedPID(double currentValue, double setPoint) {
-    return getController().calculate(currentValue, setPoint);
+  public double getMotorSpeedPID(double setPoint) {
+    return getController().calculate(colorWheelEncoder.getDistance(), setPoint);
   }
 
   /** This method resets the current PID calculation. */
@@ -152,6 +152,10 @@ public class ColorWheelSubsystem extends PIDSubsystem {
     getController().reset();
   }
 
+  /**
+   * This method finds if the motor is within its threshold of the setpoint of the motor PID
+   * @return If the motor is at its setpoint, as a boolean.
+   */
   public boolean atSetpoint() {
     return getController().atSetpoint();
   }
