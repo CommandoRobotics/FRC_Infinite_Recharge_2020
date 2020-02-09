@@ -7,11 +7,8 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.*;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.ConstantsPID;
 import frc.robot.ConstantsValues;
 import frc.robot.APIs.ProjectileMathAPI;
@@ -19,10 +16,10 @@ import frc.robot.subsystems.AutoAimSubsystem;
 
 public class AutoAim extends PIDCommand {
 
-  /*TODO Add in overriding code in case we see more than one object
-  * TODO Add in overriding code to stop the shooter so that it doesnt pass a certain angle
-  * TODO Add in code to recenter the shooter to 0 when we dont see anything
-  * TODO (Maybe) Add in code re-center the shooter using limit switches?
+  /*
+  * COMPLETE Add in overriding code to stop the shooter so that it doesnt pass a certain angle
+  * COMPLETE Add in code to recenter the shooter to 0 when we dont see anything
+  * TODO (Maybe) Add in code re-center the shooter using limit switches? ASK MECH LATER
   */
 
   AutoAimSubsystem autoAimSubsystem;
@@ -39,8 +36,8 @@ public class AutoAim extends PIDCommand {
         //Create the controller
         new PIDController(ConstantsPID.kPanP, ConstantsPID.kPanI, ConstantsPID.kPanD),
         //Give it the current value to get error from
-        m_AutoAimSubsystem::getLimelightXOffset,
-        //Give it the target setpoin
+        m_AutoAimSubsystem::getPanTarget,
+        //Give it the target setpoint
         0,
         //Give it the method that the output will be used on
         output -> m_AutoAimSubsystem.setPanner(output),
@@ -77,14 +74,24 @@ public class AutoAim extends PIDCommand {
       * basically all it's doing is calcualting the the velocity and angle using the limelight
       * distance and the current target height (changes due to lifting pistions)
       */
-      tiltPID.setSetpoint(
-        projectileMath.calculateInitialVelocityAndAngle(
-          autoAimSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted), 
-          ConstantsValues.targetHeightLifted)[1]
-          );
 
-      //Set the tilter to the calculated PID value using encoder
-      autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+      //Detect if we are detecting targets
+      if (autoAimSubsystem.isTargets()) {
+        //Set the setPoint to the calculated Limelight angle
+        tiltPID.setSetpoint(
+          projectileMath.calculateInitialVelocityAndAngle(
+            autoAimSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted, false), 
+            ConstantsValues.targetHeightLifted)[1]
+          );
+ 
+        //Set the tilter to the calculated PID value using encoder
+        autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+      } else {
+        //If we dont see targets then set the setPoints to default straight forward
+        tiltPID.setSetpoint(ConstantsValues.tiltDefaultPos);
+        autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+      }
+      
     } else {
       /*
       * CODE FOR WHEN RISER IS DOWN
@@ -93,14 +100,23 @@ public class AutoAim extends PIDCommand {
       * basically all it's doing is calcualting the the velocity and angle using the limelight
       * distance and the current target height (changes due to lifting pistions)
       */
-      tiltPID.setSetpoint(
-        projectileMath.calculateInitialVelocityAndAngle(
-          autoAimSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered), 
-          ConstantsValues.targetHeightLowered)[1]
+
+     //Detect if we are detecting targets
+     if (autoAimSubsystem.isTargets()) {
+        //Set the setPoint to the calculated Limelight angle
+        tiltPID.setSetpoint(
+          projectileMath.calculateInitialVelocityAndAngle(
+            autoAimSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered, false), 
+            ConstantsValues.targetHeightLowered)[1]
           );
 
-      //Set the tilter to the calculated PID value using encoder
-      autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+        //Set the tilter to the calculated PID value using encoder
+        autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+      } else {
+        //If we dont see targets then set the setPoints to default straight forward
+        tiltPID.setSetpoint(ConstantsValues.tiltDefaultPos);
+        autoAimSubsystem.setTilter(tiltPID.calculate(autoAimSubsystem.getTiltAngle()));
+    }
     }
   }
 

@@ -51,8 +51,8 @@ public class RobotContainer {
    */
   public RobotContainer() {
     driveSubsystem.setDefaultCommand(new DriveTank(
-      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
-      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
+      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis), 
+      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis),
       driveSubsystem));
 
     autoAimSubsystem.setDefaultCommand(new ReadLimelight(autoAimSubsystem));

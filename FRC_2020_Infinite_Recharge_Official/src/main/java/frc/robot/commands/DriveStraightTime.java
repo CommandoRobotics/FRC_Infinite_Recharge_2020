@@ -16,7 +16,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveStraightTime extends CommandBase {
 
   private DriveSubsystem driveSubsystem;
-  double startTime;
+  double startTime; 
   double time;
   double rightPower;
   double leftPower;

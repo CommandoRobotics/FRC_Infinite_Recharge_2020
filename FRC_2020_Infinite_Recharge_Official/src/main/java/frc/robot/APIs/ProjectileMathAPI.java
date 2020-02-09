@@ -41,14 +41,14 @@ public class ProjectileMathAPI {
     public double[] calculateInitialVelocityAndAngle(double limelightDistance, double targetHeight) {
         double[] velocityAndAngle = new double[3];
 
-        double Vₒᵧ = calculateRequiredYVelocity(ConstantsValues.negativeTargetVelocity, targetHeight, ConstantsValues.acceleration);
-        double timeToTarget = quadSolForLargest((.5*ConstantsValues.acceleration),Vₒᵧ,targetHeight);
+        double Voy = calculateRequiredYVelocity(ConstantsValues.negativeTargetVelocity, targetHeight, ConstantsValues.acceleration);
+        double timeToTarget = quadSolForLargest((.5*ConstantsValues.acceleration),Voy,targetHeight);
         double x = Math.sqrt(Math.pow(limelightDistance,2) - Math.pow(targetHeight,2));
-        double Vₒₓ = x/timeToTarget;
-        double Vₒ = Math.sqrt(Math.pow(Vₒₓ,2) + Math.pow(Vₒᵧ,2));
+        double Vox = x/timeToTarget;
+        double Vo = Math.sqrt(Math.pow(Vox,2) + Math.pow(Voy,2));
 
-        velocityAndAngle[0] = Vₒ;
-        velocityAndAngle[1] = (calculateAngleBasedOnVelocity(Vₒₓ, Vₒᵧ) * 180 / Math.PI);
+        velocityAndAngle[0] = Vo;
+        velocityAndAngle[1] = (calculateAngleBasedOnVelocity(Vox, Voy) * 180 / Math.PI);
         return velocityAndAngle;
     }
 
@@ -92,24 +92,24 @@ public class ProjectileMathAPI {
      * position and acceleration should be -9.8 (gravity) but can still be changed
      */
     private double calculateRequiredYVelocity(double targetNegativeVy, double targetHeight, double acceleration) {
-        double Δy = (Math.pow(targetNegativeVy,2))/(2*acceleration);
-        double yₜ = targetHeight + Math.abs(Δy) ;
-        yTotal = yₜ;
-        double Vₒᵧ = Math.sqrt(-2*acceleration*yₜ);
-        return Vₒᵧ;
+        double deltaY = (Math.pow(targetNegativeVy,2))/(2*acceleration);
+        double yTotal = targetHeight + Math.abs(deltaY) ;
+        this.yTotal = yTotal;
+        double Voy = Math.sqrt(-2*acceleration*yTotal);
+        return Voy;
     }
 
     /**
      * Uses inputs of the x and y vectors of initial velocity to find the inital launch angle. Used by 
      * calculateInitialVelocityAndAngle()
      * 
-     * @param Vₒₓ Inital x velocity
-     * @param Vₒᵧ Initial y velocity
+     * @param Vox Inital x velocity
+     * @param Voy Initial y velocity
      * @return Minimum theta, or angle required, to hit the target given a certain velocity
      */
-    private double calculateAngleBasedOnVelocity(double Vₒₓ, double Vₒᵧ) {
-        double θ = Math.atan(Vₒᵧ/Vₒₓ);
-        return θ;
+    private double calculateAngleBasedOnVelocity(double Vox, double Voy) {
+        double theta = Math.atan(Voy/Vox);
+        return theta;
     }
 
     /**

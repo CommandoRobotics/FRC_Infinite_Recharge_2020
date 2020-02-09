@@ -22,19 +22,27 @@ public final class ConstantsValues {
     //VARIABLES
     //Distance Per Pulses and PPR
     public static final int driveDisPerPulse = 0;
-    public static final double shooterInDisPerPulse = 0;
-    public static final double shooterMeterDisPerPulse = 0;
+    public static final double shooterTInDisPerPulse = 0;
+    public static final double shooterBInDisPerPulse = 0;
+    public static final double shooterTMeterDisPerPulse = 0;
     public static final double tiltDisPerPulse = 0;
     public static final double panDisPerPulse = 0;
     public static final double tiltEncPPR = 2000;
     public static final double panEncPPR = 2000;
 
-    //Min speeds
+    //Max and min speeds and angles
     public static final double genericMinSpeed = .1;
-    public static final double shooterMinSpeed = .1;
+    public static final double shooterTMinSpeed = .1;
+    public static final double shooterBMinSpeed = .1;
     public static final double loaderMinSpeed = .1;
     public static final double panMinSpeed = .1;
     public static final double tiltMinSpeed = .1;
+    public static final double minTiltAngle = 40;
+    public static final double maxTiltAngle = 90;
+    public static final double minPanAngle = -90;
+    public static final double maxPanAngle = 90;
+    public static final double tiltDefaultPos = 40;
+
 
     //Misc.
     public static final double intakeSpeed = 0.5;
