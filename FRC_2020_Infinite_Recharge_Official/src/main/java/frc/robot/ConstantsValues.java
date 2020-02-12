@@ -45,6 +45,7 @@ public final class ConstantsValues {
     
     //Drive Constants
     public static final boolean gyroReversed = false;
+    public static final boolean rightEncReversed = false;
 
 
     //Misc.

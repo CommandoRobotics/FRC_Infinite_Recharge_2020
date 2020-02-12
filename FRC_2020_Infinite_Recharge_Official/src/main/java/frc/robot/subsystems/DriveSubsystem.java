@@ -36,8 +36,9 @@ public class DriveSubsystem extends SubsystemBase {
 
 
   public DriveSubsystem() {
-    leftDriveEncoder = new Encoder(ConstantsPorts.leftDriveEncAPort, ConstantsPorts.leftDriveEncBPort, true);
-    rightDriveEncoder =  new Encoder(ConstantsPorts.rightDriveEncAPort, ConstantsPorts.rightDriveEncBPort);
+    boolean reversed = ConstantsValues.rightEncReversed;
+    leftDriveEncoder = new Encoder(ConstantsPorts.leftDriveEncAPort, ConstantsPorts.leftDriveEncBPort, reversed);
+    rightDriveEncoder =  new Encoder(ConstantsPorts.rightDriveEncAPort, ConstantsPorts.rightDriveEncBPort, !reversed);
     leftDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
     rightDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
 
@@ -152,6 +153,16 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(leftDriveEncoder.getRate(), rightDriveEncoder.getRate());
+  }
+
+  /**
+   * Returns the the reversed negative speed of the wheel at that moment as a 
+   * DifferentialDriveWheelSpeeds object
+   *  
+   * @return the reversed (x * -1) speed of the wheels as a DifferentialDriveWheelSpeeds
+   */
+  public DifferentialDriveWheelSpeeds getReversedWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(-leftDriveEncoder.getRate(), -rightDriveEncoder.getRate());
   }
 
   /**Resets the drive encoders back to 0 */
