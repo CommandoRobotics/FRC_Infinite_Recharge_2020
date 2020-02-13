@@ -11,7 +11,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.EncoderType;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -20,6 +22,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ConstantsPID;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
 
@@ -36,6 +39,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   NetworkTable limelight;
 
+  CANPIDController topPIDController;
+  CANPIDController bottomPIDController;
+
   double shooterTopMinSpeed;
   double loaderMinSpeed;
   public boolean riserActive = false;
@@ -48,10 +54,32 @@ public class ShooterSubsystem extends SubsystemBase {
     loader = new Spark(ConstantsPorts.shooterLoaderPort);
     shooterTopMaster = new CANSparkMax(ConstantsPorts.shooterTopMasterID, MotorType.kBrushed);
     shooterBottomMaster = new CANSparkMax(ConstantsPorts.shooterBottomMasterID, MotorType.kBrushed);
+    shooterTopMaster.restoreFactoryDefaults();
+    shooterBottomMaster.restoreFactoryDefaults();
     shooterTopSlave = new VictorSPX(ConstantsPorts.shooterTopSlaveID);
     shooterBottomSlave = new VictorSPX(ConstantsPorts.shooterBottomSlaveID);
 
     shooterTopEnc = shooterTopMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
+    shooterTopEnc = shooterBottomMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
+
+    topPIDController = shooterTopMaster.getPIDController();
+    bottomPIDController = shooterBottomMaster.getPIDController();
+    topPIDController.setFeedbackDevice(shooterTopEnc);
+    bottomPIDController.setFeedbackDevice(shooterBottomEnc);
+
+    topPIDController.setP(ConstantsPID.kP);
+    topPIDController.setI(ConstantsPID.kI);
+    topPIDController.setD(ConstantsPID.kD);
+    topPIDController.setIZone(ConstantsPID.kIZone);
+    topPIDController.setFF(ConstantsPID.kFF);
+    topPIDController.setOutputRange(ConstantsPID.kMin, ConstantsPID.kMax);
+
+    bottomPIDController.setP(ConstantsPID.kP);
+    bottomPIDController.setI(ConstantsPID.kI);
+    bottomPIDController.setD(ConstantsPID.kD);
+    bottomPIDController.setIZone(ConstantsPID.kIZone);
+    bottomPIDController.setFF(ConstantsPID.kFF);
+    bottomPIDController.setOutputRange(ConstantsPID.kMin, ConstantsPID.kMax);
 
     loaderMinSpeed = ConstantsValues.loaderMinSpeed;
     shooterTopMinSpeed = ConstantsValues.shooterTMinSpeed;
@@ -107,6 +135,11 @@ public class ShooterSubsystem extends SubsystemBase {
   /**Overrides the min speed the loader will run */
   public void setMinLoaderSpeed(double speed) {
     loaderMinSpeed = speed;
+  }
+
+  public void setShooterTarget(double targetRPM) {
+    topPIDController.setReference(targetRPM, ControlType.kVelocity);
+    bottomPIDController.setReference(targetRPM, ControlType.kVelocity);
   }
 
   //LIMELIGHT THINGS

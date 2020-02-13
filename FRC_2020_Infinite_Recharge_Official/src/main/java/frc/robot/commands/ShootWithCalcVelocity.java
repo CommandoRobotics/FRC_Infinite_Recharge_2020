@@ -31,17 +31,19 @@ public class ShootWithCalcVelocity extends CommandBase {
   @Override
   public void execute() {
     if (shooterSubsystem.riserActive) {
-      projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
-                                      projectileMath.calculateInitialVelocityAndAngle(
-                                        shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted, false), 
-                                        ConstantsValues.targetHeightLifted)[0]
-                                      );
+      shooterSubsystem.setShooterTarget(
+        projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
+                                        projectileMath.calculateInitialVelocityAndAngle(
+                                          shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted, false), 
+                                          ConstantsValues.targetHeightLifted)[0]
+      ));
     } else {
-      projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
-                                      projectileMath.calculateInitialVelocityAndAngle(
-                                        shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered, false), 
-                                        ConstantsValues.targetHeightLowered)[0]
-      );
+      shooterSubsystem.setShooterTarget(
+        projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
+                                        projectileMath.calculateInitialVelocityAndAngle(
+                                          shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered, false), 
+                                          ConstantsValues.targetHeightLowered)[0]
+      ));
     }
     
   }

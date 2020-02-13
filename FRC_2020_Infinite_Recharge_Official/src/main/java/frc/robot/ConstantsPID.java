@@ -28,4 +28,13 @@ public final class ConstantsPID {
     public static final double kTiltD = 0;
     public static final double tiltTolerance = 5;
     public static final double panTolerance = 5;
+
+    //Shooter PID
+    public static final double kP = 0;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double kIZone = 0;
+    public static final double kFF = 0;
+    public static final double kMax = 0;
+    public static final double kMin = 0;
 }
