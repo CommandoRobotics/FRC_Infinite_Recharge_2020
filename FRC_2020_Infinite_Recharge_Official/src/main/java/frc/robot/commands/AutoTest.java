@@ -64,7 +64,6 @@ public class AutoTest extends SequentialCommandGroup {
     }
 
     addCommands(
-
       //Stop all motors and actions and reset encoders gyro etc (kinda like an init loop)
       new ParallelCommandGroup(new StopDrive(driveSubsystem), new SetIntake(intakeSubsystem, 0)),
       new ResetSensorsAuto(driveSubsystem, shooterSubsystem),
