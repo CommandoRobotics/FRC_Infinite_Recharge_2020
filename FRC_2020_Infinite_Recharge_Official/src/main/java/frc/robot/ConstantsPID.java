@@ -20,12 +20,6 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public final class ConstantsPID {
     
     //Constants Used for PID and tuning
-<<<<<<< HEAD
-    public static final double colorWheelP = 1;
-    public static final double colorWheelI = 1;
-    public static final double colorWheelD = 1;
-    public static final double colorWheelTolerance = 1;
-=======
 
     //Drive Feedforward
     public static final double ksVolts = 0;
@@ -39,5 +33,8 @@ public final class ConstantsPID {
     public static final double trackWidthMeters = 1;
     public static final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(trackWidthMeters);
 
->>>>>>> PathWeaverExample
+    public static final double colorWheelP = 1;
+    public static final double colorWheelI = 1;
+    public static final double colorWheelD = 1;
+    public static final double colorWheelTolerance = 1;
 }
