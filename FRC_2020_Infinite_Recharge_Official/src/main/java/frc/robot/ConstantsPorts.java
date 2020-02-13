@@ -37,6 +37,9 @@ public final class ConstantsPorts {
     public static final int indexMotorOne = 8;
     public static final int indexMotorTwo = 9;
     public static final int indexMotorThree = 10;
+    public static final int funnelMotorPort = 11;
+    public static final int sideLiftMotorPort = 12;
+    public static final int frontLiftMotorPort = 13;
 
     //Solenoids 
     public static final int intakeLifterPort = 0;
