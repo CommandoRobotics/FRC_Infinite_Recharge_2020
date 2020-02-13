@@ -8,14 +8,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.ConstantsValues;
+import frc.robot.APIs.ProjectileMathAPI;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootWithCalcVelocity extends CommandBase {
-  /**
-   * Creates a new ShootWithCalcVelocity.
-   */
+
+  ShooterSubsystem shooterSubsystem;
+  ProjectileMathAPI projectileMath;
   
-  public ShootWithCalcVelocity() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ShootWithCalcVelocity(ShooterSubsystem m_shooterSubsystem) {
+    shooterSubsystem = m_shooterSubsystem;
+    addRequirements(m_shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -26,6 +30,20 @@ public class ShootWithCalcVelocity extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (shooterSubsystem.riserActive) {
+      projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
+                                      projectileMath.calculateInitialVelocityAndAngle(
+                                        shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted, false), 
+                                        ConstantsValues.targetHeightLifted)[0]
+                                      );
+    } else {
+      projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
+                                      projectileMath.calculateInitialVelocityAndAngle(
+                                        shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered, false), 
+                                        ConstantsValues.targetHeightLowered)[0]
+      );
+    }
+    
   }
 
   // Called once the command ends or is interrupted.

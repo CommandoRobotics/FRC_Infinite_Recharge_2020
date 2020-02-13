@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.SparkMax;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;

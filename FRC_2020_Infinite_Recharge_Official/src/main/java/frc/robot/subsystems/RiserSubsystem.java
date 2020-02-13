@@ -14,11 +14,13 @@ import frc.robot.ConstantsPorts;
 public class RiserSubsystem extends SubsystemBase {
 
   AutoAimSubsystem autoAimSubsystem;
+  ShooterSubsystem shooterSubsystem;
 
   Solenoid riserSolenoid;
 
-  public RiserSubsystem(AutoAimSubsystem m_AutoAimSubsystem) {
+  public RiserSubsystem(AutoAimSubsystem m_AutoAimSubsystem, ShooterSubsystem m_ShooterSubsystem) {
     riserSolenoid = new Solenoid(ConstantsPorts.shooterRiserPort);
+    shooterSubsystem = m_ShooterSubsystem;
     autoAimSubsystem = m_AutoAimSubsystem;
   }
 
@@ -31,8 +33,10 @@ public class RiserSubsystem extends SubsystemBase {
     riserSolenoid.set(set);
     if (set) {
       autoAimSubsystem.riserActive = true;
+      shooterSubsystem.riserActive = true;
     } else {
       autoAimSubsystem.riserActive = false;
+      shooterSubsystem.riserActive = false;
     }
   }
 
@@ -40,12 +44,14 @@ public class RiserSubsystem extends SubsystemBase {
   public void deployRiser() {
     riserSolenoid.set(true);
     autoAimSubsystem.riserActive = true;
+    shooterSubsystem.riserActive = true;
   }
 
   /**Sets the riser to off/retracted (false) */
   public void retractRiser() {
     riserSolenoid.set(false);
-    autoAimSubsystem.riserActive = true;
+    autoAimSubsystem.riserActive = false;
+    shooterSubsystem.riserActive = false;
   }
 
   /**Sets the riser to the opposite value of the current value 
@@ -54,6 +60,7 @@ public class RiserSubsystem extends SubsystemBase {
   public void toggleRiser() {
     riserSolenoid.set(!riserSolenoid.get());
     autoAimSubsystem.riserActive = !riserSolenoid.get();
+    shooterSubsystem.riserActive = !riserSolenoid.get();
   }
 
   /**Returns the current state of the riser 

@@ -53,5 +53,6 @@ public final class ConstantsValues {
     public static final double targetHeightLifted = 1.9;
     public static final double limlightAngleLow = 20;
     public static final double limlightAngleHigh = 20;
+    public static final double shooterWheelRadius = 1;
     
 }

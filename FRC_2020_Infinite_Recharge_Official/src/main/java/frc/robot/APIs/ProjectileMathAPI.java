@@ -138,4 +138,14 @@ public class ProjectileMathAPI {
         }
     }
 
+    /**
+     * Returns the RPM based on an inputted current radius and velocity
+     * @param radiusInMeters    The radius (r) of the wheel in meters
+     * @param velocityInMPerSec The target velocity (m/sec) of the wheel
+     * @return                  The the target revolution per min based on the m/sec and r 
+     */
+    public double fromMPerSecToRPM(double radiusInMeters, double velocityInMPerSec) {
+        return velocityInMPerSec*60/(2*Math.PI*radiusInMeters);
+    }
+
 }
