@@ -37,7 +37,11 @@ public class ControlPanelAPI {
     double distanceFromCenter = 0; // The distance between the center of the control panel and the contact point of the turning mechanism
     int gearboxRatio = 1; // The ratio of the gearbox, as x:1
     double wheelDiameter = 2; // The diameter of the wheel that is spinning the control panel
+<<<<<<< HEAD
     double countsPerRevolution = 1000; // The amount of encoder ticks per revolution of the motor (before gearbox ratio)
+=======
+    int countsPerRevolution = 1000; // The amount of encoder ticks per revolution of the motor (before gearbox ratio)
+>>>>>>> PathWeaverExample
 
     /**
      * 
@@ -46,7 +50,11 @@ public class ControlPanelAPI {
      * @param inputWheelDiameter The diameter of the wheel that is spinning the control panel
      * @param inputCountsPerRevolution The amount of encoder ticks per revolution of the motor (before gearbox ratio)
      */
+<<<<<<< HEAD
     public ControlPanelAPI(double inputDistanceFromCenter, int inputGearboxRatio, double inputWheelDiameter, double inputCountsPerRevolution) {
+=======
+    public ControlPanelAPI(double inputDistanceFromCenter, int inputGearboxRatio, double inputWheelDiameter, int inputCountsPerRevolution) {
+>>>>>>> PathWeaverExample
         distanceFromCenter = inputDistanceFromCenter; // The distance from the center of the control panel to the wheel rotating the control panel given in inches
         gearboxRatio = inputGearboxRatio;
         wheelDiameter = inputWheelDiameter;
@@ -133,9 +141,15 @@ public class ControlPanelAPI {
     }
 
     /**
+<<<<<<< HEAD
      * This method calculates the amount of rotations the motor needs to spin to land on the right color, assuming we are on our side of the field.
      * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
      * @return The amout of rotations to spin the motor, as a double.
+=======
+     * This method calculates the amount of ticks the motor needs to spin to land on the right color, assuming we are on our side of the field.
+     * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
+     * @return The amount of ticks to spin the motor, as a double.
+>>>>>>> PathWeaverExample
      */
     public double calculateOurSide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
@@ -187,6 +201,7 @@ public class ControlPanelAPI {
             motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         } else if(targetColor == COLOR_GREEN) {
             compensatedSpinDistance = (greenDistance*distanceFromCenter)/16;
+<<<<<<< HEAD
             motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         }
 
@@ -197,6 +212,18 @@ public class ControlPanelAPI {
      * This method calculates the amount of rotations the motor needs to spin to land on the right color, assuming we are on our side of the field.
      * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
      * @return The amount of rotations to spin the motor, as a double.
+=======
+            motorSpinDistanceInEncoders = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio)*countsPerRevolution;
+        }
+
+        return motorSpinDistanceInEncoders;
+    }
+
+    /**
+     * This method calculates the amount of ticks the motor needs to spin to land on the right color, assuming we are on our side of the field.
+     * @param targetColorAsChar The color we are trying to spin the wheel to, as a character (can be a raw value from the FMS).
+     * @return The amount of ticks to spin the motor, as a double.
+>>>>>>> PathWeaverExample
      */
     public double calculateEnemySide(char targetColorAsChar) {
         double compensatedSpinDistance = 0;
@@ -251,6 +278,7 @@ public class ControlPanelAPI {
             motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         }
 
+<<<<<<< HEAD
         return motorSpinDistanceFinal;
     }
 
@@ -263,6 +291,9 @@ public class ControlPanelAPI {
         double compensatedSpinDistance = (rotationsOfControlPanel*distanceFromCenter)/16;
         double motorSpinDistanceFinal = ((compensatedSpinDistance/wheelDiameter)*gearboxRatio);
         return motorSpinDistanceFinal;
+=======
+        return motorSpinDistanceInEncoders;
+>>>>>>> PathWeaverExample
     }
 
 }
