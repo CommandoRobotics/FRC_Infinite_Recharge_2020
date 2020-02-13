@@ -7,19 +7,22 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.SparkMax;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
 
 public class AutoAimSubsystem extends SubsystemBase {
-  Spark tilt;
-  Spark pan;
+  VictorSPX tilt;
+  VictorSPX pan;
 
   Encoder tiltEnc;
   Encoder panEnc;
@@ -35,8 +38,8 @@ public class AutoAimSubsystem extends SubsystemBase {
   public boolean seeingTarget = false;
 
   public AutoAimSubsystem(NetworkTable m_limelight) {
-    tilt = new Spark(ConstantsPorts.tiltPort);
-    pan = new Spark(ConstantsPorts.panPort);
+    tilt = new VictorSPX(ConstantsPorts.tiltID);
+    pan = new VictorSPX(ConstantsPorts.panID);
 
     tiltEnc = new Encoder(ConstantsPorts.tiltEncAPort, ConstantsPorts.tiltEncBPort);
     tiltEnc.setDistancePerPulse(ConstantsValues.tiltDisPerPulse);
@@ -54,14 +57,14 @@ public class AutoAimSubsystem extends SubsystemBase {
   */
   public void setTilter(double speed) {
     if (getTiltAngle() > ConstantsValues.maxTiltAngle && speed > 0) {
-      tilt.stopMotor();
+      tilt.set(ControlMode.PercentOutput, 0);
     } else if (getTiltAngle() < ConstantsValues.minTiltAngle && speed < 0) {
-      tilt.stopMotor();
+      tilt.set(ControlMode.PercentOutput, 0);
     } else {
       if (speed >= tiltMinSpeed) {
-        tilt.setSpeed(speed);
+        tilt.set(ControlMode.PercentOutput, speed);
       } else {
-        tilt.stopMotor();
+        tilt.set(ControlMode.PercentOutput, 0);
       }
     }
   }
@@ -69,26 +72,26 @@ public class AutoAimSubsystem extends SubsystemBase {
   /**Sets the Panner to a given speed */
   public void setPanner(double speed) {
     if (getPanAngle() > ConstantsValues.maxPanAngle && speed > 0) {
-      pan.stopMotor();
+      pan.set(ControlMode.PercentOutput, 0);
     } else if (getPanAngle() < ConstantsValues.minPanAngle && speed < 0) {
-      pan.stopMotor();
+      pan.set(ControlMode.PercentOutput, 0);
     } else {
       if (speed >= panMinSpeed) {
-        pan.setSpeed(speed);
+        pan.set(ControlMode.PercentOutput, speed);
       } else {
-        pan.stopMotor();
+        pan.set(ControlMode.PercentOutput, 0);
       }
     }
   }
 
   /**Stops the Tilter motor */
   public void stopTilter() {
-    tilt.stopMotor();
+    tilt.set(ControlMode.PercentOutput, 0);
   }
 
   /**Stops the Panner motor */
   public void stopPanner() {
-    pan.stopMotor();
+    pan.set(ControlMode.PercentOutput, 0);
   }
 
   /**
@@ -97,7 +100,7 @@ public class AutoAimSubsystem extends SubsystemBase {
    * @return set speed as double from -1 to 1
   */
   public double getTilterSetSpeed() {
-    return tilt.get();
+    return tilt.getMotorOutputPercent();
   }
 
   /**
@@ -106,7 +109,7 @@ public class AutoAimSubsystem extends SubsystemBase {
    * @return set speed as double from -1 to 1
   */
   public double getPannerSetSpeed() {
-    return pan.get();
+    return pan.getMotorOutputPercent();
   }
 
   /**

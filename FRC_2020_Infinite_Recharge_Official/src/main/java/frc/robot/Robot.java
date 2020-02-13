@@ -35,9 +35,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    driverController = new XboxController(0);
-    operatorController = new XboxController(1);
-    m_robotContainer = new RobotContainer(driverController, operatorController);
+    m_robotContainer = new RobotContainer();
   }
 
   @Override

@@ -23,9 +23,6 @@ public final class ConstantsPorts {
     //Sparks
     public static final int leftDrivePort = 0; 
     public static final int rightDrivePort = 1;
-    public static final int shooterPort = 2;
-    public static final int panPort = 3;
-    public static final int tiltPort = 4;
     public static final int shooterLoaderPort = 5;
     public static final int colorWheelPort = 6;
     public static final int intakePort = 7;
@@ -34,9 +31,13 @@ public final class ConstantsPorts {
     public static final int indexMotorThreePort = 10;
 
     //CAN Device #'s
-    public static final int loaderID = 4;
-    public static final int shooterTopID = 2;
-    public static final int shooterBottomID = 3;
+    public static final int shooterTopMasterID = 2;
+    public static final int shooterBottomMasterID = 3;
+    public static final int shooterTopSlaveID = 4;
+    public static final int shooterBottomSlaveID = 5;
+    public static final int loaderID = 6;
+    public static final int panID = 7;
+    public static final int tiltID = 8;
 
     //Solenoids 
     public static final int intakeLifterPort = 0;

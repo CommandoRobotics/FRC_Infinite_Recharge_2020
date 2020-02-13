@@ -22,7 +22,7 @@ public final class ConstantsValues {
     //VARIABLES
     //Distance Per Pulses and PPR
     public static final int driveDisPerPulse = 0;
-    public static final double shooterTInDisPerPulse = 0;
+    public static final int shooterCPR = 0;
     public static final double shooterBInDisPerPulse = 0;
     public static final double shooterTMeterDisPerPulse = 0;
     public static final double tiltDisPerPulse = 0;
