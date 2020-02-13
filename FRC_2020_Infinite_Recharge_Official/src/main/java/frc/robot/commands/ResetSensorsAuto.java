@@ -18,9 +18,10 @@ public class ResetSensorsAuto extends CommandBase {
   DriveSubsystem driveSubsystem;
   ShooterSubsystem shooterSubsystem;
 
-  public ResetSensorsAuto(IntakeSubsystem m_intakeSubsystem, DriveSubsystem m_driveSubsystem, ShooterSubsystem m_shooterSubsystem) {
-    addRequirements(m_intakeSubsystem, m_driveSubsystem, m_shooterSubsystem);
-    intakeSubsystem = m_intakeSubsystem;
+  boolean finished;
+
+  public ResetSensorsAuto(DriveSubsystem m_driveSubsystem, ShooterSubsystem m_shooterSubsystem) {
+    addRequirements(m_driveSubsystem, m_shooterSubsystem);
     driveSubsystem = m_driveSubsystem;
     shooterSubsystem = m_shooterSubsystem;
   }
@@ -36,7 +37,7 @@ public class ResetSensorsAuto extends CommandBase {
   public void execute() {
     driveSubsystem.resetEncoders();
     driveSubsystem.resetGyro();
-    intakeSubsystem.stopIntake();
+    finished = true;
   }
 
   // Called once the command ends or is interrupted.

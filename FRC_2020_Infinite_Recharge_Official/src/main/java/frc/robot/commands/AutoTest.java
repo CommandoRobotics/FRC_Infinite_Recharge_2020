@@ -27,6 +27,7 @@ import frc.robot.ConstantsValues;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LifterSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -41,7 +42,8 @@ public class AutoTest extends SequentialCommandGroup {
   Trajectory trajectory2;
 
 
-  public AutoTest(DriveSubsystem driveSubsystem, LifterSubsystem lifterSubsystem, IntakeSubsystem intakeSubsystem) {
+  public AutoTest(DriveSubsystem driveSubsystem, LifterSubsystem lifterSubsystem,
+                  IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem) {
 
     //The Test Path we need to load from the trajectory JSON
     String trajectoryJSON = "paths/TestPathFirst.wpilib.json";
@@ -65,7 +67,7 @@ public class AutoTest extends SequentialCommandGroup {
 
       //Stop all motors and actions and reset encoders gyro etc (kinda like an init loop)
       new ParallelCommandGroup(new StopDrive(driveSubsystem), new SetIntake(intakeSubsystem, 0)),
-      new stopAndResetEverythin(driveSubsystem, intakeSubsystem),
+      new ResetSensorsAuto(driveSubsystem, shooterSubsystem),
 
       //Drive our first generated auto path
       new CustomRamseteCommand(trajectory, false, driveSubsystem),
