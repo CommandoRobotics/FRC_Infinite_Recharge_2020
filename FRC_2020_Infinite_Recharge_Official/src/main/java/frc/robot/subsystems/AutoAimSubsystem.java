@@ -7,15 +7,22 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.SparkMax;
+
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
 
 public class AutoAimSubsystem extends SubsystemBase {
-  Spark tilt;
-  Spark pan;
+  VictorSPX tilt;
+  VictorSPX pan;
 
   Encoder tiltEnc;
   Encoder panEnc;
@@ -23,64 +30,90 @@ public class AutoAimSubsystem extends SubsystemBase {
   double panMinSpeed = ConstantsValues.panMinSpeed;
   double tiltMinSpeed = ConstantsValues.tiltMinSpeed;
 
-  public AutoAimSubsystem() {
-    tilt = new Spark(ConstantsPorts.tiltPort);
-    pan = new Spark(ConstantsPorts.panPort);
+  NetworkTable limelight;
+
+  Servo limelightServo;
+
+  public boolean riserActive = false;
+  public boolean seeingTarget = false;
+
+  public AutoAimSubsystem(NetworkTable m_limelight) {
+    tilt = new VictorSPX(ConstantsPorts.tiltID);
+    pan = new VictorSPX(ConstantsPorts.panID);
 
     tiltEnc = new Encoder(ConstantsPorts.tiltEncAPort, ConstantsPorts.tiltEncBPort);
     tiltEnc.setDistancePerPulse(ConstantsValues.tiltDisPerPulse);
     panEnc = new Encoder(ConstantsPorts.panEncAPort, ConstantsPorts.panEncBPort);
     panEnc.setDistancePerPulse(ConstantsValues.panDisPerPulse);
 
+    limelight = m_limelight;
+    limelightServo = new Servo(ConstantsPorts.limelightServoPort);
   }
 
-  /**Sets the tilter to a given speed */
+  /**
+   * Sets the tilter to a given speed for a given range. If the tilter goes above or below
+   * a certain range, and wants to continue moving past the min/max, then the motor is stopped.
+   * Min speed is also checked for.
+  */
   public void setTilter(double speed) {
-    if (speed >= tiltMinSpeed) {
-      tilt.setSpeed(speed);
+    if (getTiltAngle() > ConstantsValues.maxTiltAngle && speed > 0) {
+      tilt.set(ControlMode.PercentOutput, 0);
+    } else if (getTiltAngle() < ConstantsValues.minTiltAngle && speed < 0) {
+      tilt.set(ControlMode.PercentOutput, 0);
     } else {
-      tilt.stopMotor();
+      if (speed >= tiltMinSpeed) {
+        tilt.set(ControlMode.PercentOutput, speed);
+      } else {
+        tilt.set(ControlMode.PercentOutput, 0);
+      }
     }
-
   }
 
   /**Sets the Panner to a given speed */
   public void setPanner(double speed) {
-    if (speed >= panMinSpeed) {
-      pan.setSpeed(speed);
+    if (getPanAngle() > ConstantsValues.maxPanAngle && speed > 0) {
+      pan.set(ControlMode.PercentOutput, 0);
+    } else if (getPanAngle() < ConstantsValues.minPanAngle && speed < 0) {
+      pan.set(ControlMode.PercentOutput, 0);
     } else {
-      pan.stopMotor();
+      if (speed >= panMinSpeed) {
+        pan.set(ControlMode.PercentOutput, speed);
+      } else {
+        pan.set(ControlMode.PercentOutput, 0);
+      }
     }
-    
   }
 
   /**Stops the Tilter motor */
   public void stopTilter() {
-    tilt.stopMotor();
+    tilt.set(ControlMode.PercentOutput, 0);
   }
 
   /**Stops the Panner motor */
   public void stopPanner() {
-    pan.stopMotor();
+    pan.set(ControlMode.PercentOutput, 0);
   }
 
-  /**Returns the current set speed of the tilt motor 
+  /**
+   * Returns the current set speed of the tilt motor 
    * 
    * @return set speed as double from -1 to 1
   */
   public double getTilterSetSpeed() {
-    return tilt.get();
+    return tilt.getMotorOutputPercent();
   }
 
-  /**Returns the current set speed of the pan motor 
+  /**
+   * Returns the current set speed of the pan motor 
    * 
    * @return set speed as double from -1 to 1
   */
   public double getPannerSetSpeed() {
-    return pan.get();
+    return pan.getMotorOutputPercent();
   }
 
-  /**Returns the raw counts recieved from the tilt encoder 
+  /**
+   * Returns the raw counts recieved from the tilt encoder 
    * 
    * @return Current raw output from the tilt encoder since the last reset
   */
@@ -93,12 +126,23 @@ public class AutoAimSubsystem extends SubsystemBase {
     return tiltEnc.getDistance();
   }
 
+  /**
+   * This takes the current raw enc value for the tilt encoder and gets the 
+   * angle by finding the proportion of rotations and then converting to degrees
+   * 
+   * @return The angle at which the motor has rotated from start or reset
+   */
+  public double getTiltAngle() {
+    return (tiltEnc.getRaw()/ConstantsValues.tiltEncPPR) * 360;
+  }
+
   /**Resets the Tilter encoder back to zero */
   public void resetTilterEnc() {
     tiltEnc.reset();
   }
 
-  /**Returns the raw counts recieved from the pan encoder 
+  /**
+   * Returns the raw counts recieved from the pan encoder 
    * 
    * @return Current raw output from the pan encoder since the last reset
   */
@@ -111,11 +155,71 @@ public class AutoAimSubsystem extends SubsystemBase {
     return panEnc.getDistance();
   }
 
+  /**
+   * This takes the current raw enc value for the pan encoder and gets the 
+   * angle by finding the proportion of rotations and then converting to degrees
+   * 
+   * @return The angle at which the motor has rotated from the last start or reset
+   */
+  public double getPanAngle() {
+    return (panEnc.getRaw()/ConstantsValues.panEncPPR) * 360;
+  }
+
   /**Resets the Panner encoder back to zero */
   public void resetPannerEnc() {
     panEnc.reset();
   }
 
+  //LIMELIGHT THINGS
+
+  public double getLimelightXOffset() {
+    return limelight.getEntry("tx").getDouble(0);
+  }
+
+  public double getLimelightYOffset() {
+    return limelight.getEntry("ty").getDouble(0);
+  }
+
+  /**
+   * Gets the distance directly to the target straight from the limlight using
+   * right triangles.
+   * @param targetHeight The height of the target realtive to the current shooter
+   *                     height. This input affects the unit of measurement outputted
+   * @param isLifted     Whether or not the the limelight is angled low or high  (this changes 
+   *                     the constant angle)
+   * @return The distance directly to the target in the same unit of measurement as the
+   *         targetHeight
+   */
+  public double getLimelightDis(double targetHeight, boolean isAngledUp) {
+    if (isAngledUp) {
+      return targetHeight/Math.sin(ConstantsValues.limlightAngleHigh + limelight.getEntry("ty").getDouble(0));
+    } else {
+      return targetHeight/Math.sin(ConstantsValues.limlightAngleLow + limelight.getEntry("ty").getDouble(0));
+    }
+  }
+
+  /**
+   * Uses isTarget()'s seeingTarget boolean to determine whether to output/use limelight as the 
+   * meausurement source (if seeing target) or to use the encoder to reset to 0 (if not seeing target)
+   * 
+   * @return The offset from 0 of either proper aiming or resetting to zero
+   */
+  public double getPanTarget() {
+    if (seeingTarget) {
+      return getLimelightXOffset();
+    } else {
+      return getPanAngle();
+    }
+  }
+
+  /**
+   * Returns the number   
+   * @return
+   */
+  public boolean isTargets() { 
+    seeingTarget = (limelight.getEntry("tv").getDouble(0) == 1) ? true : false;
+    return seeingTarget;
+  }
 
   @Override
   public void periodic() {

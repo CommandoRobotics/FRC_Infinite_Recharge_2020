@@ -40,6 +40,8 @@ public class DriveTank extends CommandBase {
   @Override
   public void execute() {
     driveSubsystem.driveTank(leftPower.getAsDouble(), rightPower.getAsDouble());
+
+    driveSubsystem.resetEncoders();
   }
 
   // Called once the command ends or is interrupted.

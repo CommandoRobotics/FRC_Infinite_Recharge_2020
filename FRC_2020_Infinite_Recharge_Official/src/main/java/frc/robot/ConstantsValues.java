@@ -22,15 +22,22 @@ public final class ConstantsValues {
     //VARIABLES
     //Distance Per Pulses and PPR
     public static final int driveDisPerPulse = 0;
+<<<<<<< HEAD
     public static final double shooterTInDisPerPulse = 0;
+=======
+    public static final int shooterCPR = 0;
+>>>>>>> ShooterWithLimelight
     public static final double shooterBInDisPerPulse = 0;
     public static final double shooterTMeterDisPerPulse = 0;
     public static final double tiltDisPerPulse = 0;
     public static final double panDisPerPulse = 0;
     public static final double tiltEncPPR = 2000;
     public static final double panEncPPR = 2000;
+<<<<<<< HEAD
     public static final double colorMotorDisPerPulse = 0;
     public static final double colorWheelEncPPR = 1;
+=======
+>>>>>>> ShooterWithLimelight
 
     //Max and min speeds and angles
     public static final double genericMinSpeed = .1;
@@ -44,10 +51,13 @@ public final class ConstantsValues {
     public static final double minPanAngle = -90;
     public static final double maxPanAngle = 90;
     public static final double tiltDefaultPos = 40;
+<<<<<<< HEAD
     
     //Drive Constants
     public static final boolean gyroReversed = false;
     public static final boolean rightEncReversed = false;
+=======
+>>>>>>> ShooterWithLimelight
 
 
     //Misc.
@@ -59,11 +69,15 @@ public final class ConstantsValues {
     public static final double targetHeightLifted = 1.9;
     public static final double limlightAngleLow = 20;
     public static final double limlightAngleHigh = 20;
+<<<<<<< HEAD
     
     public static final double distanceFromCenterOfColorWheelInInches = 0;
     public static final int colorWheelGearboxRatio = 1; // As x:1
     public static final int colorWheelDiameterInInches = 3; // The diameter of the wheel that is touching the control panel, given in inches.
     public static final int colorWheelEncoderCountsPerRevolution =1000;
     public static final double colorWheelRotationsToSpinWhenPositioning = 4;
+=======
+    public static final double shooterWheelRadius = 1;
+>>>>>>> ShooterWithLimelight
     
 }
