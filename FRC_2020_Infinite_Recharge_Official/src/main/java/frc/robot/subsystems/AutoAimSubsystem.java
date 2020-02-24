@@ -205,7 +205,7 @@ public class AutoAimSubsystem extends SubsystemBase {
    * @return The offset from 0 of either proper aiming or resetting to zero
    */
   public double getPanTarget() {
-    if (seeingTarget) {
+    if (isTargets()) {
       return getLimelightXOffset();
     } else {
       return getPanAngle();

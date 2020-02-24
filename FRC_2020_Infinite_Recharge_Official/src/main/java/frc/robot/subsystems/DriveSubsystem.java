@@ -7,8 +7,11 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
@@ -21,12 +24,9 @@ import frc.robot.ConstantsValues;
 
 public class DriveSubsystem extends SubsystemBase {
 
-<<<<<<< HEAD
   //TODO Decide on what motor types to use
-=======
   //Make a drive with voltage subsystem
 
->>>>>>> ShooterWithLimelight
   Spark leftMotors;
   Spark rightMotors;
 
@@ -37,7 +37,7 @@ public class DriveSubsystem extends SubsystemBase {
   Encoder rightDriveEncoder;
 
   //TODO Create a gyro properly and decide on which one we need
-  AnalogGyro gyro;
+  AHRS navX;
 
 
   public DriveSubsystem() {
@@ -47,7 +47,7 @@ public class DriveSubsystem extends SubsystemBase {
     leftDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
     rightDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
 
-    gyro = new AnalogGyro(ConstantsPorts.gyroPort);
+    navX = new AHRS(SPI.Port.kMXP);
 
     leftMotors = new Spark(ConstantsPorts.leftDrivePort);
     rightMotors = new Spark(ConstantsPorts.rightDrivePort);
@@ -105,12 +105,12 @@ public class DriveSubsystem extends SubsystemBase {
    *         and will go past 360
   */
   public double getAngle() {
-    return gyro.getAngle();
+    return navX.getAngle();
   }
 
   /**Resets the gyro back to 0 degrees (basically re-centers it) */
   public void resetGyro() {
-    gyro.reset();
+    navX.reset();
   }
 
   /**
@@ -119,7 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the heading of the robot from -180 to 180 degrees
    */
   public double getHeading() {
-    return Math.IEEEremainder(gyro.getAngle(), 360) * (ConstantsValues.gyroReversed ? -1.0 : 1.0);
+    return Math.IEEEremainder(navX.getAngle(), 360) * (ConstantsValues.gyroReversed ? -1.0 : 1.0);
   }
 
   /**
@@ -128,7 +128,7 @@ public class DriveSubsystem extends SubsystemBase {
    * @return The turn rate of the robot, in degrees per second
    */
   public double getTurnRate() {
-    return gyro.getRate() * (ConstantsValues.gyroReversed ? -1.0 : 1.0);
+    return navX.getRate() * (ConstantsValues.gyroReversed ? -1.0 : 1.0);
   }
 
   //ENCODER METHODS

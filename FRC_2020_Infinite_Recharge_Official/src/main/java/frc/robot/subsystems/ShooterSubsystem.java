@@ -52,15 +52,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem(NetworkTable m_limelight) {
     loader = new Spark(ConstantsPorts.shooterLoaderPort);
-<<<<<<< HEAD
-    shooter = new Spark(ConstantsPorts.shooterPort);
-
-    shooterEnc = new Encoder(ConstantsPorts.shooterEncAPort, ConstantsPorts.shooterEncBPort);
-    shooterEnc.setDistancePerPulse(ConstantsValues.shooterTInDisPerPulse);
-
-    loaderMinSpeed = ConstantsValues.loaderMinSpeed;
-    shooterMinSpeed = ConstantsValues.shooterTMinSpeed;
-=======
     shooterTopMaster = new CANSparkMax(ConstantsPorts.shooterTopMasterID, MotorType.kBrushed);
     shooterBottomMaster = new CANSparkMax(ConstantsPorts.shooterBottomMasterID, MotorType.kBrushed);
     shooterTopMaster.restoreFactoryDefaults();
@@ -94,7 +85,6 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterTopMinSpeed = ConstantsValues.shooterTMinSpeed;
 
     limelight = m_limelight;
->>>>>>> ShooterWithLimelight
   }
 
   /**Set the shooterTop to a certain inputted speed
@@ -149,7 +139,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setShooterTarget(double targetRPM) {
     topPIDController.setReference(targetRPM, ControlType.kVelocity);
-    bottomPIDController.setReference(targetRPM, ControlType.kVelocity);
+    bottomPIDController.setReference(targetRPM * .9, ControlType.kVelocity);
   }
 
   //LIMELIGHT THINGS
@@ -162,17 +152,6 @@ public class ShooterSubsystem extends SubsystemBase {
     return limelight.getEntry("ty").getDouble(0);
   }
 
-<<<<<<< HEAD
-  /**Sets the disPerPulse to either meters (Physics) or inches (AMERCICA)
-   * 
-   * @param mode Input METER_MODE for meters. Input INCH_MODE for inches
-  */
-  public void setShooterEncoderMode(int mode) {
-    if (mode == METER_MODE) {
-      shooterEnc.setDistancePerPulse(ConstantsValues.shooterTMeterDisPerPulse);
-    } else if (mode == INCH_MODE) {
-      shooterEnc.setDistancePerPulse(ConstantsValues.shooterTInDisPerPulse);
-=======
   /**
    * Gets the distance directly to the target straight from the limlight using
    * right triangles.
@@ -188,7 +167,6 @@ public class ShooterSubsystem extends SubsystemBase {
       return targetHeight/Math.sin(ConstantsValues.limlightAngleHigh + limelight.getEntry("ty").getDouble(0));
     } else {
       return targetHeight/Math.sin(ConstantsValues.limlightAngleLow + limelight.getEntry("ty").getDouble(0));
->>>>>>> ShooterWithLimelight
     }
   }
 

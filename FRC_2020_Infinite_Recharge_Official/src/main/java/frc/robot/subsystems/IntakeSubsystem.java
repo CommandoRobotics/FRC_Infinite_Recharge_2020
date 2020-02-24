@@ -30,6 +30,10 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.setSpeed(ConstantsValues.intakeSpeed);
   }
 
+  public void sweep() {
+    intakeMotor.setSpeed(ConstantsValues.sweepSpeed);
+  }
+
   /**In case you were confused, this stops the intake motor
    * 
    * Cosmic Brownies are not as good as you think they are

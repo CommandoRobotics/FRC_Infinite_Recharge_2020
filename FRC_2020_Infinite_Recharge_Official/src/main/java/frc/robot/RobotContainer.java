@@ -17,7 +17,13 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
-import frc.robot.commands.*;
+import frc.robot.commands.SolenoidSetsAndToggles.*;
+import frc.robot.commands.DriveCommands.*;
+import frc.robot.commands.ColorWheelCommands.*;
+import frc.robot.commands.IntakeCommands.*;
+import frc.robot.commands.DEBUG.*;
+import frc.robot.commands.ShooterCommands.*;
+import frc.robot.commands.AutoCommands.*;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -52,12 +58,7 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
 
-<<<<<<< HEAD
-
-
-=======
  
->>>>>>> ShooterWithLimelight
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
@@ -68,7 +69,7 @@ public class RobotContainer {
       () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis),
       driveSubsystem));
 
-    autoAimSubsystem.setDefaultCommand(new ReadLimelight(autoAimSubsystem));
+    autoAimSubsystem.setDefaultCommand(new ReadLimelight_DEBUG(autoAimSubsystem));
     configureButtonBindings();  
   }
 
