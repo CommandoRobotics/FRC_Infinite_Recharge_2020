@@ -36,6 +36,9 @@ public class DriveSubsystem extends SubsystemBase {
   Encoder leftDriveEncoder;
   Encoder rightDriveEncoder;
 
+  double previousOutputLeftPercent;
+  double previousOutputRightPercent;
+
   //TODO Create a gyro properly and decide on which one we need
   AHRS navX;
 
@@ -60,8 +63,33 @@ public class DriveSubsystem extends SubsystemBase {
   //BASIC DRIVE METHODS
 
   /**Drives in Tank Drive with direct input controls for left and right power */
-  public void driveTank(double leftPower, double rightPower) {
-    drive.tankDrive(leftPower, rightPower);
+  public void driveRampedTank(double askingLeftPower, double askingRightPower) {
+    double targetLeft = previousOutputLeftPercent;
+    double targetRight = previousOutputRightPercent;
+
+    if (Math.abs(askingLeftPower - previousOutputLeftPercent) < ConstantsValues.driveRampRate) {
+      targetLeft = targetLeft + (askingLeftPower - previousOutputLeftPercent);
+    } else {
+      if (askingLeftPower > previousOutputLeftPercent) {
+        targetLeft = targetLeft + ConstantsValues.driveRampRate;
+      } else {
+        targetLeft = targetLeft - ConstantsValues.driveRampRate;
+      }
+    }
+
+    if (Math.abs(askingRightPower - previousOutputRightPercent) < ConstantsValues.driveRampRate) {
+      targetRight = targetRight + (askingRightPower - previousOutputRightPercent);
+    } else {
+      if (askingRightPower > previousOutputRightPercent) {
+        targetRight = targetRight + ConstantsValues.driveRampRate;
+      } else {
+        targetRight = targetRight - ConstantsValues.driveRampRate;
+      }
+    }
+    
+    drive.tankDrive(targetLeft, targetRight);
+    previousOutputLeftPercent = targetLeft;
+    previousOutputRightPercent = targetRight;
   }
 
   /**Drives in Arcade Mode with direct inputs */

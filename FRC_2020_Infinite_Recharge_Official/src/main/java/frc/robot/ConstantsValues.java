@@ -49,6 +49,7 @@ public final class ConstantsValues {
     //Drive Constants
     public static final boolean gyroReversed = false;
     public static final boolean rightEncReversed = false;
+    public static final double driveRampRate = .2;
 
 
     //Misc.

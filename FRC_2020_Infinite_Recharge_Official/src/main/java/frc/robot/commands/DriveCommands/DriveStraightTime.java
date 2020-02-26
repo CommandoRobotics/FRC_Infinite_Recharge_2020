@@ -42,7 +42,7 @@ public class DriveStraightTime extends CommandBase {
   @Override
   public void execute() {
     if((System.nanoTime() - startTime) <= time) {
-      driveSubsystem.driveTank(leftPower, rightPower);
+      driveSubsystem.driveRampedTank(leftPower, rightPower);
       finished = false;
     } else {
       finished = true;
