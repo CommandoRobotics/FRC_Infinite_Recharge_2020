@@ -22,7 +22,7 @@ public final class ConstantsOI {
     //Driver Controller
     public static final int driverPort = 0;
     //AXES
-    public static final int driverLeftDriveAxis = 1;
+    public static final int driverLeftDriveAxis = 2;
     public static final int driverRightDriveAxis = 5;
 
     //Operator Controller

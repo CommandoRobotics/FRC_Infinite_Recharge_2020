@@ -7,12 +7,24 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.sql.Driver;
+
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import frc.robot.commands.IntakeCommands.*;
+import frc.robot.commands.DriveTank;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -23,6 +35,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  //Limelights and Network Tables
+  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+
   //Subsystems
   private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
@@ -31,7 +46,7 @@ public class RobotContainer {
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
   private final IntakeSubsystem intakeSubsystem =  new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  
 
   //Commands
   //private final TankDriveCommand tankDriveCommand;
@@ -39,15 +54,20 @@ public class RobotContainer {
   //Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
+  TriggerAxis driverLeftTrigger = new TriggerAxis(driverController, Hand.kLeft, .1);
+  TriggerAxis driverRightTrigger = new TriggerAxis(driverController, Hand.kRight, .1);
 
+ 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
     driveSubsystem.setDefaultCommand(new DriveTank(
-      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
-      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
+      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis), 
+      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis),
       driveSubsystem));
+      
     configureButtonBindings();  
   }
 
@@ -58,6 +78,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    driverLeftTrigger.whenActive(new RunIntake(intakeSubsystem, true), true);
+    driverRightTrigger.whenActive(new SweepIntake(intakeSubsystem), true);
   }
 
 
