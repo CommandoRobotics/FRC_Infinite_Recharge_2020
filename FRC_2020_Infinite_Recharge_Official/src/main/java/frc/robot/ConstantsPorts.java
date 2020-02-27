@@ -76,6 +76,4 @@ public final class ConstantsPorts {
     public static final int shooterTEncBPort = 10;
     public static final int shooterBEncAPort = 9;
     public static final int shooterBEncBPort = 10;
-    public static final int shooterUltrasonicPort = 11;
-    public static final int indexUltrasonicPort = 12;
 }

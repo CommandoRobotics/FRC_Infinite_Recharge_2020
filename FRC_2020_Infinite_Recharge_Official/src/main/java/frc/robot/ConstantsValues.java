@@ -56,8 +56,6 @@ public final class ConstantsValues {
     //Misc.
     public static final double intakeSpeed = 0.5;
     public static final double sweepSpeed = -0.7;
-    public static final double indexInSpeed = 0.5;
-    public static final double expellSpeed = 0.7;
     public static final double axisThreshold = .08;
     public static final double acceleration = -9.8; 
     public static final double negativeTargetVelocity = -.5;    

@@ -15,14 +15,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import frc.robot.commands.ShooterCommands.*;
 import frc.robot.commands.DriveTank;
-import frc.robot.commands.IndexCommands.ExpellAllInIndex;
-import frc.robot.commands.IndexCommands.IndexToShooter;
-import frc.robot.commands.IndexCommands.*;
-import frc.robot.commands.IndexCommands.StopIndex;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -47,7 +45,7 @@ public class RobotContainer {
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
   private final IntakeSubsystem intakeSubsystem =  new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(limelight);
   
 
   //Commands
@@ -56,6 +54,8 @@ public class RobotContainer {
   //Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
+  TriggerAxis operatorLeftTrigger = new TriggerAxis(operatorController, Hand.kLeft, .1);
+  TriggerAxis operatorRightTrigger = new TriggerAxis(operatorController, Hand.kRight, .1);
 
  
   /**
@@ -64,11 +64,11 @@ public class RobotContainer {
   public RobotContainer() {
 
     driveSubsystem.setDefaultCommand(new DriveTank(
-      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis), 
+      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
       () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis),
       driveSubsystem));
 
-    configureButtonBindings();  
+    configureButtonBindings();
   }
 
   /** 
@@ -78,16 +78,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(operatorController, Button.kBumperRight.value)
-      .whenPressed(new IndexToShooter(indexSubsystem))
-      .whenReleased(new StopIndex(indexSubsystem));
-
-    new JoystickButton(operatorController, Button.kBumperLeft.value)
-      .whenPressed(new ReverseIndex(indexSubsystem))
-      .whenReleased(new StopIndex(indexSubsystem));
-
-    new JoystickButton(operatorController, Button.kStart.value)
-      .whileHeld(new ExpellAllInIndex(indexSubsystem));
+    operatorLeftTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, 8000), true);
+    operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
   }
 
 
