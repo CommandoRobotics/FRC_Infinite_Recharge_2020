@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.SparkMax;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
@@ -33,6 +34,9 @@ public class AutoAimSubsystem extends SubsystemBase {
   NetworkTable limelight;
 
   Servo limelightServo;
+
+  DigitalInput panResetSwitch;
+  DigitalInput tiltResetSwitch;
 
   public boolean riserActive = false;
   public boolean seeingTarget = false;
@@ -61,7 +65,7 @@ public class AutoAimSubsystem extends SubsystemBase {
     } else if (getTiltAngle() < ConstantsValues.minTiltAngle && speed < 0) {
       tilt.set(ControlMode.PercentOutput, 0);
     } else {
-      if (speed >= tiltMinSpeed) {
+      if ((speed > 0 && speed >= tiltMinSpeed) || (speed < 0 && speed <= -tiltMinSpeed)) {
         tilt.set(ControlMode.PercentOutput, speed);
       } else {
         tilt.set(ControlMode.PercentOutput, 0);
@@ -76,7 +80,7 @@ public class AutoAimSubsystem extends SubsystemBase {
     } else if (getPanAngle() < ConstantsValues.minPanAngle && speed < 0) {
       pan.set(ControlMode.PercentOutput, 0);
     } else {
-      if (speed >= panMinSpeed) {
+      if ((speed > 0 && speed >= panMinSpeed) || (speed < 0 && speed <= -panMinSpeed)) {
         pan.set(ControlMode.PercentOutput, speed);
       } else {
         pan.set(ControlMode.PercentOutput, 0);
@@ -132,8 +136,8 @@ public class AutoAimSubsystem extends SubsystemBase {
    * 
    * @return The angle at which the motor has rotated from start or reset
    */
-  public double getTiltAngle() {
-    return (tiltEnc.getRaw()/ConstantsValues.tiltEncPPR) * 360;
+  public double getTiltAngle() {                        //Gear Reduction
+    return ((tiltEnc.getRaw()/ConstantsValues.tiltEncPPR)/8.26666666) * 360;
   }
 
   /**Resets the Tilter encoder back to zero */
@@ -219,6 +223,26 @@ public class AutoAimSubsystem extends SubsystemBase {
   public boolean isTargets() { 
     seeingTarget = (limelight.getEntry("tv").getDouble(0) == 1) ? true : false;
     return seeingTarget;
+  }
+
+  //LIMIT SWITCH COMMANDS
+
+  /**
+   * Returns whether the pan is reset to its zero position by using a limit switch
+   * and seeing when it is enabled
+   * @return whether or not the pan limit switch is active
+   */
+  public boolean isPanReset() {
+    return panResetSwitch.get();
+  }
+
+  /**
+   * Returns whether the tilt is reset to its zero position by using a limit switch
+   * and seeing when it is enabled
+   * @return whether or not the tilt limit switch is active
+   */
+  public boolean isTiltReset() {
+    return panResetSwitch.get();
   }
 
   @Override

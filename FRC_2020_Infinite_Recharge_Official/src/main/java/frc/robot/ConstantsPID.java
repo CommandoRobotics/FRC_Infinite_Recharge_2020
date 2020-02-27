@@ -37,6 +37,7 @@ public final class ConstantsPID {
     public static final double colorWheelI = 1;
     public static final double colorWheelD = 1;
     public static final double colorWheelTolerance = 1;
+    
     //AutoAim PID
     public static final double kPanP = .1;
     public static final double kPanI = 0;
@@ -54,5 +55,5 @@ public final class ConstantsPID {
     public static final double kIZone = 0;
     public static final double kFF = 0;
     public static final double kMax = 0;
-    public static final double kMin = 1;
+    public static final double kMin = .8;
 }

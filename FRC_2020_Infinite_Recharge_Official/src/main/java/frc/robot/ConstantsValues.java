@@ -21,7 +21,8 @@ public final class ConstantsValues {
     
     //VARIABLES
     //Distance Per Pulses and PPR
-    public static final int driveDisPerPulse = 0;
+    public static final int drivePPR = 2048;
+    public static final double driveDisPerPulse = drivePPR/(6*Math.PI);
     public static final double shooterTInDisPerPulse = 0;
     public static final int shooterCPR = 0;
     public static final double shooterBInDisPerPulse = 0;
@@ -49,7 +50,7 @@ public final class ConstantsValues {
     //Drive Constants
     public static final boolean gyroReversed = false;
     public static final boolean rightEncReversed = false;
-    public static final double driveRampRate = .2;
+    public static final double driveRampRate = .1;
 
 
     //Misc.
@@ -60,8 +61,8 @@ public final class ConstantsValues {
     public static final double negativeTargetVelocity = -.5;    
     public static final double targetHeightLowered = 2;
     public static final double targetHeightLifted = 1.9;
-    public static final double limlightAngleLow = 20;
-    public static final double limlightAngleHigh = 20;
+    public static final double limlightAngleLow = 15;
+    public static final double limlightAngleHigh = 15;
     
     public static final double distanceFromCenterOfColorWheelInInches = 0;
     public static final int colorWheelGearboxRatio = 1; // As x:1

@@ -24,7 +24,7 @@ import frc.robot.ConstantsValues;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  //TODO Decide on what motor types to use
+  //TODO Decide on what encoder types to use
   //Make a drive with voltage subsystem
 
   Spark leftMotors;
@@ -49,8 +49,11 @@ public class DriveSubsystem extends SubsystemBase {
     rightDriveEncoder =  new Encoder(ConstantsPorts.rightDriveEncAPort, ConstantsPorts.rightDriveEncBPort, !reversed);
     leftDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
     rightDriveEncoder.setDistancePerPulse(ConstantsValues.driveDisPerPulse);
+    leftDriveEncoder.reset();;
+    rightDriveEncoder.reset();
 
     navX = new AHRS(SPI.Port.kMXP);
+    navX.reset();
 
     leftMotors = new Spark(ConstantsPorts.leftDrivePort);
     rightMotors = new Spark(ConstantsPorts.rightDrivePort);
@@ -147,7 +150,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @return the heading of the robot from -180 to 180 degrees
    */
   public double getHeading() {
-    return Math.IEEEremainder(navX.getAngle(), 360) * (ConstantsValues.gyroReversed ? -1.0 : 1.0);
+    //return Math.IEEEremainder(navX.getAngle(), 360) * (ConstantsValues.gyroReversed ? -1.0 : 1.0);
+    return navX.getYaw();
   }
 
   /**
@@ -220,5 +224,7 @@ public class DriveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
     dOdometry.update(Rotation2d.fromDegrees(getHeading()), leftDriveEncoder.getDistance(),
                      rightDriveEncoder.getDistance());
+    //Reset the Motor safety feed to avoid jittery drive
+    drive.feed();
   }
 }
