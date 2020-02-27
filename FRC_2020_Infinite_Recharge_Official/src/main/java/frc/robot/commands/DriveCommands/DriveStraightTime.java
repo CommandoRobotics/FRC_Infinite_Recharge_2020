@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.DriveCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
@@ -16,7 +16,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class DriveStraightTime extends CommandBase {
 
   private DriveSubsystem driveSubsystem;
-  double startTime;
+  double startTime; 
   double time;
   double rightPower;
   double leftPower;
@@ -42,7 +42,7 @@ public class DriveStraightTime extends CommandBase {
   @Override
   public void execute() {
     if((System.nanoTime() - startTime) <= time) {
-      driveSubsystem.driveTank(leftPower, rightPower);
+      driveSubsystem.driveRampedTank(leftPower, rightPower);
       finished = false;
     } else {
       finished = true;
