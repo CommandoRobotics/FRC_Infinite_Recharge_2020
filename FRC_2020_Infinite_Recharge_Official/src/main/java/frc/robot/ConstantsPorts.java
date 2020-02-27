@@ -7,13 +7,17 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.I2C;
+
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants.  This class should not be used for any other purpose.  All constants should be
- * declared globally (i.e. public static).  Do not put anything functional in this class.
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean constants. This class should not be used for any other
+ * purpose. All constants should be declared globally (i.e. public static). Do
+ * not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the constants are needed, to reduce verbosity.
  */
 public final class ConstantsPorts {
     
@@ -23,19 +27,35 @@ public final class ConstantsPorts {
     //Sparks
     public static final int leftDrivePort = 0; 
     public static final int rightDrivePort = 1;
-    public static final int shooterPort = 2;
-    public static final int panPort = 3;
-    public static final int tiltPort = 4;
     public static final int shooterLoaderPort = 5;
     public static final int colorWheelPort = 6;
     public static final int intakePort = 7;
     public static final int indexMotorOne = 8;
     public static final int indexMotorTwo = 9;
     public static final int indexMotorThree = 10;
+    public static final int funnelMotorPort = 11;
+    public static final int sideLiftMotorPort = 12;
+    public static final int frontLiftMotorPort = 13;
 
     //Solenoids 
     public static final int intakeLifterPort = 0;
-    public static final int colorWheelLifterPort = 1;
+    public static final int colorWheelPistonPort = 1;
+    public static final int indexMotorOnePort = 8;
+    public static final int indexMotorTwoPort = 9;
+    public static final int indexMotorThreePort = 10;
+    public static final int shooterRiserPort = 2;
+
+    //CAN Device #'s
+    public static final int shooterTopMasterID = 2;
+    public static final int shooterBottomMasterID = 3;
+    public static final int shooterTopSlaveID = 4;
+    public static final int shooterBottomSlaveID = 5;
+    public static final int loaderID = 6;
+    public static final int panID = 7;
+    public static final int tiltID = 8;
+
+    //Servos
+    public static final int limelightServoPort = 11;
 
     //Sensors
     public static final int gyroPort = 0;
@@ -49,4 +69,11 @@ public final class ConstantsPorts {
     public static final int panEncBPort = 8;
     public static final int shooterEncAPort = 9;
     public static final int shooterEncBPort = 10;
+    public static final int colorWheelEncAPort = 11;
+    public static final int colorWheelEncBPort = 12;
+    public static final I2C.Port colorWheelSensorPort = I2C.Port.kOnboard;
+    public static final int shooterTEncAPort = 9;
+    public static final int shooterTEncBPort = 10;
+    public static final int shooterBEncAPort = 9;
+    public static final int shooterBEncBPort = 10;
 }
