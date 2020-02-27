@@ -24,8 +24,8 @@ public class AutoAimSubsystem extends SubsystemBase {
   double tiltMinSpeed = ConstantsValues.tiltMinSpeed;
 
   public AutoAimSubsystem() {
-    tilt = new Spark(ConstantsPorts.tiltPort);
-    pan = new Spark(ConstantsPorts.panPort);
+    tilt = new Spark(ConstantsPorts.tiltID);
+    pan = new Spark(ConstantsPorts.panID);
 
     tiltEnc = new Encoder(ConstantsPorts.tiltEncAPort, ConstantsPorts.tiltEncBPort);
     tiltEnc.setDistancePerPulse(ConstantsValues.tiltDisPerPulse);

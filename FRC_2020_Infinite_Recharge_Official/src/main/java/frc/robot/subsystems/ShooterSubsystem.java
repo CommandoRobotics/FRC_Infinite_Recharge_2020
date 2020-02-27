@@ -28,13 +28,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public ShooterSubsystem() {
     loader = new Spark(ConstantsPorts.shooterLoaderPort);
-    shooter = new Spark(ConstantsPorts.shooterPort);
+    shooter = new Spark(ConstantsPorts.shooterTopMasterID);
 
     shooterEnc = new Encoder(ConstantsPorts.shooterEncAPort, ConstantsPorts.shooterEncBPort);
-    shooterEnc.setDistancePerPulse(ConstantsValues.shooterInDisPerPulse);
+    shooterEnc.setDistancePerPulse(ConstantsValues.shooterTInDisPerPulse);
 
     loaderMinSpeed = ConstantsValues.loaderMinSpeed;
-    shooterMinSpeed = ConstantsValues.shooterMinSpeed;
+    shooterMinSpeed = ConstantsValues.shooterTMinSpeed;
   }
 
   /**Set the shooter to a certain inputted speed
@@ -112,9 +112,9 @@ public class ShooterSubsystem extends SubsystemBase {
   */
   public void setShooterEncoderMode(int mode) {
     if (mode == METER_MODE) {
-      shooterEnc.setDistancePerPulse(ConstantsValues.shooterMeterDisPerPulse);
+      shooterEnc.setDistancePerPulse(ConstantsValues.shooterTInDisPerPulse);
     } else if (mode == INCH_MODE) {
-      shooterEnc.setDistancePerPulse(ConstantsValues.shooterInDisPerPulse);
+      shooterEnc.setDistancePerPulse(ConstantsValues.shooterBInDisPerPulse);
     }
   }
 
