@@ -7,12 +7,25 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import frc.robot.commands.DriveTank;
+import frc.robot.commands.ClimbCommands.*;
+import frc.robot.commands.ClimbCommands.SetRopePosition.SetOrAngle;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -23,15 +36,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  //Limelights and Network Tables
+  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+
   //Subsystems
   private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem();
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
   private final IntakeSubsystem intakeSubsystem =  new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  
 
   //Commands
   //private final TankDriveCommand tankDriveCommand;
@@ -40,14 +57,17 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
 
+ 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
     driveSubsystem.setDefaultCommand(new DriveTank(
-      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
-      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
+      () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis), 
+      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis),
       driveSubsystem));
+
     configureButtonBindings();  
   }
 
@@ -58,6 +78,35 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    //Lock the Climb
+    new JoystickButton(operatorController, Button.kA.value)
+      .whenPressed(new InstantCommand(climbSubsystem::lockClimb, climbSubsystem));
+    
+    //Release the climb logic
+    new JoystickButton(operatorController, Button.kY.value)
+      .whenPressed(new ReleaseClimb(climbSubsystem));
+
+    //Test Code for testing if we should use set or setAngle
+    //Set
+    new JoystickButton(operatorController, Button.kX.value) 
+      .whenPressed(new SetRopePosition(SetOrAngle.set, 1, climbSubsystem));
+
+    //Angle
+    new JoystickButton(operatorController, Button.kB.value)
+      .whenPressed(new SetRopePosition(SetOrAngle.angle, 180, climbSubsystem));
+
+    //Command for reseting the climb after matches
+    new JoystickButton(operatorController, Button.kStart.value)
+      .whenPressed(new ResetClimb(climbSubsystem));
+
+    //Command for unlocking the climb lock pistons
+    new JoystickButton(operatorController, Button.kBack.value)
+      .whenPressed(new InstantCommand(climbSubsystem::unlockClimb, climbSubsystem));
+  }
+
+  //Interfacing command for to 
+  public void scheduleClimbLock() {
+    new InstantCommand(climbSubsystem::lockClimb, climbSubsystem).schedule();
   }
 
 
