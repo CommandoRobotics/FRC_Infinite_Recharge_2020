@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.*;
+import frc.robot.commands.SolenoidSetsAndToggles.CompressIntake;
+import frc.robot.commands.SolenoidSetsAndToggles.ReleaseIntake;
 import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifter;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -63,6 +65,12 @@ public class RobotContainer {
   private void configureButtonBindings() {
     new JoystickButton(driverController, Button.kBumperRight.value)
       .whenPressed(new ToggleLifter(lifterSubsystem));
+
+    new JoystickButton(driverController, Button.kBumperLeft.value)
+      .whenPressed(new CompressIntake(lifterSubsystem));
+
+    new JoystickButton(driverController, Button.kA.value)
+      .whenPressed(new ReleaseIntake(lifterSubsystem));
   }
 
 

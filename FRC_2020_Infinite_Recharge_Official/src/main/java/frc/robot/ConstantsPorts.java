@@ -37,6 +37,8 @@ public final class ConstantsPorts {
     public static final int intakeLifterPort = 0;
     public static final int colorWheelLifterPort = 1;
 
+    public static final int pannelPort = 3;
+
     //Sensors
     public static final int gyroPort = 0;
     public static final int leftDriveEncAPort = 1;

@@ -14,10 +14,14 @@ import frc.robot.ConstantsPorts;
 public class LifterSubsystem extends SubsystemBase {
 
   Solenoid intakeSolenoid;
+  Solenoid pannelSolenoid;
 
   public LifterSubsystem() {
     intakeSolenoid = new Solenoid(ConstantsPorts.intakeLifterPort);
+    pannelSolenoid = new Solenoid(ConstantsPorts.pannelPort);
   }
+
+  //LIFTER METHODS
 
   /** Sets the lifter solenoid to an inputted value 
    * 
@@ -51,8 +55,46 @@ public class LifterSubsystem extends SubsystemBase {
    *         true = on
    *         false = off
   */
-  public boolean getCurrentState() { 
+  public boolean getIntakeCurrentState() { 
     return intakeSolenoid.get();
+  }
+
+  //PANNEL METHODS
+
+    /** Sets the pannel solenoid to an inputted value 
+   * 
+   * @param set  True will set the solenoid to on.
+   *             False will set the solenoid to off
+  */
+  public void setPannel(boolean set) {
+    pannelSolenoid.set(set);
+  }
+
+  /** Sets the pannel to on/deployed (true) */
+  public void deployPannel() {
+    pannelSolenoid.set(false);
+  }
+
+  /**Sets the pannel to off/retracted (false) */
+  public void retractPannel() {
+    pannelSolenoid.set(true);
+  }
+
+  /**Sets the pannel to the opposite value of the current value 
+   * Ex. if solenoid is on, this will set it to off
+  */
+  public void togglePannel() {
+    pannelSolenoid.set(!pannelSolenoid.get());
+  }
+
+  /**Returns the current state of the pannel 
+   * 
+   * @return either true or false
+   *         true = on
+   *         false = off
+  */
+  public boolean getPannelCurrentState() { 
+    return pannelSolenoid.get();
   }
 
   //Dont forget to run this mechanism into the wall! Because, progress!
