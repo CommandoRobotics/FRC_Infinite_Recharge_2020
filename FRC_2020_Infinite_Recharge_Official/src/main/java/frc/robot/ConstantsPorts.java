@@ -54,6 +54,8 @@ public final class ConstantsPorts {
     //Servos
     public static final int limelightServoPort = 11;
 
+    public static final int pannelPort = 3;
+
     //Sensors
     public static final int gyroPort = 0;
     public static final int leftDriveEncAPort = 1;

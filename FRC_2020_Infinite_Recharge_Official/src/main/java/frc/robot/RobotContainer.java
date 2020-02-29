@@ -30,6 +30,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.*;
+import frc.robot.commands.SolenoidSetsAndToggles.CompressIntake;
+import frc.robot.commands.SolenoidSetsAndToggles.ReleaseIntake;
 import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifter;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -108,6 +110,12 @@ public class RobotContainer {
       .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
     new JoystickButton(driverController, Button.kBumperRight.value)
       .whenPressed(new ToggleLifter(lifterSubsystem));
+
+    new JoystickButton(driverController, Button.kBumperLeft.value)
+      .whenPressed(new CompressIntake(lifterSubsystem));
+
+    new JoystickButton(driverController, Button.kA.value)
+      .whenPressed(new ReleaseIntake(lifterSubsystem));
   }
 
 
