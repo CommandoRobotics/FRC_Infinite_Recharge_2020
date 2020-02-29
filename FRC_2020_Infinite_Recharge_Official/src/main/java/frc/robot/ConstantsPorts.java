@@ -62,8 +62,7 @@ public final class ConstantsPorts {
     public static final int leftDriveEncBPort = 2;
     public static final int rightDriveEncAPort = 3;
     public static final int rightDriveEncBPort = 4;
-    public static final int tiltEncAPort = 5;
-    public static final int tiltEncBPort = 6;
+    public static final int tiltCounterPort = 5;
     public static final int panEncAPort = 7;
     public static final int panEncBPort = 8;
     public static final int shooterEncAPort = 9;

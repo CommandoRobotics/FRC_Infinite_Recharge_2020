@@ -51,7 +51,7 @@ public class RobotContainer {
   NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
   //Subsystems
-  private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem();
+  private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem(limelight);
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
