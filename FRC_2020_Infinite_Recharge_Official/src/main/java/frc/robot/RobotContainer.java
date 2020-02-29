@@ -84,7 +84,7 @@ public class RobotContainer {
     operatorLeftTrigger.whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
     operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
     new JoystickButton(operatorController, Button.kA.value)
-      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotor(.75), indexSubsystem))
+      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(.75), indexSubsystem))
       .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
 
     new JoystickButton(operatorController, Button.kBumperLeft.value)

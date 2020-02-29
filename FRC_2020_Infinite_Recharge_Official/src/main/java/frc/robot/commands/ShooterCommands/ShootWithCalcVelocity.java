@@ -40,7 +40,6 @@ public class ShootWithCalcVelocity extends CommandBase {
                                           shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted, false), 
                                           ConstantsValues.targetHeightLifted)[0]
       ));
-      indexSubsystem.loadToShooter();
     } else {
       shooterSubsystem.setShooterTarget(
         projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
@@ -48,7 +47,6 @@ public class ShootWithCalcVelocity extends CommandBase {
                                           shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered, false), 
                                           ConstantsValues.targetHeightLowered)[0]
       ));
-      indexSubsystem.loadToShooter();
     }
     
   }

@@ -7,10 +7,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
+import frc.robot.ConstantsValues;
 
 public class IndexSubsystem extends SubsystemBase {
   
@@ -34,6 +36,12 @@ public class IndexSubsystem extends SubsystemBase {
     funnelMotor.setSpeed(0);
     indexMotors.set(0);
   }
+
+    /** This method stops all of the motors in the index system. */
+    public void setAllIndexMotors(double speed) {
+      funnelMotor.setSpeed(speed);
+      indexMotors.set(speed);
+    }
   
   /** This method stops the lift motors. */
   public void stopLift() {
@@ -45,41 +53,19 @@ public class IndexSubsystem extends SubsystemBase {
     funnelMotor.setSpeed(0);
   }
 
-<<<<<<< HEAD
-  /**
-   * This method sets the speed of all of the motors in the index system.
-   * @param speed The speed to set the motors to.
-   */
-  public void setAllIndexMotor(double speed) {
-    funnelMotor.setSpeed(speed);
-    indexMotors.set(speed);
+  public void expellAll() {
+    indexMotors.set(-ConstantsValues.expellSpeed);
+    funnelMotor.setSpeed(-ConstantsValues.expellSpeed);
   }
 
-  /**
-   * This method sets the speed of the lift motors.
-   * @param speed The speed to set the motors to.
-   */
-  public void setLiftSpeed(double speed) {
-    indexMotors.set(speed);
+  public void reverseIndex() {
+    indexMotors.set(-ConstantsValues.indexInSpeed);
   }
 
-  /**
-   * This method sets the speed of the funnel motor.
-   * @param speed The speed to set the motor to.
-   */
-  public void setFunnelSpeed(double speed) {
-    funnelMotor.setSpeed(speed);
+  public void indexIn() {
+    indexMotors.set(ConstantsValues.indexInSpeed);
   }
 
-  /**
-   * 
-   */
-  public void loadToShooter() {
-    funnelMotor.setSpeed(.5);
-    indexMotors.set(.8);
-  }
-  
-=======
   // /**
   //  * Gets the current value of the shooter ultrasonic sensor.
   //  * @return The current value of the shooter ultrasonic sensor, as an int.
@@ -113,7 +99,6 @@ public class IndexSubsystem extends SubsystemBase {
   // public void setBalls(int balls) {
   //   ballsInIndex = balls;
   // }
->>>>>>> IntegratedIndex
 
   @Override
   public void periodic() {
