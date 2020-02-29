@@ -48,7 +48,6 @@ public final class ConstantsPorts {
     public static final int shooterBottomMasterID = 3;
     public static final int shooterTopSlaveID = 1;
     public static final int shooterBottomSlaveID = 3;
-    public static final int loaderID = 6;
     public static final int panID = 2;
     public static final int tiltID = 0;
 
