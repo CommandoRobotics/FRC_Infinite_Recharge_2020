@@ -7,12 +7,26 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.*;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+import frc.robot.commands.ShooterCommands.*;
+import frc.robot.commands.DriveTank;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -23,15 +37,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
+  //Limelights and Network Tables
+  NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
+
   //Subsystems
   private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem();
   private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
-  private final IntakeSubsystem intakeSubsystem =  new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(limelight);
+  
 
   //Commands
   //private final TankDriveCommand tankDriveCommand;
@@ -39,16 +56,21 @@ public class RobotContainer {
   //Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
+  TriggerAxis operatorLeftTrigger = new TriggerAxis(operatorController, Hand.kLeft, .1);
+  TriggerAxis operatorRightTrigger = new TriggerAxis(operatorController, Hand.kRight, .1);
 
+ 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
     driveSubsystem.setDefaultCommand(new DriveTank(
-      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis), 
       () -> driverController.getRawAxis(ConstantsOI.driverRightDriveAxis),
+      () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis),
       driveSubsystem));
-    configureButtonBindings();  
+
+    configureButtonBindings();
   }
 
   /** 
@@ -58,6 +80,19 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    operatorLeftTrigger.whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem));
+    operatorLeftTrigger.whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
+    operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
+    new JoystickButton(operatorController, Button.kA.value)
+      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotor(.75), indexSubsystem))
+      .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
+
+    new JoystickButton(operatorController, Button.kBumperLeft.value)
+      .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(-.4), autoAimSubsystem))
+      .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
+      new JoystickButton(operatorController, Button.kBumperRight.value)
+      .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(.6), autoAimSubsystem))
+      .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
   }
 
 

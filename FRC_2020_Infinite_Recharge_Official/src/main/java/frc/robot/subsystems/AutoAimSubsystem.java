@@ -7,15 +7,19 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
 
 public class AutoAimSubsystem extends SubsystemBase {
-  Spark tilt;
-  Spark pan;
+  VictorSPX tilt;
+  VictorSPX pan;
 
   Encoder tiltEnc;
   Encoder panEnc;
@@ -24,8 +28,8 @@ public class AutoAimSubsystem extends SubsystemBase {
   double tiltMinSpeed = ConstantsValues.tiltMinSpeed;
 
   public AutoAimSubsystem() {
-    tilt = new Spark(ConstantsPorts.tiltPort);
-    pan = new Spark(ConstantsPorts.panPort);
+    tilt = new VictorSPX(ConstantsPorts.tiltID);
+    pan = new VictorSPX(ConstantsPorts.panID);
 
     tiltEnc = new Encoder(ConstantsPorts.tiltEncAPort, ConstantsPorts.tiltEncBPort);
     tiltEnc.setDistancePerPulse(ConstantsValues.tiltDisPerPulse);
@@ -36,85 +40,76 @@ public class AutoAimSubsystem extends SubsystemBase {
 
   /**Sets the tilter to a given speed */
   public void setTilter(double speed) {
-    if (speed >= tiltMinSpeed) {
-      tilt.setSpeed(speed);
-    } else {
-      tilt.stopMotor();
-    }
+      tilt.set(ControlMode.PercentOutput, speed);
 
   }
 
   /**Sets the Panner to a given speed */
   public void setPanner(double speed) {
-    if (speed >= panMinSpeed) {
-      pan.setSpeed(speed);
-    } else {
-      pan.stopMotor();
-    }
-    
+      pan.set(ControlMode.PercentOutput, speed); 
   }
 
   /**Stops the Tilter motor */
   public void stopTilter() {
-    tilt.stopMotor();
+    tilt.set(ControlMode.PercentOutput, 0);
   }
 
   /**Stops the Panner motor */
   public void stopPanner() {
-    pan.stopMotor();
+    pan.set(ControlMode.PercentOutput, 0);
   }
 
-  /**Returns the current set speed of the tilt motor 
-   * 
-   * @return set speed as double from -1 to 1
-  */
-  public double getTilterSetSpeed() {
-    return tilt.get();
-  }
+  // /**Returns the current set speed of the tilt motor 
+  //  * 
+  //  * @return set speed as double from -1 to 1
+  // */
+  // public double getTilterSetSpeed() {
+  //   return tilt.get();
+  // }
 
-  /**Returns the current set speed of the pan motor 
-   * 
-   * @return set speed as double from -1 to 1
-  */
-  public double getPannerSetSpeed() {
-    return pan.get();
-  }
+  // /**Returns the current set speed of the pan motor 
+  //  * 
+  //  * @return set speed as double from -1 to 1
+  // */
+  // public double getPannerSetSpeed() {
+  //   return pan.get();
+  // }
 
-  /**Returns the raw counts recieved from the tilt encoder 
-   * 
-   * @return Current raw output from the tilt encoder since the last reset
-  */
-  public double getTilterEncRaw() {
-    return tiltEnc.getRaw();
-  }
+  // /**Returns the raw counts recieved from the tilt encoder 
+  //  * 
+  //  * @return Current raw output from the tilt encoder since the last reset
+  // */
+  // public double getTilterEncRaw() {
+  //   return tiltEnc.getRaw();
+  // }
 
-  /**Returns the tilt encoder's distance in inches */
-  public double getTilterDistance() {
-    return tiltEnc.getDistance();
-  }
+  // /**Returns the tilt encoder's distance in inches */
+  // public double getTilterDistance() {
+  //   return tiltEnc.getDistance();
+  // }
 
-  /**Resets the Tilter encoder back to zero */
-  public void resetTilterEnc() {
-    tiltEnc.reset();
-  }
+  // /**Resets the Tilter encoder back to zero */
+  // public void resetTilterEnc() {
+  //   tiltEnc.reset();
+  // }
 
-  /**Returns the raw counts recieved from the pan encoder 
-   * 
-   * @return Current raw output from the pan encoder since the last reset
-  */
-  public double getPannerEncRaw() {
-    return panEnc.getRaw();
-  }
+  // /**Returns the raw counts recieved from the pan encoder 
+  //  * 
+  //  * @return Current raw output from the pan encoder since the last reset
+  // */
+  // public double getPannerEncRaw() {
+  //   return panEnc.getRaw();
+  // }
 
-  /**Returns the pan encoder's distance in inches */
-  public double getPannerDistance() {
-    return panEnc.getDistance();
-  }
+  // /**Returns the pan encoder's distance in inches */
+  // public double getPannerDistance() {
+  //   return panEnc.getDistance();
+  // }
 
-  /**Resets the Panner encoder back to zero */
-  public void resetPannerEnc() {
-    panEnc.reset();
-  }
+  // /**Resets the Panner encoder back to zero */
+  // public void resetPannerEnc() {
+  //   panEnc.reset();
+  // }
 
 
   @Override
