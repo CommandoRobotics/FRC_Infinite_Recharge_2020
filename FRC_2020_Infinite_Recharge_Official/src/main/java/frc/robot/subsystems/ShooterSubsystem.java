@@ -54,20 +54,19 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem(NetworkTable m_limelight) {
     shooterTopMaster = new CANSparkMax(ConstantsPorts.shooterTopMasterID, MotorType.kBrushed);
     shooterBottomMaster = new CANSparkMax(ConstantsPorts.shooterBottomMasterID, MotorType.kBrushed);
+    shooterTopEnc = shooterTopMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
+    shooterBottomEnc = shooterBottomMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
     shooterTopMaster.restoreFactoryDefaults();
     shooterBottomMaster.restoreFactoryDefaults();
     shooterTopMaster.setInverted(true);
     shooterTopSlave = new VictorSPX(ConstantsPorts.shooterTopSlaveID);
     shooterBottomSlave = new VictorSPX(ConstantsPorts.shooterBottomSlaveID);
     shooterBottomSlave.setInverted(true);
-    
-    shooterTopEnc = shooterTopMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
-    shooterTopEnc = shooterBottomMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
 
     topPIDController = shooterTopMaster.getPIDController();
     bottomPIDController = shooterBottomMaster.getPIDController();
-    //topPIDController.setFeedbackDevice(shooterTopEnc);
-    //bottomPIDController.setFeedbackDevice(shooterBottomEnc);
+    topPIDController.setFeedbackDevice(shooterTopEnc);
+    bottomPIDController.setFeedbackDevice(shooterBottomEnc);
 
     topPIDController.setP(ConstantsPID.kP);
     topPIDController.setI(ConstantsPID.kI);

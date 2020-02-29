@@ -93,8 +93,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorLeftTrigger
-      .whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem))
+    operatorLeftTrigger.whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem))
       .whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
     operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
     driverLeftTrigger.whenActive(new RunIntake(intakeSubsystem, true), true);
@@ -108,6 +107,7 @@ public class RobotContainer {
       new JoystickButton(operatorController, Button.kBumperRight.value)
       .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(.6), autoAimSubsystem))
       .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
+
     new JoystickButton(driverController, Button.kBumperRight.value)
       .whenPressed(new ToggleLifter(lifterSubsystem));
 
