@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.ShooterCommands.*;
 import frc.robot.commands.DriveTank;
+import frc.robot.commands.IntakeCommands.RunIntake;
+import frc.robot.commands.IntakeCommands.SweepIntake;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -65,6 +67,8 @@ public class RobotContainer {
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
   TriggerAxis operatorLeftTrigger = new TriggerAxis(operatorController, Hand.kLeft, .1);
   TriggerAxis operatorRightTrigger = new TriggerAxis(operatorController, Hand.kRight, .1);
+  TriggerAxis driverLeftTrigger = new TriggerAxis(driverController, Hand.kLeft, .1);
+  TriggerAxis driverRightTrigger = new TriggerAxis(driverController, Hand.kRight, .1);
 
  
   /**
@@ -90,8 +94,9 @@ public class RobotContainer {
     operatorLeftTrigger
       .whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem))
       .whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
-    operatorRightTrigger
-      .whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
+    operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
+    driverLeftTrigger.whenActive(new RunIntake(intakeSubsystem, true), true);
+    driverRightTrigger.whenActive(new SweepIntake(intakeSubsystem), true);
     new JoystickButton(operatorController, Button.kA.value)
       .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(.75), indexSubsystem))
       .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
