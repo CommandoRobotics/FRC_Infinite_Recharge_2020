@@ -49,7 +49,7 @@ public final class ConstantsPID {
     public static final double panTolerance = 2;
 
     //Shooter PID
-    public static final double kP = 0;
+    public static final double kP = .5;
     public static final double kI = 0;
     public static final double kD = 0;
     public static final double kIZone = 0;

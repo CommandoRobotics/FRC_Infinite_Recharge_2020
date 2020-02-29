@@ -14,8 +14,10 @@ import edu.wpi.first.networktables.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
@@ -23,6 +25,7 @@ import frc.robot.commands.ShooterCommands.*;
 import frc.robot.commands.DriveTank;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -43,7 +46,6 @@ public class RobotContainer {
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
-  private final IntakeSubsystem intakeSubsystem =  new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(limelight);
   
@@ -78,8 +80,19 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorLeftTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, 8000), true);
+    operatorLeftTrigger.whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem));
+    operatorLeftTrigger.whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
     operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
+    new JoystickButton(operatorController, Button.kA.value)
+      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotor(.75), indexSubsystem))
+      .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
+
+    new JoystickButton(operatorController, Button.kBumperLeft.value)
+      .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(-.4), autoAimSubsystem))
+      .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
+      new JoystickButton(operatorController, Button.kBumperRight.value)
+      .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(.6), autoAimSubsystem))
+      .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
   }
 
 

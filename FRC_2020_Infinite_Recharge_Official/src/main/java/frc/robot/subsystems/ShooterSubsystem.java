@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPXConfiguration;
 import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -21,6 +22,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPID;
 import frc.robot.ConstantsPorts;
@@ -28,7 +30,6 @@ import frc.robot.ConstantsValues;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-  Spark loader;
   CANSparkMax shooterTopMaster;
   VictorSPX shooterTopSlave;
   CANSparkMax shooterBottomMaster;
@@ -51,21 +52,22 @@ public class ShooterSubsystem extends SubsystemBase {
   public int METER_MODE = 1;
 
   public ShooterSubsystem(NetworkTable m_limelight) {
-    loader = new Spark(ConstantsPorts.shooterLoaderPort);
     shooterTopMaster = new CANSparkMax(ConstantsPorts.shooterTopMasterID, MotorType.kBrushed);
     shooterBottomMaster = new CANSparkMax(ConstantsPorts.shooterBottomMasterID, MotorType.kBrushed);
     shooterTopMaster.restoreFactoryDefaults();
     shooterBottomMaster.restoreFactoryDefaults();
+    shooterTopMaster.setInverted(true);
     shooterTopSlave = new VictorSPX(ConstantsPorts.shooterTopSlaveID);
     shooterBottomSlave = new VictorSPX(ConstantsPorts.shooterBottomSlaveID);
-
+    shooterBottomSlave.setInverted(true);
+    
     shooterTopEnc = shooterTopMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
     shooterTopEnc = shooterBottomMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
 
     topPIDController = shooterTopMaster.getPIDController();
     bottomPIDController = shooterBottomMaster.getPIDController();
-    topPIDController.setFeedbackDevice(shooterTopEnc);
-    bottomPIDController.setFeedbackDevice(shooterBottomEnc);
+    //topPIDController.setFeedbackDevice(shooterTopEnc);
+    //bottomPIDController.setFeedbackDevice(shooterBottomEnc);
 
     topPIDController.setP(ConstantsPID.kP);
     topPIDController.setI(ConstantsPID.kI);
@@ -93,30 +95,16 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setShooter(double speed) {
     if (speed > shooterTopMinSpeed) {
       shooterTopMaster.set(speed);
+      shooterBottomMaster.set(speed);
     } else {
       shooterTopMaster.stopMotor();
-    }
-  }
-
-  /**Sets the loader/flywheel to a certain inputted speed 
-   * given that the input speed is greater than the minSpeed
-  */
-  public void setLoader(double speed) {
-    if (speed > loaderMinSpeed) {
-      loader.setSpeed(speed);
-    } else {
-      loader.stopMotor();
+      shooterBottomMaster.stopMotor();
     }
   }
 
   /**Stops the shooter motors */
   public void stopShooter() {
     shooterTopMaster.stopMotor();
-  }
-
-  /**Stops the loader/flywheel motors */
-  public void stopLoader() {
-    loader.stopMotor();
   }
 
   /**Returns the current set speed of the shooter motors
@@ -185,8 +173,8 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     shooterBottomSlave.set(ControlMode.PercentOutput,
-                           (shooterBottomMaster.get() >= ConstantsValues.shooterBMinSpeed) ? shooterBottomMaster.get() : 0);
+                           shooterBottomMaster.get());
     shooterTopSlave.set(ControlMode.PercentOutput, 
-                        (shooterTopMaster.get() >= ConstantsValues.shooterTMinSpeed) ? shooterTopMaster.get() : 0);
+                        shooterTopMaster.get());
   }
 }

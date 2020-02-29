@@ -27,32 +27,30 @@ public final class ConstantsPorts {
     //Sparks
     public static final int leftDrivePort = 0; 
     public static final int rightDrivePort = 1;
-    public static final int shooterLoaderPort = 5;
-    public static final int colorWheelPort = 6;
-    public static final int intakePort = 7;
-    public static final int indexMotorOne = 8;
-    public static final int indexMotorTwo = 9;
-    public static final int indexMotorThree = 10;
-    public static final int funnelMotorPort = 11;
-    public static final int sideLiftMotorPort = 12;
-    public static final int frontLiftMotorPort = 13;
+    public static final int indexLeftPort = 2;
+    public static final int indexRightPort = 3;
+    public static final int intakePort = 4;
+    public static final int colorWheelPort = 5;
+    public static final int funnelMotorPort = 6;
+
+
 
     //Solenoids 
     public static final int intakeLifterPort = 0;
     public static final int colorWheelPistonPort = 1;
-    public static final int indexMotorOnePort = 8;
-    public static final int indexMotorTwoPort = 9;
-    public static final int indexMotorThreePort = 10;
+    public static final int indexMotorOnePort = 2;
+    public static final int indexMotorTwoPort = 3;
+    public static final int indexMotorThreePort = 4;
     public static final int shooterRiserPort = 2;
 
     //CAN Device #'s
     public static final int shooterTopMasterID = 2;
     public static final int shooterBottomMasterID = 3;
-    public static final int shooterTopSlaveID = 4;
-    public static final int shooterBottomSlaveID = 5;
+    public static final int shooterTopSlaveID = 1;
+    public static final int shooterBottomSlaveID = 3;
     public static final int loaderID = 6;
-    public static final int panID = 7;
-    public static final int tiltID = 8;
+    public static final int panID = 2;
+    public static final int tiltID = 0;
 
     //Servos
     public static final int limelightServoPort = 11;
