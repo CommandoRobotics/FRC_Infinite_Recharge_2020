@@ -26,13 +26,19 @@ import frc.robot.commands.DriveTank;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.commands.*;
+import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifter;
+import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
- * This class is where the bulk of the robot should be declared.  Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
- * (including subsystems, commands, and button mappings) should be declared here.
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a "declarative" paradigm, very little robot logic should
+ * actually be handled in the {@link Robot} periodic methods (other than the
+ * scheduler calls). Instead, the structure of the robot (including subsystems,
+ * commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
@@ -46,14 +52,15 @@ public class RobotContainer {
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final LifterSubsystem lifterSubsystem = new LifterSubsystem();
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(limelight);
   
 
-  //Commands
-  //private final TankDriveCommand tankDriveCommand;
+  // Commands
+  // private final TankDriveCommand tankDriveCommand;
 
-  //Controllers
+  // Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
   TriggerAxis operatorLeftTrigger = new TriggerAxis(operatorController, Hand.kLeft, .1);
@@ -61,7 +68,7 @@ public class RobotContainer {
 
  
   /**
-   * The container for the robot.  Contains subsystems, OI devices, and commands.
+   * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
@@ -73,26 +80,29 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  /** 
-   * Use this method to define your button->command mappings.  Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
-   * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+  /**
+   * Use this method to define your button->command mappings. Buttons can be
+   * created by instantiating a {@link GenericHID} or one of its subclasses
+   * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
+   * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorLeftTrigger.whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem));
-    operatorLeftTrigger.whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
-    operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
+    operatorLeftTrigger
+      .whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem))
+      .whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
+    operatorRightTrigger
+      .whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
     new JoystickButton(operatorController, Button.kA.value)
       .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(.75), indexSubsystem))
       .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
-
     new JoystickButton(operatorController, Button.kBumperLeft.value)
       .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(-.4), autoAimSubsystem))
       .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
       new JoystickButton(operatorController, Button.kBumperRight.value)
       .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(.6), autoAimSubsystem))
       .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
+    new JoystickButton(driverController, Button.kBumperRight.value)
+      .whenPressed(new ToggleLifter(lifterSubsystem));
   }
 
 
