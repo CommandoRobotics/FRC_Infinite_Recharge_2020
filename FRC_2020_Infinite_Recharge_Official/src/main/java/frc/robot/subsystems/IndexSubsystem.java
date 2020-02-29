@@ -45,6 +45,7 @@ public class IndexSubsystem extends SubsystemBase {
     funnelMotor.setSpeed(0);
   }
 
+<<<<<<< HEAD
   /**
    * This method sets the speed of all of the motors in the index system.
    * @param speed The speed to set the motors to.
@@ -78,6 +79,41 @@ public class IndexSubsystem extends SubsystemBase {
     indexMotors.set(.8);
   }
   
+=======
+  // /**
+  //  * Gets the current value of the shooter ultrasonic sensor.
+  //  * @return The current value of the shooter ultrasonic sensor, as an int.
+  //  */
+  // public int getShooterUltrasonic() {
+  //   return shooterUltrasonic.getValue();
+  // }
+
+  // /**
+  //  * Gets the current value of the index ultrasonic sensor.
+  //  * @return The current value of the index ultrasonic sensor, as an int.
+  //  */
+  // public int getIndexUltrasonic() {
+  //   return indexUltrasonic.getValue();
+  // }
+
+  // /** Adds a ball to the current ball count. */
+  // public void addBall() {
+  //   ballsInIndex++;
+  // }
+
+  // /** Subtracts a ball from the current ball count. */
+  // public void subtractBall() {
+  //   ballsInIndex--;
+  // }
+
+  // /**
+  //  * Sets the amount of balls currently in the index.
+  //  * @param balls The amount of balls that are currently in the index.
+  //  */
+  // public void setBalls(int balls) {
+  //   ballsInIndex = balls;
+  // }
+>>>>>>> IntegratedIndex
 
   @Override
   public void periodic() {
