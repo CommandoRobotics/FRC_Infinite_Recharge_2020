@@ -36,8 +36,6 @@ public class AutoAimSubsystem extends SubsystemBase {
 
   NetworkTable limelight;
 
-  Servo limelightServo;
-
   DigitalInput panResetSwitch;
   DigitalInput tiltResetSwitch;
 
@@ -54,7 +52,6 @@ public class AutoAimSubsystem extends SubsystemBase {
     panEnc.setDistancePerPulse(ConstantsValues.panDisPerPulse);
 
     limelight = m_limelight;
-    limelightServo = new Servo(ConstantsPorts.limelightServoPort);
   }
 
   /**

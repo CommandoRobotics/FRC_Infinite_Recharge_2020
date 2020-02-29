@@ -38,10 +38,12 @@ public final class ConstantsPorts {
     //Solenoids 
     public static final int intakeLifterPort = 0;
     public static final int colorWheelPistonPort = 1;
-    public static final int indexMotorOnePort = 2;
-    public static final int indexMotorTwoPort = 3;
-    public static final int indexMotorThreePort = 4;
-    public static final int shooterRiserPort = 2;
+    public static final int pannelPort = 2;
+    public static final int lockPortA = 4;
+    public static final int lockPortB = 5;
+    public static final int releasePortA = 6;
+    public static final int releasePortB = 7;
+
 
     //CAN Device #'s
     public static final int shooterTopMasterID = 2;
@@ -51,10 +53,10 @@ public final class ConstantsPorts {
     public static final int panID = 2;
     public static final int tiltID = 0;
 
-    //Servos
-    public static final int limelightServoPort = 11;
 
-    public static final int pannelPort = 3;
+    //Servos
+    public static final int rightRopeReleasePort = 0;
+    public static final int leftRopeReleasePort = 1;
 
     //Sensors
     public static final int gyroPort = 0;

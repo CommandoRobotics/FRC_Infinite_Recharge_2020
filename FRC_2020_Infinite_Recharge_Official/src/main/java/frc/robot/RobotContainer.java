@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.ShooterCommands.*;
 import frc.robot.commands.DriveTank;
+import frc.robot.commands.ClimbCommands.*;
+import frc.robot.commands.ClimbCommands.SetRopePosition.SetOrAngle;
 import frc.robot.commands.IntakeCommands.RunIntake;
 import frc.robot.commands.IntakeCommands.SweepIntake;
 import frc.robot.subsystems.*;
@@ -52,7 +54,7 @@ public class RobotContainer {
 
   //Subsystems
   private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem(limelight);
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
   private final ColorWheelSubsystem colorWheelSubsystem = new ColorWheelSubsystem();
   private final DriveSubsystem driveSubsystem = new DriveSubsystem();
   private final IndexSubsystem indexSubsystem = new IndexSubsystem();
@@ -116,6 +118,35 @@ public class RobotContainer {
 
     new JoystickButton(driverController, Button.kA.value)
       .whenPressed(new ReleaseIntake(lifterSubsystem));
+    //Lock the Climb
+    new JoystickButton(operatorController, Button.kA.value)
+      .whenPressed(new InstantCommand(climbSubsystem::lockClimb, climbSubsystem));
+    
+    //Release the climb logic
+    new JoystickButton(operatorController, Button.kY.value)
+      .whenPressed(new ReleaseClimb(climbSubsystem));
+
+    //Test Code for testing if we should use set or setAngle
+    //Set
+    new JoystickButton(operatorController, Button.kX.value) 
+      .whenPressed(new SetRopePosition(SetOrAngle.set, 1, climbSubsystem));
+
+    //Angle
+    new JoystickButton(operatorController, Button.kB.value)
+      .whenPressed(new SetRopePosition(SetOrAngle.angle, 180, climbSubsystem));
+
+    //Command for reseting the climb after matches
+    new JoystickButton(operatorController, Button.kStart.value)
+      .whenPressed(new ResetClimb(climbSubsystem));
+
+    //Command for unlocking the climb lock pistons
+    new JoystickButton(operatorController, Button.kBack.value)
+      .whenPressed(new InstantCommand(climbSubsystem::unlockClimb, climbSubsystem));
+  }
+
+  //Interfacing command for to 
+  public void scheduleClimbLock() {
+    new InstantCommand(climbSubsystem::lockClimb, climbSubsystem).schedule();
   }
 
 
