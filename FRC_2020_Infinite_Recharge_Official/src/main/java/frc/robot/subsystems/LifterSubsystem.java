@@ -66,24 +66,24 @@ public class LifterSubsystem extends SubsystemBase {
    * @param set  True will set the solenoid to on.
    *             False will set the solenoid to off
   */
-  public void setpanel(boolean set) {
+  public void setPanel(boolean set) {
     panelSolenoid.set(set);
   }
 
   /** Sets the panel to on/deployed (true) */
-  public void deploypanel() {
+  public void deployPanel() {
     panelSolenoid.set(false);
   }
 
   /**Sets the panel to off/retracted (false) */
-  public void retractpanel() {
+  public void retractPanel() {
     panelSolenoid.set(true);
   }
 
   /**Sets the panel to the opposite value of the current value 
    * Ex. if solenoid is on, this will set it to off
   */
-  public void togglepanel() {
+  public void togglePanel() {
     panelSolenoid.set(!panelSolenoid.get());
   }
 
@@ -93,7 +93,7 @@ public class LifterSubsystem extends SubsystemBase {
    *         true = on
    *         false = off
   */
-  public boolean getpanelCurrentState() { 
+  public boolean getPanelCurrentState() { 
     return panelSolenoid.get();
   }
 
