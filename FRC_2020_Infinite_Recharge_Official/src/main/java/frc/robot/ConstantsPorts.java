@@ -38,7 +38,7 @@ public final class ConstantsPorts {
     //Solenoids 
     public static final int intakeLifterPort = 0;
     public static final int colorWheelPistonPort = 1;
-    public static final int pannelPort = 2;
+    public static final int panelPort = 2;
     public static final int lockPortA = 4;
     public static final int lockPortB = 5;
     public static final int releasePortA = 6;
