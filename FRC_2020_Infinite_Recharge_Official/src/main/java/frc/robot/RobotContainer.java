@@ -34,7 +34,6 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.*;
 import frc.robot.commands.SolenoidSetsAndToggles.CompressIntake;
 import frc.robot.commands.SolenoidSetsAndToggles.ReleaseIntake;
-import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifter;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -85,6 +84,8 @@ public class RobotContainer {
       () -> driverController.getRawAxis(ConstantsOI.driverLeftDriveAxis),
       driveSubsystem));
 
+    shooterSubsystem.setShooterTarget(0);
+
     configureButtonBindings();
   }
 
@@ -95,13 +96,18 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorLeftTrigger.whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(1), shooterSubsystem))
-      .whenInactive(new InstantCommand(() -> shooterSubsystem.setShooter(0), shooterSubsystem));
+    operatorLeftTrigger.whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(.25), shooterSubsystem))
+      .whenInactive(new InstantCommand(() -> shooterSubsystem.stopShooter(), shooterSubsystem));
     operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
-    driverLeftTrigger.whenActive(new RunIntake(intakeSubsystem, true), true);
-    driverRightTrigger.whenActive(new SweepIntake(intakeSubsystem), true);
+    driverLeftTrigger.whenActive(new InstantCommand(intakeSubsystem::intakeCells, intakeSubsystem))
+      .whenInactive(new InstantCommand(intakeSubsystem::stopIntake, intakeSubsystem));
+    driverRightTrigger.whenActive(new SweepIntake(intakeSubsystem), true)
+    .whenInactive(new InstantCommand(intakeSubsystem::stopIntake, intakeSubsystem));
     new JoystickButton(operatorController, Button.kA.value)
-      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(.75), indexSubsystem))
+      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(1), indexSubsystem))
+      .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
+      new JoystickButton(driverController, Button.kA.value)
+      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(1), indexSubsystem))
       .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
     new JoystickButton(operatorController, Button.kBumperLeft.value)
       .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(-.4), autoAimSubsystem))
@@ -110,11 +116,8 @@ public class RobotContainer {
       .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(.6), autoAimSubsystem))
       .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
 
-    new JoystickButton(driverController, Button.kBumperRight.value)
-      .whenPressed(new ToggleLifter(lifterSubsystem));
-
-    new JoystickButton(driverController, Button.kBumperLeft.value)
-      .whenPressed(new CompressIntake(lifterSubsystem));
+    // new JoystickButton(driverController, Button.kBumperLeft.value)
+    //   .whenPressed(new CompressIntake(lifterSubsystem));
 
     new JoystickButton(driverController, Button.kA.value)
       .whenPressed(new ReleaseIntake(lifterSubsystem));
@@ -142,6 +145,18 @@ public class RobotContainer {
     //Command for unlocking the climb lock pistons
     new JoystickButton(operatorController, Button.kBack.value)
       .whenPressed(new InstantCommand(climbSubsystem::unlockClimb, climbSubsystem));
+
+    new JoystickButton(driverController, Button.kBumperLeft.value)
+      .whenActive(new InstantCommand(lifterSubsystem::togglePanel, lifterSubsystem));
+      
+    new JoystickButton(driverController, Button.kBumperRight.value)
+    .whenActive(new InstantCommand(lifterSubsystem::toggleLifter, lifterSubsystem));
+    //   new JoystickButton(operatorController, Button.kBumperRight.value)
+    //   .whenActive(new InstantCommand(lifterSubsystem::togglePannel, lifterSubsystem));
+    //   new JoystickButton(operatorController, Button.kA.value)
+    //   .whenActive(new InstantCommand(climbSubsystem::toggleClimbLock, climbSubsystem));
+    //   new JoystickButton(operatorController, Button.kB.value)
+    //   .whenActive(new InstantCommand(climbSubsystem::toggleSpringRelease, climbSubsystem));
   }
 
   //Interfacing command for to 

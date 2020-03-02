@@ -23,7 +23,7 @@ public class CompressIntake extends SequentialCommandGroup {
   public CompressIntake(LifterSubsystem lifterSubsystem) {
     addCommands(
       //Retract the pannel first
-      new InstantCommand(lifterSubsystem::retractPannel, lifterSubsystem),
+      new InstantCommand(lifterSubsystem::retractPanel, lifterSubsystem),
 
       //Wait for it to go a bit
       new WaitCommand(.5),

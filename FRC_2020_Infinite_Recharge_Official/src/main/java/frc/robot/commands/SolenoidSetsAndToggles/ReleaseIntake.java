@@ -28,7 +28,7 @@ public class ReleaseIntake extends SequentialCommandGroup {
       new WaitCommand(.5),
 
       //Then deploy the pannel out
-      new InstantCommand(lifterSubsystem::deployPannel, lifterSubsystem)
+      new InstantCommand(lifterSubsystem::deployPanel, lifterSubsystem)
     );
   }
 }

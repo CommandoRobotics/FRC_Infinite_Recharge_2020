@@ -25,7 +25,7 @@ public class IndexSubsystem extends SubsystemBase {
     funnelMotor = new Spark(ConstantsPorts.funnelMotorPort);
     sideLiftMotor = new Spark(ConstantsPorts.indexRightPort);
     frontLiftMotor = new Spark(ConstantsPorts.indexLeftPort);
-    frontLiftMotor.setInverted(true);
+    sideLiftMotor.setInverted(true);
 
     indexMotors = new SpeedControllerGroup(frontLiftMotor, sideLiftMotor);
 
