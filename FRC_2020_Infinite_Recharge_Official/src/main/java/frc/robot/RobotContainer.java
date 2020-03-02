@@ -96,67 +96,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    operatorLeftTrigger.whileActiveContinuous(new InstantCommand(() -> shooterSubsystem.setShooter(.25), shooterSubsystem))
-      .whenInactive(new InstantCommand(() -> shooterSubsystem.stopShooter(), shooterSubsystem));
-    operatorRightTrigger.whileActiveContinuous(new SetShooterRPM(shooterSubsystem, SmartDashboard.getNumber("targetRPM", 10000)), true);
-    driverLeftTrigger.whenActive(new InstantCommand(intakeSubsystem::intakeCells, intakeSubsystem))
-      .whenInactive(new InstantCommand(intakeSubsystem::stopIntake, intakeSubsystem));
-    driverRightTrigger.whenActive(new SweepIntake(intakeSubsystem), true)
-    .whenInactive(new InstantCommand(intakeSubsystem::stopIntake, intakeSubsystem));
-    new JoystickButton(operatorController, Button.kA.value)
-      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(1), indexSubsystem))
-      .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
-      new JoystickButton(driverController, Button.kA.value)
-      .whenPressed(new InstantCommand(() -> indexSubsystem.setAllIndexMotors(1), indexSubsystem))
-      .whenReleased(new InstantCommand(indexSubsystem::stopAllIndexMotors, indexSubsystem));
-    new JoystickButton(operatorController, Button.kBumperLeft.value)
-      .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(-.4), autoAimSubsystem))
-      .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
-      new JoystickButton(operatorController, Button.kBumperRight.value)
-      .whenPressed(new InstantCommand(() -> autoAimSubsystem.setTilter(.6), autoAimSubsystem))
-      .whenReleased(new InstantCommand(autoAimSubsystem::stopTilter, autoAimSubsystem));
-
-    // new JoystickButton(driverController, Button.kBumperLeft.value)
-    //   .whenPressed(new CompressIntake(lifterSubsystem));
-
-    new JoystickButton(driverController, Button.kA.value)
-      .whenPressed(new ReleaseIntake(lifterSubsystem));
-    //Lock the Climb
-    new JoystickButton(operatorController, Button.kA.value)
-      .whenPressed(new InstantCommand(climbSubsystem::lockClimb, climbSubsystem));
     
-    //Release the climb logic
-    new JoystickButton(operatorController, Button.kY.value)
-      .whenPressed(new ReleaseClimb(climbSubsystem));
-
-    //Test Code for testing if we should use set or setAngle
-    //Set
-    new JoystickButton(operatorController, Button.kX.value) 
-      .whenPressed(new SetRopePosition(SetOrAngle.set, 1, climbSubsystem));
-
-    //Angle
-    new JoystickButton(operatorController, Button.kB.value)
-      .whenPressed(new SetRopePosition(SetOrAngle.angle, 180, climbSubsystem));
-
-    //Command for reseting the climb after matches
-    new JoystickButton(operatorController, Button.kStart.value)
-      .whenPressed(new ResetClimb(climbSubsystem));
-
-    //Command for unlocking the climb lock pistons
-    new JoystickButton(operatorController, Button.kBack.value)
-      .whenPressed(new InstantCommand(climbSubsystem::unlockClimb, climbSubsystem));
-
-    new JoystickButton(driverController, Button.kBumperLeft.value)
-      .whenActive(new InstantCommand(lifterSubsystem::togglePanel, lifterSubsystem));
-      
-    new JoystickButton(driverController, Button.kBumperRight.value)
-    .whenActive(new InstantCommand(lifterSubsystem::toggleLifter, lifterSubsystem));
-    //   new JoystickButton(operatorController, Button.kBumperRight.value)
-    //   .whenActive(new InstantCommand(lifterSubsystem::togglePannel, lifterSubsystem));
-    //   new JoystickButton(operatorController, Button.kA.value)
-    //   .whenActive(new InstantCommand(climbSubsystem::toggleClimbLock, climbSubsystem));
-    //   new JoystickButton(operatorController, Button.kB.value)
-    //   .whenActive(new InstantCommand(climbSubsystem::toggleSpringRelease, climbSubsystem));
   }
 
   //Interfacing command for to 
