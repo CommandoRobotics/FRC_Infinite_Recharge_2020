@@ -55,6 +55,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterTopMaster = new CANSparkMax(ConstantsPorts.shooterTopMasterID, MotorType.kBrushed);
     shooterBottomMaster = new CANSparkMax(ConstantsPorts.shooterBottomMasterID, MotorType.kBrushed);
     shooterTopEnc = shooterTopMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
+    shooterTopEnc.setInverted(true);
     shooterBottomEnc = shooterBottomMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
     shooterTopMaster.restoreFactoryDefaults();
     shooterBottomMaster.restoreFactoryDefaults();
@@ -65,8 +66,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     topPIDController = shooterTopMaster.getPIDController();
     bottomPIDController = shooterBottomMaster.getPIDController();
-    topPIDController.setFeedbackDevice(shooterTopEnc);
-    bottomPIDController.setFeedbackDevice(shooterBottomEnc);
+    //topPIDController.setFeedbackDevice(shooterTopEnc);
+    //bottomPIDController.setFeedbackDevice(shooterBottomEnc);
 
     topPIDController.setP(ConstantsPID.kP);
     topPIDController.setI(ConstantsPID.kI);
@@ -104,6 +105,7 @@ public class ShooterSubsystem extends SubsystemBase {
   /**Stops the shooter motors */
   public void stopShooter() {
     shooterTopMaster.stopMotor();
+    shooterBottomMaster.stopMotor();
   }
 
   /**Returns the current set speed of the shooter motors
@@ -125,8 +127,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterTarget(double targetRPM) {
-    topPIDController.setReference(targetRPM, ControlType.kVelocity);
-    bottomPIDController.setReference(targetRPM * .9, ControlType.kVelocity);
+    //topPIDController.setReference(targetRPM, ControlType.kVelocity);
+    //bottomPIDController.setReference(targetRPM * .9, ControlType.kVelocity);
   }
 
   //LIMELIGHT THINGS
@@ -175,5 +177,6 @@ public class ShooterSubsystem extends SubsystemBase {
                            shooterBottomMaster.get());
     shooterTopSlave.set(ControlMode.PercentOutput, 
                         shooterTopMaster.get());
+    SmartDashboard.putNumber("shooterRPM", shooterTopEnc.getVelocity());
   }
 }

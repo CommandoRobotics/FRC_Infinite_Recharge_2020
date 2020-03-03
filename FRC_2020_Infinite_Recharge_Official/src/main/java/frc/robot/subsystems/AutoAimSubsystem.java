@@ -121,11 +121,11 @@ public class AutoAimSubsystem extends SubsystemBase {
    * 
    * @return Current raw output from the tilt encoder since the last reset
   */
-  public double getTilterCounts() {
+  public double getTilterTicks() {
     return currentCounts;
   }
 
-  public double getTilterCounterActive() {
+  public double getTilterCounter() {
     return tiltCounter.get();
   }
 
@@ -138,7 +138,7 @@ public class AutoAimSubsystem extends SubsystemBase {
     tiltCounter.reset();
   }
 
-  public void resetTilterTotalCounts() {
+  public void resetTilterTotalTicks() {
     currentCounts = 0;
   }
 
