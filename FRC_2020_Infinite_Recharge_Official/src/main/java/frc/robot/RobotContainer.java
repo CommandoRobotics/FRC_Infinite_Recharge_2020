@@ -123,7 +123,40 @@ public class RobotContainer {
 
     //TODO Right Stick Y: Manual Tilt for target
 
-    //TOOD Left Trigger: 
+    //TODO Left Trigger: Run Index In (not for shooting but rather for when intaking balls)
+
+    //TODO Right Trigger: Set the Target RPM based on the cycleSpeedSelector or if Auto aim active
+    //Based on auto aim
+
+    //TODO Left Bumper: Run the funnel only at a lowerish speed
+
+    //TODO Right Bumper: Cycle between three different target RPMs
+
+    //TODO A: Run the AutoAim Home command to manually automatically recenter aim
+
+    //TODO Y: Run the release climb command (runs both servo and pistion in sequence)
+
+    //TODO X: Lock Climb Pistion (CURRENTLY UNUSED AS THERE IS NO LOCK PISTON)
+
+    //TODO Menu: Tgl Auto Velocity
+
+    //TODO Back: Tgl Auto Aim
+
+    //TODO POV up: Tgl the ctrl panel piston (CURRENTLY UNUSED)
+
+    //TODO POV Left: Run Rotate (Ctrl Panel)
+
+    //TODO POV Right: Run Position (Ctrl Panel)
+
+    //TODO POV Down: Our alt trigger. Dont acutally run a command with this
+    //Rather use .and() on a button/trigger with this to activate a command
+
+    //ALT COMMANDS
+
+    //TODO Y ALT: Reset Climb (both piston and servo)
+
+    //TODO X ALT: Unlock Climb (CURRENTLY UNUSED)
+
   }
 
   //Interfacing command for to 
