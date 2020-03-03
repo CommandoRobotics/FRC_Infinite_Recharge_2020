@@ -96,7 +96,34 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
+    //DRIVER BINDS
+
+    //TODO Drive From left and right Y joysticks
+
+    //TODO Left Trigger: Sweep
+
+    //TODO Right Trigger: IntakeIn (Just intake and possibly funnel?)
+
+    //TODO Left Bumper: Tgl Lifter/Panel
+
+    //TODO X button: Tgl Lifter
+     
+    //TODO B Button: Tgl Panel
+
+    //TODO POV Down: Reset Climb Release (ALL)
+
+    //TODO POV Left: Tgl Rope Servo
+
+    //TODO POV Right: Tgl Climb Spring Release
+
+
+    //OPERATOR BINDS
+
+    //TODO Left Stick X: Manual Pan for target
+
+    //TODO Right Stick Y: Manual Tilt for target
+
+    //TOOD Left Trigger: 
   }
 
   //Interfacing command for to 
