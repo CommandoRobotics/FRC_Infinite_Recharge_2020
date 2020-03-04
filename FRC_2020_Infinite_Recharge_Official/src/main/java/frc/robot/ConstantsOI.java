@@ -27,5 +27,7 @@ public final class ConstantsOI {
 
     //Operator Controller
     public static final int operatorPort = 1;
+    public static final int operatorLeftStickXAxis = 0;
+    public static final int operatorRightStickYAxis = 5;
 
 }

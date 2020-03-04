@@ -34,9 +34,14 @@ import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.*;
 import frc.robot.commands.SolenoidSetsAndToggles.CompressIntake;
 import frc.robot.commands.SolenoidSetsAndToggles.ReleaseIntake;
+import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifter;
+import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifterAndPanel;
+import frc.robot.commands.SolenoidSetsAndToggles.TogglePanel;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -68,10 +73,40 @@ public class RobotContainer {
   // Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
-  TriggerAxis operatorLeftTrigger = new TriggerAxis(operatorController, Hand.kLeft, .1);
-  TriggerAxis operatorRightTrigger = new TriggerAxis(operatorController, Hand.kRight, .1);
+  
+  // Driver buttons and triggers
   TriggerAxis driverLeftTrigger = new TriggerAxis(driverController, Hand.kLeft, .1);
   TriggerAxis driverRightTrigger = new TriggerAxis(driverController, Hand.kRight, .1);
+  JoystickButton driverLeftBumper = new JoystickButton(driverController, Button.kBumperLeft.value);
+  JoystickButton driverRightBumper = new JoystickButton(driverController, Button.kBumperRight.value);
+  JoystickButton driverAButton = new JoystickButton(driverController, Button.kA.value);
+  JoystickButton driverBButton = new JoystickButton(driverController, Button.kB.value);
+  JoystickButton driverXButton = new JoystickButton(driverController, Button.kX.value);
+  JoystickButton driverYButton = new JoystickButton(driverController, Button.kY.value);
+  JoystickButton driverBackButton = new JoystickButton(driverController, Button.kBack.value);
+  JoystickButton driverStartButton = new JoystickButton(driverController, Button.kStart.value);
+  POVButton driverDpadUp = new POVButton(driverController, 0);
+  POVButton driverDpadRight = new POVButton(driverController, 90);
+  POVButton driverDpadDown = new POVButton(driverController, 180);
+  POVButton driverDpadLeft = new POVButton(driverController, 270);
+
+  // Operator buttons and triggers
+  TriggerThumbstick operatorLeftStickX = new TriggerThumbstick(operatorController, XboxController.Axis.kLeftX, 0.05);
+  TriggerThumbstick operatorRightStickY = new TriggerThumbstick(operatorController, XboxController.Axis.kRightY, 0.05);
+  TriggerAxis operatorLeftTrigger = new TriggerAxis(operatorController, Hand.kLeft, .1);
+  TriggerAxis operatorRightTrigger = new TriggerAxis(operatorController, Hand.kRight, .1);
+  JoystickButton operatorLeftBumper = new JoystickButton(operatorController, Button.kBumperLeft.value);
+  JoystickButton operatorRightBumper = new JoystickButton(operatorController, Button.kBumperRight.value);
+  JoystickButton operatorAButton = new JoystickButton(operatorController, Button.kA.value);
+  JoystickButton operatorBButton = new JoystickButton(operatorController, Button.kB.value);
+  JoystickButton operatorXButton = new JoystickButton(operatorController, Button.kX.value);
+  JoystickButton operatorYButton = new JoystickButton(operatorController, Button.kY.value);
+  JoystickButton operatorBackButton = new JoystickButton(operatorController, Button.kBack.value);
+  JoystickButton operatorStartButton = new JoystickButton(operatorController, Button.kStart.value);
+  POVButton operatorDpadUp = new POVButton(operatorController, 0);
+  POVButton operatorDpadRight = new POVButton(operatorController, 90);
+  POVButton operatorDpadDown = new POVButton(operatorController, 180);
+  POVButton operatorDpadLeft = new POVButton(operatorController, 270);
 
  
   /**
@@ -104,11 +139,14 @@ public class RobotContainer {
 
     //TODO Right Trigger: IntakeIn (Just intake and possibly funnel?)
 
-    //TODO Left Bumper: Tgl Lifter/Panel
+    // Toggle lifter and panel (driver left bumper)
+    operatorLeftBumper.whenPressed(new ToggleLifterAndPanel(lifterSubsystem));
 
-    //TODO X button: Tgl Lifter
+    // Toggle lifter (driver x button)
+    driverXButton.whenPressed(new ToggleLifter(lifterSubsystem));
      
-    //TODO B Button: Tgl Panel
+    // Toggle panel (driver b button)
+    driverBButton.whenPressed(new TogglePanel(lifterSubsystem));
 
     //TODO POV Down: Reset Climb Release (ALL)
 
@@ -117,11 +155,14 @@ public class RobotContainer {
     //TODO POV Right: Tgl Climb Spring Release
 
 
+
     //OPERATOR BINDS
 
     //TODO Left Stick X: Manual Pan for target
+    operatorLeftStickX.whileActiveContinuous(new AdjustPan(() -> operatorController.getRawAxis(XboxController.Axis.kLeftX), autoAimSubsystem));
 
     //TODO Right Stick Y: Manual Tilt for target
+    operatorRightStickY.whileActiveContinuous(new AdjustTilt(() -> -operatorController.getRawAxis(XboxController.Axis.kRightY), autoAimSubsystem));
 
     //TODO Left Trigger: Run Index In (not for shooting but rather for when intaking balls)
 
@@ -134,7 +175,8 @@ public class RobotContainer {
 
     //TODO A: Run the AutoAim Home command to manually automatically recenter aim
 
-    //TODO Y: Run the release climb command (runs both servo and pistion in sequence)
+    // Release climb (operator y button)
+    operatorYButton.whenPressed(new ReleaseClimb(climbSubsystem));
 
     //TODO X: Lock Climb Pistion (CURRENTLY UNUSED AS THERE IS NO LOCK PISTON)
 
