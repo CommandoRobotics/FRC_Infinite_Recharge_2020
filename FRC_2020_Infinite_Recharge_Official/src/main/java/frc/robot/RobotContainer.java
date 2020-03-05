@@ -162,12 +162,19 @@ public class RobotContainer {
     //TODO Right Stick Y: Manual Tilt for target
     operatorRightStickY.whileActiveContinuous(new AdjustTilt(() -> -operatorController.getRawAxis(XboxController.Axis.kRightY), autoAimSubsystem));
 
-    //TODO Left Trigger: Run Index In (not for shooting but rather for when intaking balls)
+    // Run index in (operator left trigger)
+    new TriggerAxis(operatorController, Hand.kLeft ,0.1)
+      .whenActive(indexSubsystem::indexIn)
+      .whenInactive(indexSubsystem::stopAllIndexMotors);
 
     //TODO Right Trigger: Set the Target RPM based on the cycleSpeedSelector or if Auto aim active
     //Based on auto aim
 
-    //TODO Left Bumper: Run the funnel only at a lowerish speed
+    // Run funnel at a lowerish speed (operator left bumper)
+    new JoystickButton(operatorController, Button.kBumperLeft.value)
+      .whenActive(() -> indexSubsystem.setFunnel(ConstantsValues.funnelLowSpeed))
+      .whenInactive(indexSubsystem::stopFunnel);
+
 
     //TODO Right Bumper: Cycle between three different target RPMs
 

@@ -76,4 +76,8 @@ public final class ConstantsPorts {
     public static final int shooterTEncBPort = 10;
     public static final int shooterBEncAPort = 9;
     public static final int shooterBEncBPort = 10;
+
+    // Limit Switches
+    public static final int shooterTiltLimitSwitch = 1;
+    public static final int shooterPanLimitSwitch = 2;
 }

@@ -52,6 +52,9 @@ public final class ConstantsValues {
     public static final boolean rightEncReversed = false;
     public static final double driveRampRate = .1;
 
+    // Home Speeds
+    public static final double tiltHomeSpeed = -0.3;
+    public static final double panHomeSpeed = 0.3;
 
     //Misc.
     public static final double intakeSpeed = 0.7;
@@ -65,6 +68,7 @@ public final class ConstantsValues {
     public static final double targetHeightLifted = 1.9;
     public static final double limlightAngleLow = 15;
     public static final double limlightAngleHigh = 15;
+    public static final double funnelLowSpeed = 0.5;
     
     public static final double distanceFromCenterOfColorWheelInInches = 0;
     public static final int colorWheelGearboxRatio = 1; // As x:1
