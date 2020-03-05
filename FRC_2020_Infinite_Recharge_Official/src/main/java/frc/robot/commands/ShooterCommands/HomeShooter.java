@@ -30,7 +30,7 @@ public class HomeShooter extends CommandBase {
   @Override
   public void execute() {
     
-    while(!(autoAimSubsystem.isTiltReset() && autoAimSubsystem.isPanReset()) {
+    while(!(autoAimSubsystem.isTiltReset() && autoAimSubsystem.isPanReset())) {
       if(!autoAimSubsystem.isTiltReset()) {
         autoAimSubsystem.setTilter(ConstantsValues.tiltHomeSpeed);
       } else {
