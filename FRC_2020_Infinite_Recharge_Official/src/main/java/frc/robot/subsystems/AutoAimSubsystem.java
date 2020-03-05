@@ -51,6 +51,9 @@ public class AutoAimSubsystem extends SubsystemBase {
     panEnc = new Encoder(ConstantsPorts.panEncAPort, ConstantsPorts.panEncBPort);
     panEnc.setDistancePerPulse(ConstantsValues.panDisPerPulse);
 
+    panResetSwitch = new DigitalInput(ConstantsPorts.shooterPanLimitSwitch);
+    tiltResetSwitch = new DigitalInput(ConstantsPorts.shooterTiltLimitSwitch);
+
     limelight = m_limelight;
   }
 

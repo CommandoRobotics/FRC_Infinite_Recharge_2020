@@ -7,33 +7,18 @@
 
 package frc.robot.commands.ShooterCommands;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.ConstantsPID;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ConstantsValues;
-import frc.robot.APIs.ProjectileMathAPI;
 import frc.robot.subsystems.AutoAimSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 
-public class RecenterAim extends CommandBase {
-
-  /*
-  * COMPLETE Add in overriding code to stop the shooter so that it doesnt pass a certain angle
-  * COMPLETE Add in code to recenter the shooter to 0 when we dont see anything
-  * TODO (Maybe) Add in code re-center the shooter using limit switches? ASK MECH LATER
-  */
-
+public class HomeShooter extends CommandBase {
+  
   AutoAimSubsystem autoAimSubsystem;
-  PIDController tiltPID;
-  ProjectileMathAPI projectileMath;
+  boolean isFinished = false;
 
-  //WE BUILD EACH OTHER UP LIKE WE BUILD OUR ROBOT ~ Dorian Head Programmer
-
-  /**
-   * Creates a new AutoAim.
-   */
-  public RecenterAim(AutoAimSubsystem m_AutoAimSubsystem) {
-    addRequirements(m_AutoAimSubsystem);
+  public HomeShooter(AutoAimSubsystem sub) {
+    autoAimSubsystem = sub;
+    addRequirements(sub);
   }
 
   // Called when the command is initially scheduled.
@@ -44,19 +29,34 @@ public class RecenterAim extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!autoAimSubsystem.isPanReset()) {
-      
+    
+    while(!(autoAimSubsystem.isTiltReset() && autoAimSubsystem.isPanReset()) {
+      if(!autoAimSubsystem.isTiltReset()) {
+        autoAimSubsystem.setTilter(ConstantsValues.tiltHomeSpeed);
+      } else {
+        autoAimSubsystem.stopTilter();
+      }
+
+      if(!autoAimSubsystem.isPanReset()) {
+        autoAimSubsystem.setPanner(ConstantsValues.panHomeSpeed);
+      } else {
+        autoAimSubsystem.stopPanner();
+      }
     }
+
+    isFinished = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    autoAimSubsystem.stopPanner();
+    autoAimSubsystem.stopTilter();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return isFinished;
   }
 }

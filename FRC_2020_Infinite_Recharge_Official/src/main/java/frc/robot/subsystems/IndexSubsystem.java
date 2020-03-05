@@ -66,6 +66,10 @@ public class IndexSubsystem extends SubsystemBase {
     indexMotors.set(ConstantsValues.indexInSpeed);
   }
 
+  public void setFunnel(double speed) {
+    funnelMotor.setSpeed(speed);
+  }
+
   // /**
   //  * Gets the current value of the shooter ultrasonic sensor.
   //  * @return The current value of the shooter ultrasonic sensor, as an int.
