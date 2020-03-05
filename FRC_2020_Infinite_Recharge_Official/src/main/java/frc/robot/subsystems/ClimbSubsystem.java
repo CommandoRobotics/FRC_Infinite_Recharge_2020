@@ -27,8 +27,6 @@ public class ClimbSubsystem extends SubsystemBase {
 
     climbRelease = new DoubleSolenoid(ConstantsPorts.releasePortA, ConstantsPorts.releasePortB);
     climbLock = new DoubleSolenoid(ConstantsPorts.lockPortA, ConstantsPorts.lockPortB);
-    climbLock.set(Value.kOff);
-    climbRelease.set(Value.kOff);
   }
 
   /** Sets the ClimbRelease solenoid to an inputted value 
