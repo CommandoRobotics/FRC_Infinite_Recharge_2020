@@ -15,6 +15,9 @@ public class HomeShooter extends CommandBase {
   
   AutoAimSubsystem autoAimSubsystem;
   boolean isFinished = false;
+  boolean isTiltFinished = false;
+  boolean isPanFinished = false;
+  int panDirection = 1;
 
   public HomeShooter(AutoAimSubsystem sub) {
     autoAimSubsystem = sub;
@@ -24,27 +27,41 @@ public class HomeShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if(autoAimSubsystem.getPannerEncRaw() > 2) {
+      panDirection = 1;
+    } else if(autoAimSubsystem.getPannerEncRaw() < -2) {
+      panDirection = -1;
+    } else {
+      panDirection = 0;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    while(!(autoAimSubsystem.isTiltReset() && autoAimSubsystem.isPanReset()) {
-      if(!autoAimSubsystem.isTiltReset()) {
-        autoAimSubsystem.setTilter(ConstantsValues.tiltHomeSpeed);
-      } else {
-        autoAimSubsystem.stopTilter();
-      }
 
-      if(!autoAimSubsystem.isPanReset()) {
-        autoAimSubsystem.setPanner(ConstantsValues.panHomeSpeed);
+    if(!isTiltFinished) {
+      if(autoAimSubsystem.isTiltReset()) {
+        isTiltFinished = true;
+        autoAimSubsystem.stopTilter();
       } else {
-        autoAimSubsystem.stopPanner();
+        autoAimSubsystem.setTilter(ConstantsValues.tiltHomeSpeed);
       }
     }
 
-    isFinished = true;
+    if(!isPanFinished || panDirection == 0) {
+      if(autoAimSubsystem.isPanReset()) {
+        isPanFinished = true;
+        autoAimSubsystem.stopPanner();
+      } else {
+        autoAimSubsystem.setPanner(ConstantsValues.panHomeSpeed*panDirection);
+      }
+    }
+
+    if(isPanFinished && isTiltFinished) {
+      isFinished = true;
+    }
+
   }
 
   // Called once the command ends or is interrupted.
