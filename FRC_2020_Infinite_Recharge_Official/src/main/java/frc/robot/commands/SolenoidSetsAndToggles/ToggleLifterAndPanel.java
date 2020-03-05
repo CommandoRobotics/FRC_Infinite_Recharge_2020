@@ -13,7 +13,6 @@ import frc.robot.subsystems.LifterSubsystem;
 public class ToggleLifterAndPanel extends CommandBase {
 
   LifterSubsystem lifterSubsystem;
-  boolean isFinished = false;
 
   public ToggleLifterAndPanel(LifterSubsystem lifterSubsystem) {
     this.lifterSubsystem = lifterSubsystem;
@@ -28,9 +27,11 @@ public class ToggleLifterAndPanel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    lifterSubsystem.toggleLifter();
-    lifterSubsystem.togglePanel();
-    isFinished = true;
+    if (lifterSubsystem.getPanelCurrentState() == true && lifterSubsystem.getLifterCurrentState() == true) {
+      new CompressIntake(lifterSubsystem).schedule();
+    } else if (lifterSubsystem.getPanelCurrentState() == false && lifterSubsystem.getLifterCurrentState() == false) {
+      new ReleaseIntake(lifterSubsystem).schedule();
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -41,6 +42,6 @@ public class ToggleLifterAndPanel extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isFinished;
+    return true;
   }
 }

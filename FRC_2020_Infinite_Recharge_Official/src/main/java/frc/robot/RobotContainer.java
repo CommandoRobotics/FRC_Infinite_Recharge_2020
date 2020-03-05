@@ -17,14 +17,15 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.ShooterCommands.*;
-import frc.robot.commands.DriveTank;
 import frc.robot.commands.ClimbCommands.*;
 import frc.robot.commands.ClimbCommands.SetRopePosition.SetOrAngle;
+import frc.robot.commands.DriveCommands.DriveTank;
 import frc.robot.commands.IntakeCommands.RunIntake;
 import frc.robot.commands.IntakeCommands.SweepIntake;
 import frc.robot.subsystems.*;
@@ -35,7 +36,6 @@ import frc.robot.TriggerPOV.POVDirection;
 import frc.robot.commands.*;
 import frc.robot.commands.SolenoidSetsAndToggles.CompressIntake;
 import frc.robot.commands.SolenoidSetsAndToggles.ReleaseIntake;
-import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifter;
 import frc.robot.commands.SolenoidSetsAndToggles.ToggleLifterAndPanel;
 import frc.robot.commands.SolenoidSetsAndToggles.TogglePanel;
 import frc.robot.subsystems.*;
@@ -57,6 +57,12 @@ public class RobotContainer {
   //Limelights and Network Tables
   NetworkTable limelight = NetworkTableInstance.getDefault().getTable("limelight");
 
+  //Speed Switcher
+  private double cycleSpeeds = 0;
+  private boolean previousBack = false;
+  private boolean previousStart = false;
+  private boolean isShootWtihLimelight = true;
+
   //Subsystems
   private final AutoAimSubsystem autoAimSubsystem = new AutoAimSubsystem(limelight);
   private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
@@ -70,28 +76,13 @@ public class RobotContainer {
 
   // Commands
   // private final TankDriveCommand tankDriveCommand;
+  private final AutoAim autoAim = new AutoAim(autoAimSubsystem);
+  private final ShootWithCalcVelocity shootWithCalcVelocity = new ShootWithCalcVelocity(shooterSubsystem, indexSubsystem);
 
   // Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
 
-  // Operator buttons and triggers
-  TriggerThumbstick operatorLeftStickX = new TriggerThumbstick(operatorController, XboxController.Axis.kLeftX, 0.05);
-  TriggerThumbstick operatorRightStickY = new TriggerThumbstick(operatorController, XboxController.Axis.kRightY, 0.05);
-  TriggerAxis operatorLeftTrigger = new TriggerAxis(operatorController, Hand.kLeft, .1);
-  TriggerAxis operatorRightTrigger = new TriggerAxis(operatorController, Hand.kRight, .1);
-  JoystickButton operatorLeftBumper = new JoystickButton(operatorController, Button.kBumperLeft.value);
-  JoystickButton operatorRightBumper = new JoystickButton(operatorController, Button.kBumperRight.value);
-  JoystickButton operatorAButton = new JoystickButton(operatorController, Button.kA.value);
-  JoystickButton operatorBButton = new JoystickButton(operatorController, Button.kB.value);
-  JoystickButton operatorXButton = new JoystickButton(operatorController, Button.kX.value);
-  JoystickButton operatorYButton = new JoystickButton(operatorController, Button.kY.value);
-  JoystickButton operatorBackButton = new JoystickButton(operatorController, Button.kBack.value);
-  JoystickButton operatorStartButton = new JoystickButton(operatorController, Button.kStart.value);
-  POVButton operatorDpadUp = new POVButton(operatorController, 0);
-  POVButton operatorDpadRight = new POVButton(operatorController, 90);
-  POVButton operatorDpadDown = new POVButton(operatorController, 180);
-  POVButton operatorDpadLeft = new POVButton(operatorController, 270);
 
  
   /**
@@ -130,7 +121,7 @@ public class RobotContainer {
 
     //Toggle lifter and panel (driver left bumper)
     new JoystickButton(driverController, Button.kBumperLeft.value)
-      .whenActive(lifterSubsystem::toggleEntireIntakeLifter, lifterSubsystem);
+      .whenActive(new ToggleLifterAndPanel(lifterSubsystem));
 
     //Toggle lifter (driver x button)
     new JoystickButton(driverController, Button.kX.value)
@@ -146,9 +137,9 @@ public class RobotContainer {
 
     //POV Left: Tgl Rope Servo
     new TriggerPOV(driverController, POVDirection.kLeft)
-      .toggleWhenActive(new ToggleRopeServo(climbSubsystem));
+      .toggleWhenActive(new ToggleRopeServo(climbSubsystem), true);
 
-    //TODO POV Right: Tgl Climb Spring Release
+    //POV Right: Tgl Climb Spring Release
     new TriggerPOV(driverController, POVDirection.kRight)
       .whenActive(climbSubsystem::toggleSpringRelease, climbSubsystem);
 
@@ -157,37 +148,48 @@ public class RobotContainer {
     //OPERATOR BINDS
 
     //TODO Left Stick X: Manual Pan for target
-    operatorLeftStickX.whileActiveContinuous(new AdjustPan(() -> operatorController.getRawAxis(XboxController.Axis.kLeftX), autoAimSubsystem));
+    new TriggerThumbstick(operatorController, Axis.kLeftX, .05)
+      .whileActiveContinuous(new AdjustPan(() -> operatorController.getRawAxis(XboxController.Axis.kLeftX.value), autoAimSubsystem));
 
     //TODO Right Stick Y: Manual Tilt for target
-    operatorRightStickY.whileActiveContinuous(new AdjustTilt(() -> -operatorController.getRawAxis(XboxController.Axis.kRightY), autoAimSubsystem));
+    new TriggerThumbstick(operatorController, Axis.kRightY, .05)
+      .whileActiveContinuous(new AdjustTilt(() -> -operatorController.getRawAxis(XboxController.Axis.kRightY.value), autoAimSubsystem));
 
     // Run index in (operator left trigger)
-    new TriggerAxis(operatorController, Hand.kLeft ,0.1)
+    new TriggerTrigger(operatorController, Hand.kLeft ,0.1)
       .whenActive(indexSubsystem::indexIn)
       .whenInactive(indexSubsystem::stopAllIndexMotors);
 
-    //TODO Right Trigger: Set the Target RPM based on the cycleSpeedSelector or if Auto aim active
+    //Right Trigger: Set the Target RPM based on the cycleSpeedSelector or if Auto aim active
     //Based on auto aim
+    new TriggerTrigger(operatorController, Hand.kRight, .1)
+      .whenActive(new DetermineShooterSource(isShootWtihLimelight, cycleSpeeds, shootWithCalcVelocity, shooterSubsystem))
+      .whenInactive(new StopShooter(shooterSubsystem));
 
     // Run funnel at a lowerish speed (operator left bumper)
     new JoystickButton(operatorController, Button.kBumperLeft.value)
-      .whenActive(() -> indexSubsystem.setFunnel(ConstantsValues.funnelLowSpeed))
-      .whenInactive(indexSubsystem::stopFunnel);
+      .whenActive((() -> indexSubsystem.setFunnel(ConstantsValues.funnelLowSpeed)), indexSubsystem)
+      .whenInactive(indexSubsystem::stopFunnel, indexSubsystem);
 
+    //Right Bumper: Cycle between three different target RPMs
+    new JoystickButton(operatorController, Button.kBumperRight.value)
+      .whenActive(new CycleSpeeds(cycleSpeeds));
 
-    //TODO Right Bumper: Cycle between three different target RPMs
-
-    //TODO A: Run the AutoAim Home command to manually automatically recenter aim
+    //A: Run the AutoAim Home command to manually automatically recenter aim
+    new JoystickButton(operatorController, Button.kA.value)
+      .whenActive(new HomeShooter(autoAimSubsystem), false);
 
     // Release climb (operator y button)
-    operatorYButton.whenPressed(new ReleaseClimb(climbSubsystem));
+    new JoystickButton(operatorController, Button.kY.value) 
+      .whenActive(new ReleaseClimb(climbSubsystem));
 
     //TODO X: Lock Climb Pistion (CURRENTLY UNUSED AS THERE IS NO LOCK PISTON)
 
-    //TODO Menu: Tgl Auto Velocity
+    //Menu: Tgl Auto Velocity
+    //DONE
 
-    //TODO Back: Tgl Auto Aim
+    //Back: Tgl Auto Aim
+    //DONE
 
     //TODO POV up: Tgl the ctrl panel piston (CURRENTLY UNUSED)
 
@@ -200,7 +202,10 @@ public class RobotContainer {
 
     //ALT COMMANDS
 
-    //TODO Y ALT: Reset Climb (both piston and servo)
+    //Y ALT: Reset Climb (both piston and servo)
+    (new TriggerPOV(operatorController, POVDirection.kDown)
+      .and(new JoystickButton(operatorController, Button.kY.value)))
+        .whenActive(new ResetClimb(climbSubsystem));
 
     //TODO X ALT: Unlock Climb (CURRENTLY UNUSED)
 
@@ -209,6 +214,22 @@ public class RobotContainer {
   //Interfacing command for to 
   public void scheduleClimbLock() {
     new InstantCommand(climbSubsystem::lockClimb, climbSubsystem).schedule();
+  }
+
+  public void checkAutoToggles() {
+    if (operatorController.getRawButton(Button.kBack.value) && (operatorController.getRawButton(Button.kBack.value) != previousBack)) {
+      if (autoAim.isScheduled()) {
+        autoAim.cancel();
+      } else {
+        autoAim.schedule(false);
+      }
+    }
+    previousBack = operatorController.getRawButton(Button.kBack.value);
+
+    if (operatorController.getRawButton(Button.kStart.value) && (operatorController.getRawButton(Button.kStart.value) != previousStart)) {
+      isShootWtihLimelight = !isShootWtihLimelight;
+    }
+    previousStart = operatorController.getRawButton(Button.kStart.value);
   }
 
 

@@ -97,15 +97,6 @@ public class LifterSubsystem extends SubsystemBase {
     return panelSolenoid.get();
   }
 
-  public void toggleEntireIntakeLifter() {
-    if (panelSolenoid.get() == true && intakeSolenoid.get() == true) {
-      panelSolenoid.set(false);
-      intakeSolenoid.set(false);
-    } else if (panelSolenoid.get() == false && intakeSolenoid.get() == false) {
-      panelSolenoid.set(true);
-      intakeSolenoid.set(true);
-    }
-  }
 
   //Dont forget to run this mechanism into the wall! Because, progress!
 

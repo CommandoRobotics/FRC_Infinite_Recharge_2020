@@ -111,6 +111,8 @@ public class Robot extends TimedRobot {
     if (Timer.getMatchTime() < 1) {
       m_robotContainer.scheduleClimbLock();
     }
+
+    m_robotContainer.checkAutoToggles();
   }
 
   @Override

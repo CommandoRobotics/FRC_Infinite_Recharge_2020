@@ -133,7 +133,8 @@ public class AutoAimSubsystem extends SubsystemBase {
   }
 
   public double getTiltAngle() {
-    return (tiltCounter.get()/ConstantsValues.tiltCounterTicks) * 360;
+    //TODO get exact starting angle
+    return ((tiltCounter.get()/ConstantsValues.tiltCounterTicks) * 360) + 40;
   }
 
   /**Resets the Tilter encoder back to zero */

@@ -64,6 +64,7 @@ public class IndexSubsystem extends SubsystemBase {
 
   public void indexIn() {
     indexMotors.set(ConstantsValues.indexInSpeed);
+    funnelMotor.set(ConstantsValues.funnelInSpeed);
   }
 
   public void setFunnel(double speed) {
