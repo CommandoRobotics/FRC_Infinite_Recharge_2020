@@ -55,7 +55,7 @@ public class LifterSubsystem extends SubsystemBase {
    *         true = on
    *         false = off
   */
-  public boolean getIntakeCurrentState() { 
+  public boolean getLifterCurrentState() { 
     return intakeSolenoid.get();
   }
 
@@ -95,6 +95,16 @@ public class LifterSubsystem extends SubsystemBase {
   */
   public boolean getPanelCurrentState() { 
     return panelSolenoid.get();
+  }
+
+  public void toggleEntireIntakeLifter() {
+    if (panelSolenoid.get() == true && intakeSolenoid.get() == true) {
+      panelSolenoid.set(false);
+      intakeSolenoid.set(false);
+    } else if (panelSolenoid.get() == false && intakeSolenoid.get() == false) {
+      panelSolenoid.set(true);
+      intakeSolenoid.set(true);
+    }
   }
 
   //Dont forget to run this mechanism into the wall! Because, progress!

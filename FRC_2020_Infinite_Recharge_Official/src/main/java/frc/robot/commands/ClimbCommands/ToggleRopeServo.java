@@ -5,41 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.SolenoidSetsAndToggles;
+package frc.robot.commands.ClimbCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LifterSubsystem;
+import frc.robot.subsystems.ClimbSubsystem;
 
-public class ToggleLifter extends CommandBase {
-  
-  LifterSubsystem lifterSubsystem;
-  boolean isFinished = false;
+public class ToggleRopeServo extends CommandBase {
 
-  public ToggleLifter(LifterSubsystem sub) {
-    lifterSubsystem = sub;
-    addRequirements(sub);
+  ClimbSubsystem climbSubsystem;
+
+  public ToggleRopeServo(ClimbSubsystem climbSubsystem) {
+    this.climbSubsystem = climbSubsystem;
+    addRequirements();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    climbSubsystem.releaseRope();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    lifterSubsystem.toggleLifter();
-    isFinished = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    climbSubsystem.resetRopeRelease();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return isFinished;
+    return false;
   }
 }

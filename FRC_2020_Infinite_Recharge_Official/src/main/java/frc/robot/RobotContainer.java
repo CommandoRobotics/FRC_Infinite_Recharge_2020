@@ -31,6 +31,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.TriggerPOV.POVDirection;
 import frc.robot.commands.*;
 import frc.robot.commands.SolenoidSetsAndToggles.CompressIntake;
 import frc.robot.commands.SolenoidSetsAndToggles.ReleaseIntake;
@@ -73,22 +74,6 @@ public class RobotContainer {
   // Controllers
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
-  
-  // Driver buttons and triggers
-  TriggerAxis driverLeftTrigger = new TriggerAxis(driverController, Hand.kLeft, .1);
-  TriggerAxis driverRightTrigger = new TriggerAxis(driverController, Hand.kRight, .1);
-  JoystickButton driverLeftBumper = new JoystickButton(driverController, Button.kBumperLeft.value);
-  JoystickButton driverRightBumper = new JoystickButton(driverController, Button.kBumperRight.value);
-  JoystickButton driverAButton = new JoystickButton(driverController, Button.kA.value);
-  JoystickButton driverBButton = new JoystickButton(driverController, Button.kB.value);
-  JoystickButton driverXButton = new JoystickButton(driverController, Button.kX.value);
-  JoystickButton driverYButton = new JoystickButton(driverController, Button.kY.value);
-  JoystickButton driverBackButton = new JoystickButton(driverController, Button.kBack.value);
-  JoystickButton driverStartButton = new JoystickButton(driverController, Button.kStart.value);
-  POVButton driverDpadUp = new POVButton(driverController, 0);
-  POVButton driverDpadRight = new POVButton(driverController, 90);
-  POVButton driverDpadDown = new POVButton(driverController, 180);
-  POVButton driverDpadLeft = new POVButton(driverController, 270);
 
   // Operator buttons and triggers
   TriggerThumbstick operatorLeftStickX = new TriggerThumbstick(operatorController, XboxController.Axis.kLeftX, 0.05);
@@ -130,29 +115,42 @@ public class RobotContainer {
    * ({@link edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-    //DRIVER BINDS
+  private void configureButtonBindings() {  
+    //DRIVER Binds
 
-    //TODO Drive From left and right Y joysticks
+    //Left Trigger: Sweep
+    new TriggerTrigger(driverController, Hand.kLeft, .1)
+      .whenActive(new SweepIntake(intakeSubsystem), true)
+      .whenInactive(intakeSubsystem::stopIntake, intakeSubsystem);
 
-    //TODO Left Trigger: Sweep
+    //Right Trigger: IntakeIn (Just intake)
+    new TriggerTrigger(driverController, Hand.kRight, .1)
+      .whenActive(intakeSubsystem::intakeCells, intakeSubsystem)
+      .whenInactive(intakeSubsystem::stopIntake, intakeSubsystem);
 
-    //TODO Right Trigger: IntakeIn (Just intake and possibly funnel?)
+    //Toggle lifter and panel (driver left bumper)
+    new JoystickButton(driverController, Button.kBumperLeft.value)
+      .whenActive(lifterSubsystem::toggleEntireIntakeLifter, lifterSubsystem);
 
-    // Toggle lifter and panel (driver left bumper)
-    operatorLeftBumper.whenPressed(new ToggleLifterAndPanel(lifterSubsystem));
-
-    // Toggle lifter (driver x button)
-    driverXButton.whenPressed(new ToggleLifter(lifterSubsystem));
+    //Toggle lifter (driver x button)
+    new JoystickButton(driverController, Button.kX.value)
+      .whenActive(lifterSubsystem::toggleLifter, lifterSubsystem);
      
-    // Toggle panel (driver b button)
-    driverBButton.whenPressed(new TogglePanel(lifterSubsystem));
+    //Toggle panel (driver b button)
+    new JoystickButton(driverController, Button.kB.value)
+      .whenActive(lifterSubsystem::togglePanel, lifterSubsystem);
 
-    //TODO POV Down: Reset Climb Release (ALL)
+    //POV Down: Reset Climb Release (ALL)
+    new TriggerPOV(driverController, POVDirection.kDown)
+      .whenActive(new ResetClimb(climbSubsystem), true);
 
-    //TODO POV Left: Tgl Rope Servo
+    //POV Left: Tgl Rope Servo
+    new TriggerPOV(driverController, POVDirection.kLeft)
+      .toggleWhenActive(new ToggleRopeServo(climbSubsystem));
 
     //TODO POV Right: Tgl Climb Spring Release
+    new TriggerPOV(driverController, POVDirection.kRight)
+      .whenActive(climbSubsystem::toggleSpringRelease, climbSubsystem);
 
 
 
