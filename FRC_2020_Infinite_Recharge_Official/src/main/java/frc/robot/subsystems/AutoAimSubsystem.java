@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
@@ -46,10 +47,12 @@ public class AutoAimSubsystem extends SubsystemBase {
   public AutoAimSubsystem(NetworkTable m_limelight) {
     tilt = new VictorSPX(ConstantsPorts.tiltID);
     pan = new VictorSPX(ConstantsPorts.panID);
+    tilt.setInverted(true);
 
     tiltCounter = new Counter(ConstantsPorts.tiltCounterPort);
     panEnc = new Encoder(ConstantsPorts.panEncAPort, ConstantsPorts.panEncBPort);
     panEnc.setDistancePerPulse(ConstantsValues.panDisPerPulse);
+    panEnc.setReverseDirection(true);
 
     panResetSwitch = new DigitalInput(ConstantsPorts.shooterPanLimitSwitch);
     tiltResetSwitch = new DigitalInput(ConstantsPorts.shooterTiltLimitSwitch);
@@ -76,12 +79,16 @@ public class AutoAimSubsystem extends SubsystemBase {
     }
   }
 
+
+
   /**Sets the Panner to a given speed */
   public void setPanner(double speed) {
     if (getPanAngle() > ConstantsValues.maxPanAngle && speed > 0) {
       pan.set(ControlMode.PercentOutput, 0);
+      System.out.println("PAN LIMIT TOP REACHED");
     } else if (getPanAngle() < ConstantsValues.minPanAngle && speed < 0) {
       pan.set(ControlMode.PercentOutput, 0);
+      System.out.println("PAN LIMIT BOTTOM REACHED");
     } else {
       if ((speed > 0 && speed >= panMinSpeed) || (speed < 0 && speed <= -panMinSpeed)) {
         pan.set(ControlMode.PercentOutput, speed);
@@ -89,6 +96,14 @@ public class AutoAimSubsystem extends SubsystemBase {
         pan.set(ControlMode.PercentOutput, 0);
       }
     }
+  }
+
+  public void setPannerOverride(double speed) {
+    pan.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setTiltOverride(double speed) {
+    tilt.set(ControlMode.PercentOutput, speed);
   }
 
   /**Stops the Tilter motor */
@@ -254,5 +269,6 @@ public class AutoAimSubsystem extends SubsystemBase {
       currentCounts -= tiltCounter.get();
    }
    tiltCounter.reset();
+   SmartDashboard.putNumber("tiltENC Angle", getPanAngle());
   }
 }

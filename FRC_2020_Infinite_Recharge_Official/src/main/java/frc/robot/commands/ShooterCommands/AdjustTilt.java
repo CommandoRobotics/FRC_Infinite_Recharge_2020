@@ -33,6 +33,7 @@ public class AdjustTilt extends CommandBase {
   @Override
   public void execute() {
     autoAim.setTilter(speed.getAsDouble());
+    System.out.println("Set Speed of Tilt: " + speed.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

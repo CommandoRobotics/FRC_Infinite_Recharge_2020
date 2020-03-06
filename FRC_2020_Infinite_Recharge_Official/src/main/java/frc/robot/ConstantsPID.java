@@ -33,6 +33,8 @@ public final class ConstantsPID {
     public static final double trackWidthMeters = 1;
     public static final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(trackWidthMeters);
 
+    public static final double kDriveP = .02;
+
     public static final double colorWheelP = 1;
     public static final double colorWheelI = 1;
     public static final double colorWheelD = 1;

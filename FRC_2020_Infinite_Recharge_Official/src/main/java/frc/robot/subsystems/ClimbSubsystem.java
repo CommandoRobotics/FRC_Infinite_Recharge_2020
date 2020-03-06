@@ -59,6 +59,7 @@ public class ClimbSubsystem extends SubsystemBase {
     } else if (climbRelease.get() == Value.kForward) {
       climbRelease.set(Value.kReverse);
     }
+    System.out.println("CLIMB STATE:" + climbRelease.get());
   }
 
   /**Returns the current state of the ClimbRelease 
@@ -113,12 +114,12 @@ public class ClimbSubsystem extends SubsystemBase {
 
   /**Release the Velcro that is on the servo hook for the climb motor*/
   public void releaseRope() {
-    leftRopeRelease.set(1);
+    leftRopeRelease.set(0);
     rightRopeRelease.set(1);
   }
   /**Reset the servos for the velcro release back to their starting positions*/
   public void resetRopeRelease() {
-    leftRopeRelease.set(0);
+    leftRopeRelease.set(1);
     rightRopeRelease.set(0);
   }
 

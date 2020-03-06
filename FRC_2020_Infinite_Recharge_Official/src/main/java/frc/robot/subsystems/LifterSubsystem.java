@@ -72,12 +72,12 @@ public class LifterSubsystem extends SubsystemBase {
 
   /** Sets the panel to on/deployed (true) */
   public void deployPanel() {
-    panelSolenoid.set(false);
+    panelSolenoid.set(true);
   }
 
   /**Sets the panel to off/retracted (false) */
   public void retractPanel() {
-    panelSolenoid.set(true);
+    panelSolenoid.set(false);
   }
 
   /**Sets the panel to the opposite value of the current value 

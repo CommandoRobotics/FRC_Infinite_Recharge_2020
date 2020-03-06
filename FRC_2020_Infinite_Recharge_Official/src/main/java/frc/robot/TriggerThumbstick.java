@@ -20,7 +20,7 @@ public class TriggerThumbstick extends Trigger {
 
     @Override
     public boolean get() {
-        return controller.getRawAxis(axis.value) > deadZone ? true : false;
+        return (controller.getRawAxis(axis.value) > deadZone && controller.getRawAxis(axis.value) < -deadZone) ? true : false;
     }
 
     

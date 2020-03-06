@@ -45,6 +45,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   double shooterTopMinSpeed;
   double loaderMinSpeed;
+  double cycleSpeed;
   public boolean riserActive = false;
   public boolean seeingTarget = false;
 
@@ -95,11 +96,16 @@ public class ShooterSubsystem extends SubsystemBase {
   public void setShooter(double speed) {
     if (speed > shooterTopMinSpeed) {
       shooterTopMaster.set(speed);
-      shooterBottomMaster.set(speed);
+      shooterBottomMaster.set(speed * .9);
     } else {
       shooterTopMaster.stopMotor();
       shooterBottomMaster.stopMotor();
     }
+  }
+
+  public void setShooterCycleSpeeds() {
+    shooterTopMaster.set(cycleSpeed);
+    shooterBottomMaster.set(cycleSpeed * .9);
   }
 
   /**Stops the shooter motors */
@@ -168,6 +174,28 @@ public class ShooterSubsystem extends SubsystemBase {
     return seeingTarget;
   }
 
+  public void setLights(boolean lightsOn) {
+    if (lightsOn) {
+      limelight.getEntry("ledMode").setNumber(3);
+    } else {
+      limelight.getEntry("ledMode").setNumber(1);
+    }
+  }
+
+  public void cycleSpeeds() {
+    if (cycleSpeed == 0) {
+      cycleSpeed = .1;
+    } else if (cycleSpeed == .1) {
+      cycleSpeed = .35;
+    } else if (cycleSpeed == .35) {
+      cycleSpeed = .5;
+    } else if (cycleSpeed == .5) {
+      cycleSpeed = .75;
+    } else if (cycleSpeed == .75) {
+      cycleSpeed = 0;
+    }
+  }
+
   
 
   @Override
@@ -178,5 +206,6 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterTopSlave.set(ControlMode.PercentOutput, 
                         shooterTopMaster.get());
     SmartDashboard.putNumber("shooterRPM", shooterTopEnc.getVelocity());
+    SmartDashboard.putNumber("Current SPEED", cycleSpeed);
   }
 }

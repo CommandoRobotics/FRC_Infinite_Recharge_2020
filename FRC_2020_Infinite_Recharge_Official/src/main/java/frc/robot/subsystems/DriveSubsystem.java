@@ -13,12 +13,14 @@ import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ConstantsPID;
 import frc.robot.ConstantsPorts;
 import frc.robot.ConstantsValues;
 
@@ -38,6 +40,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   double previousOutputLeftPercent;
   double previousOutputRightPercent;
+  
+  PIDController straightPID;
+
 
   //TODO Create a gyro properly and decide on which one we need
   AHRS navX;
@@ -61,6 +66,8 @@ public class DriveSubsystem extends SubsystemBase {
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
     dOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
+
+    straightPID = new PIDController(ConstantsPID.kDriveP, 0,0);
   }
 
   //BASIC DRIVE METHODS
@@ -111,6 +118,8 @@ public class DriveSubsystem extends SubsystemBase {
     rightMotors.setVoltage(-rightVolts);
     drive.feed();
   }
+
+  //working on straight pid
 
   /**
    * Overrides the max speed of the drive motors to the set input

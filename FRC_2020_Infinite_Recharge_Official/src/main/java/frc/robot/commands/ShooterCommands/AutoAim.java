@@ -59,6 +59,7 @@ public class AutoAim extends PIDCommand {
     //Set both of th tolerances for the PID loops saved in ConstantsValues (probably pretty small)
     tiltPID.setTolerance(ConstantsPID.tiltTolerance);
     getController().setTolerance(ConstantsPID.panTolerance);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

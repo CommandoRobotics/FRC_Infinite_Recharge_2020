@@ -69,6 +69,9 @@ public class HomeShooter extends CommandBase {
   public void end(boolean interrupted) {
     autoAimSubsystem.stopPanner();
     autoAimSubsystem.stopTilter();
+    autoAimSubsystem.resetPannerEnc();
+    autoAimSubsystem.resetTilterCounter();
+    autoAimSubsystem.resetTilterTotalTicks();
   }
 
   // Returns true when the command should end.

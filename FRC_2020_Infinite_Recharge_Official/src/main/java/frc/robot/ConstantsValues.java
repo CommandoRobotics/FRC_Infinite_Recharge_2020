@@ -41,11 +41,11 @@ public final class ConstantsValues {
     public static final double loaderMinSpeed = .1;
     public static final double panMinSpeed = .1;
     public static final double tiltMinSpeed = .1;
-    public static final double minTiltAngle = 40;
-    public static final double maxTiltAngle = 90;
+    public static final double minTiltAngle = 46;
+    public static final double maxTiltAngle = 80;
     public static final double minPanAngle = -90;
     public static final double maxPanAngle = 90;
-    public static final double tiltDefaultPos = 40;
+    public static final double tiltDefaultPos = 46;
     
     //Drive Constants
     public static final boolean gyroReversed = false;
@@ -57,8 +57,11 @@ public final class ConstantsValues {
     public static final double panHomeSpeed = 0.3;
 
     //Index Speeds
-    public static final double funnelInSpeed = .3;
-    public static final double indexInSpeed = 0.5;
+    public static final double funnelInSpeed = .5;
+    public static final double indexInSpeed = 1;
+
+    //Climb Speeds
+    public static final double climbDriveSpeed = .8;
 
     //Misc.
     public static final double intakeSpeed = 0.7;
@@ -67,7 +70,7 @@ public final class ConstantsValues {
     public static final double axisThreshold = .08;
     public static final double acceleration = -9.8; 
     public static final double negativeTargetVelocity = -.5;    
-    public static final double targetHeightLowered = 2;
+    public static final double targetHeightLowered = 2; //.66294
     public static final double targetHeightLifted = 1.9;
     public static final double limlightAngleLow = 15;
     public static final double limlightAngleHigh = 15;

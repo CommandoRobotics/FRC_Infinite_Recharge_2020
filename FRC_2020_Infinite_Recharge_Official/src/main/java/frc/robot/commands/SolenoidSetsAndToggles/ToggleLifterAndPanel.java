@@ -27,16 +27,16 @@ public class ToggleLifterAndPanel extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (lifterSubsystem.getPanelCurrentState() == true && lifterSubsystem.getLifterCurrentState() == true) {
-      new CompressIntake(lifterSubsystem).schedule();
-    } else if (lifterSubsystem.getPanelCurrentState() == false && lifterSubsystem.getLifterCurrentState() == false) {
-      new ReleaseIntake(lifterSubsystem).schedule();
-    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (lifterSubsystem.getPanelCurrentState() == false && lifterSubsystem.getLifterCurrentState() == false) {
+      
+    } else if (lifterSubsystem.getPanelCurrentState() == true && lifterSubsystem.getLifterCurrentState() == true) {
+      new ReleaseIntake(lifterSubsystem).schedule();
+    }
   }
 
   // Returns true when the command should end.
