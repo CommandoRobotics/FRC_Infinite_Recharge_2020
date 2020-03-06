@@ -88,6 +88,8 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(ConstantsOI.driverPort);
   private final XboxController operatorController = new XboxController(ConstantsOI.operatorPort);
 
+  private final TriggerTrigger operatorLeftTrigger = new TriggerTrigger(operatorController, Hand.kLeft, .1);
+
 
  
   /**
@@ -140,7 +142,7 @@ public class RobotContainer {
 
     //Y: Climb at a set speed TODO
     new JoystickButton(driverController, Button.kY.value)
-      .whileHeld(new InstantCommand(() -> driveSubsystem.driveRampedTank(-ConstantsValues.climbDriveSpeed, -ConstantsValues.climbDriveSpeed), driveSubsystem), true)
+      .whileHeld(new ReleaseAndClimb(-ConstantsValues.climbDriveSpeed, -ConstantsValues.climbDriveSpeed, driveSubsystem, climbSubsystem))
       .whenReleased(new InstantCommand(() -> driveSubsystem.stopDrive(), driveSubsystem));
 
     //POV Down: Reset Climb Release (ALL) TODO
@@ -154,19 +156,6 @@ public class RobotContainer {
     //POV Right: Tgl Climb Spring Release TODO
     new TriggerPOV(driverController, POVDirection.kRight)
       .whenActive(climbSubsystem::toggleSpringRelease, climbSubsystem);
-
-
-
-
-
-
-    new JoystickButton(driverController, Button.kA.value)
-      .whenActive(climbSubsystem::releaseRope, climbSubsystem);
-
-    new JoystickButton(driverController, Button.kBumperRight.value)
-      .whenActive(climbSubsystem::resetRopeRelease, climbSubsystem);
-
-
 
     //OPERATOR BINDS
 
@@ -190,8 +179,7 @@ public class RobotContainer {
     .whenInactive(autoAimSubsystem::stopTilter, autoAimSubsystem);
 
     // Run index in (operator left trigger)
-    new TriggerTrigger(operatorController, Hand.kLeft, 0.1)
-      .whenActive(indexSubsystem::indexIn)
+    operatorLeftTrigger.whenActive(indexSubsystem::indexIn)
       .whenInactive(indexSubsystem::stopAllIndexMotors);
 
     //Right Trigger: Set the Target RPM based on the cycleSpeedSelector or if Auto aim active
@@ -218,7 +206,7 @@ public class RobotContainer {
 
     // Release climb (operator y button)
     new JoystickButton(operatorController, Button.kY.value) 
-      .whenActive(new ReleaseClimb(climbSubsystem));
+      .whenActive(climbSubsystem::releaseSpring, climbSubsystem);
 
     //TODO X: Lock Climb Pistion (CURRENTLY UNUSED AS THERE IS NO LOCK PISTON)
 
@@ -244,6 +232,9 @@ public class RobotContainer {
       .and(new JoystickButton(operatorController, Button.kY.value))
         .whenActive(new ResetClimb(climbSubsystem));
 
+    new TriggerPOV(operatorController, POVDirection.kDown)
+      .and(operatorLeftTrigger)
+        .whenActive(indexSubsystem::reverseIndex, indexSubsystem);
     //TODO X ALT: Unlock Climb (CURRENTLY UNUSED)
 
   }
@@ -284,6 +275,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DriveStraightTime(2000, .5, .5, driveSubsystem);
+    return new DriveStraightTime(.5, .5, 2, driveSubsystem);
   }
 }

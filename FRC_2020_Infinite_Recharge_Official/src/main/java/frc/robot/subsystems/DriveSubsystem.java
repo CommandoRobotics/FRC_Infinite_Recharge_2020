@@ -73,7 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
   //BASIC DRIVE METHODS
 
   /**Drives in Tank Drive with direct input controls for left and right power */
-  public void driveRampedTank(double askingLeftPower, double askingRightPower) {
+  public void driveRamedTank(double askingLeftPower, double askingRightPower) {
     double targetLeft = previousOutputLeftPercent;
     double targetRight = previousOutputRightPercent;
 
@@ -100,6 +100,10 @@ public class DriveSubsystem extends SubsystemBase {
     drive.tankDrive(targetLeft, targetRight);
     previousOutputLeftPercent = targetLeft;
     previousOutputRightPercent = targetRight;
+  }
+
+  public void driveTank(double leftPower, double rightPower) {
+    drive.tankDrive(leftPower, rightPower);
   }
 
   /**Drives in Arcade Mode with direct inputs */

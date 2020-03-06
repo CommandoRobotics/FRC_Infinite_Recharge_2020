@@ -1,63 +1,29 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
 
 package frc.robot.commands.DriveCommands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LifterSubsystem;
 
-/**
- * An example command that uses an example subsystem.
- */
-public class DriveStraightTime extends CommandBase {
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
+public class DriveStraightTime extends SequentialCommandGroup {
+  /**
+   * Creates a new ReleaseIntake.
+   */
+  public DriveStraightTime(double leftPower, double rightPower, double time, DriveSubsystem driveSubsystem) {
+    addCommands(
+      //First let the intake out
+      new InstantCommand(() -> driveSubsystem.driveTank(leftPower, rightPower), driveSubsystem),
 
-  private DriveSubsystem driveSubsystem;
-  double startTime; 
-  double time;
-  double rightPower;
-  double leftPower;
-  boolean finished = false;
+      //Wait for it to go a bit
+      new WaitCommand(time),
 
-  
-  public DriveStraightTime(double m_time, double m_leftPower, double m_rightPower, DriveSubsystem m_driveSubsystem) {
-    driveSubsystem = m_driveSubsystem;
-    time = m_time;
-    leftPower = m_leftPower;
-    rightPower = m_rightPower;
-    //Subsystem Requirements
-    addRequirements(m_driveSubsystem);
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    startTime = System.nanoTime();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    if((System.nanoTime() - startTime) <= time) {
-      driveSubsystem.driveRampedTank(leftPower, rightPower);
-      finished = false;
-    } else {
-      finished = true;
-    }
-  }
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    driveSubsystem.stopDrive();
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return finished;
+      //Then deploy the pannel out
+      new InstantCommand((driveSubsystem::stopDrive), driveSubsystem)
+    );
   }
 }

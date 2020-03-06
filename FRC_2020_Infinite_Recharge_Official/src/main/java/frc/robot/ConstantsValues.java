@@ -30,7 +30,7 @@ public final class ConstantsValues {
     public static final double tiltDisPerPulse = 0;
     public static final double panDisPerPulse = 0;
     public static final double tiltCounterTicks = 179;
-    public static final double panEncPPR = 2000;
+    public static final double panEncPPR = 4096;
     public static final double colorMotorDisPerPulse = 0;
     public static final double colorWheelEncPPR = 1;
 

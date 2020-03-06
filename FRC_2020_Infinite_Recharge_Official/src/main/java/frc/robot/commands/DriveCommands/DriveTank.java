@@ -39,7 +39,7 @@ public class DriveTank extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.driveRampedTank(leftPower.getAsDouble(), rightPower.getAsDouble());
+    driveSubsystem.driveTank(leftPower.getAsDouble(), rightPower.getAsDouble());
 
     driveSubsystem.resetEncoders();
   }
