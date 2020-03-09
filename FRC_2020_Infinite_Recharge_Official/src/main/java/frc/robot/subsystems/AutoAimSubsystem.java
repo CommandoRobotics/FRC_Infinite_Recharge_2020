@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPorts;
@@ -149,7 +150,7 @@ public class AutoAimSubsystem extends SubsystemBase {
 
   public double getTiltAngle() {
     //TODO get exact starting angle
-    return ((tiltCounter.get()/ConstantsValues.tiltCounterTicks) * 360) + 40;
+    return ((tiltCounter.get()/ConstantsValues.tiltCounterTicks) * 360) + ConstantsValues.minTiltAngle;
   }
 
   /**Resets the Tilter encoder back to zero */
@@ -193,10 +194,12 @@ public class AutoAimSubsystem extends SubsystemBase {
   //LIMELIGHT THINGS
 
   public double getLimelightXOffset() {
+    SmartDashboard.putNumber("LimelightX", limelight.getEntry("tx").getDouble(0));
     return limelight.getEntry("tx").getDouble(0);
   }
 
   public double getLimelightYOffset() {
+    SmartDashboard.putNumber("LimelightY", limelight.getEntry("ty").getDouble(0));
     return limelight.getEntry("ty").getDouble(0);
   }
 
@@ -261,6 +264,31 @@ public class AutoAimSubsystem extends SubsystemBase {
     return panResetSwitch.get();
   }
 
+  public void setLights(boolean lightsOn) {
+    if (lightsOn) {
+      limelight.getEntry("pipeline").setNumber(1);
+    } else {
+      limelight.getEntry("pipeline").setNumber(0);
+    }
+  }
+
+  public void toggleLimelightLights() {
+    if (limelight.getEntry("pipeline").getDouble(0) == 1) {
+      limelight.getEntry("pipeline").setNumber(0);
+    } else if (limelight.getEntry("pipeline").getDouble(0) == 0) {
+      limelight.getEntry("pipeline").setNumber(1);
+    }
+  }
+
+  public void setLimeCameraMode(boolean isVision) {
+    if (isVision) {
+      limelight.getEntry("pipeline").setNumber(0);
+    } else {
+      limelight.getEntry("pipeline").setNumber(1);
+    }
+  }
+
+
   @Override
   public void periodic() {
     if (tilt.getMotorOutputPercent() > 0) {
@@ -269,6 +297,10 @@ public class AutoAimSubsystem extends SubsystemBase {
       currentCounts -= tiltCounter.get();
    }
    tiltCounter.reset();
-   SmartDashboard.putNumber("tiltENC Angle", getPanAngle());
+   SmartDashboard.putNumber("tiltENC Angle", getTiltAngle());
+   SmartDashboard.putNumber("LimelightY", limelight.getEntry("ty").getDouble(0));
+   SmartDashboard.putNumber("LimelightX", limelight.getEntry("tx").getDouble(0));
+   SmartDashboard.putBoolean("Bottom Limit switch", tiltResetSwitch.get());
+   SmartDashboard.putBoolean("Pan Limit switch", panResetSwitch.get());
   }
 }

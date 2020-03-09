@@ -56,7 +56,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterTopMaster = new CANSparkMax(ConstantsPorts.shooterTopMasterID, MotorType.kBrushed);
     shooterBottomMaster = new CANSparkMax(ConstantsPorts.shooterBottomMasterID, MotorType.kBrushed);
     shooterTopEnc = shooterTopMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
-    shooterTopEnc.setInverted(true);
+    shooterTopEnc.setInverted(false);
     shooterBottomEnc = shooterBottomMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
     shooterTopMaster.restoreFactoryDefaults();
     shooterBottomMaster.restoreFactoryDefaults();
@@ -67,8 +67,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     topPIDController = shooterTopMaster.getPIDController();
     bottomPIDController = shooterBottomMaster.getPIDController();
-    //topPIDController.setFeedbackDevice(shooterTopEnc);
-    //bottomPIDController.setFeedbackDevice(shooterBottomEnc);
+    topPIDController.setFeedbackDevice(shooterTopEnc);
+    bottomPIDController.setFeedbackDevice(shooterBottomEnc);
 
     topPIDController.setP(ConstantsPID.kP);
     topPIDController.setI(ConstantsPID.kI);
@@ -133,8 +133,10 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterTarget(double targetRPM) {
-    //topPIDController.setReference(targetRPM, ControlType.kVelocity);
-    //bottomPIDController.setReference(targetRPM * .9, ControlType.kVelocity);
+    topPIDController.setReference(targetRPM, ControlType.kVelocity);
+    bottomPIDController.setReference(targetRPM *.9, ControlType.kVelocity);
+    SmartDashboard.putNumber("TARGET RPM", targetRPM);
+    SmartDashboard.putNumber("TARGET OUTPUT", shooterTopMaster.getClosedLoopRampRate());
   }
 
   //LIMELIGHT THINGS
@@ -176,9 +178,17 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void setLights(boolean lightsOn) {
     if (lightsOn) {
-      limelight.getEntry("ledMode").setNumber(3);
+      limelight.getEntry("pipeline").setNumber(1);
     } else {
-      limelight.getEntry("ledMode").setNumber(1);
+      limelight.getEntry("pipeline").setNumber(0);
+    }
+  }
+
+  public void toggleLimelightLights() {
+    if (limelight.getEntry("pipeline").getDouble(0) == 1) {
+      limelight.getEntry("pipeline").setNumber(0);
+    } else if (limelight.getEntry("pipeline").getDouble(0) == 0) {
+      limelight.getEntry("pipeline").setNumber(1);
     }
   }
 
@@ -186,14 +196,21 @@ public class ShooterSubsystem extends SubsystemBase {
     if (cycleSpeed == 0) {
       cycleSpeed = .1;
     } else if (cycleSpeed == .1) {
+      cycleSpeed = .25;
+    } else if (cycleSpeed == .25){
       cycleSpeed = .35;
     } else if (cycleSpeed == .35) {
+      cycleSpeed = .40;
+    } else if (cycleSpeed == .40) {
       cycleSpeed = .5;
     } else if (cycleSpeed == .5) {
       cycleSpeed = .75;
     } else if (cycleSpeed == .75) {
+      cycleSpeed = 1;
+    } else if (cycleSpeed == 1) {
       cycleSpeed = 0;
     }
+
   }
 
   
@@ -205,7 +222,9 @@ public class ShooterSubsystem extends SubsystemBase {
                            shooterBottomMaster.get());
     shooterTopSlave.set(ControlMode.PercentOutput, 
                         shooterTopMaster.get());
-    SmartDashboard.putNumber("shooterRPM", shooterTopEnc.getVelocity());
+    SmartDashboard.putNumber("shooterRPM Top", shooterBottomEnc.getVelocity());
+    SmartDashboard.putNumber("shooterRPM Bottom", shooterBottomEnc.getVelocity());
     SmartDashboard.putNumber("Current SPEED", cycleSpeed);
+    SmartDashboard.putNumber("Limelight LED mode", limelight.getEntry("pipeline").getDouble(3));
   }
 }

@@ -26,7 +26,7 @@ public class CompressIntake extends SequentialCommandGroup {
       new InstantCommand(lifterSubsystem::retractPanel, lifterSubsystem),
 
       //Wait for it to go a bit
-      new WaitCommand(.5),
+      //new WaitCommand(.5),
 
       //Then retract the intake
       new InstantCommand(lifterSubsystem::retractLifter, lifterSubsystem)
