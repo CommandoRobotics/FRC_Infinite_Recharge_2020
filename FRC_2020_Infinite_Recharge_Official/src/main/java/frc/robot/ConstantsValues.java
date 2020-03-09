@@ -69,7 +69,7 @@ public final class ConstantsValues {
     public static final double expellSpeed = 0.7;
     public static final double axisThreshold = .08;
     public static final double acceleration = -9.8; 
-    public static final double negativeTargetVelocity = -.5;    
+    public static final double negativeTargetVelocity = -.25;    
     public static final double targetHeightLowered = 2; //.66294
     public static final double targetHeightLifted = 1.9;
     public static final double limlightAngleLow = 15;

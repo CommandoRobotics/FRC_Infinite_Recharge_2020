@@ -33,17 +33,14 @@ public final class ConstantsPorts {
     public static final int colorWheelPort = 5;
     public static final int funnelMotorPort = 6;
 
-
-
     //Solenoids 
+    public static final int lockPortB = 0;
+    public static final int releasePortA = 1;
+    public static final int lockPortA = 2;
+    public static final int releasePortB = 3;
     public static final int intakeLifterPort = 4;
     public static final int colorWheelPistonPort = 5;
     public static final int panelPort = 6;
-    public static final int lockPortA = 2;
-    public static final int lockPortB = 0;
-    public static final int releasePortA = 1;
-    public static final int releasePortB = 3;
-
 
     //CAN Device #'s
     public static final int shooterTopMasterID = 2;
@@ -53,12 +50,14 @@ public final class ConstantsPorts {
     public static final int panID = 2;
     public static final int tiltID = 0;
 
-
     //Servos
     public static final int rightRopeReleasePort = 8;
     public static final int leftRopeReleasePort = 7;
 
     //Sensors
+    public static final I2C.Port colorWheelSensorPort = I2C.Port.kOnboard;
+
+    //Encoders
     public static final int leftDriveEncAPort = 0;
     public static final int leftDriveEncBPort = 1;
     public static final int rightDriveEncAPort = 2;
@@ -68,9 +67,8 @@ public final class ConstantsPorts {
     public static final int panEncBPort = 5;
     public static final int colorWheelEncAPort = 11;
     public static final int colorWheelEncBPort = 12;
-    public static final I2C.Port colorWheelSensorPort = I2C.Port.kOnboard;
 
-    // Limit Switches
+    //Limit Switches
     public static final int shooterTiltLimitSwitch = 7;
     public static final int shooterPanLimitSwitch = 8;
 }

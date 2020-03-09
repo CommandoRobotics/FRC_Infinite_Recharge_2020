@@ -9,9 +9,9 @@ public class ProjectileMathAPI {
 
     int FIND_ANGLE_MODE = 0;
     int FIND_VELOCITY_MODE = 1;
-    int METRIC_MODE = 0;
-    int FEET_MODE = 1;
-    int INCH_MODE = 2;
+    public int METRIC_MODE = 0;
+    public int FEET_MODE = 1;
+    public int INCH_MODE = 2;
     double yTotal; 
     double vyInitial;
     double vxIntital;
@@ -53,14 +53,14 @@ public class ProjectileMathAPI {
     }
 
     /**
-     * This takes a distance from a target and returns a scaled velocity in the double[] from the one given by 
-     * calculateInitialVelocityAndAngle(). This is used to slightly over adjust the speed to ensure proper travel
-     * as drag and wheel slow down is not factored into calculateInitialVelocityAndAngle(). Scales differently
-     * depending on distance
+     * This takes a distance from a target and returns a scaled velocity given bycalculateInitialVelocityAndAngle(). 
+     * This is used to slightly over adjust the speed to ensure proper travel as drag and wheel slow down is not
+     * factored into calculateInitialVelocityAndAngle(). Scales differently depending on distance
+     * 
      * @param velocityAndAngle The double array from calculateInitialVelocityAndAngle()
      * @param distanceToTarget The direct distance to the target read directly from the limelight
-     * @param mode METRIC_MODE: Scales assuming meter inputs. FEET_MODE: Scales assuming feet inputs. INCH_MODE
-     *             Scales assuming inch inputs
+     * @param mode             METRIC_MODE: Scales assuming meter inputs. FEET_MODE: Scales assuming feet inputs. INCH_MODE
+     *                         Scales assuming inch inputs
      * @return The double[] inputted but with double[2] now containing the scaled initial required velocity
      */
     public double[] scaleVelocity(double[] velocityAndAngle, double distanceToTarget, double mode) {

@@ -21,7 +21,9 @@ public final class ConstantsPID {
     
     //Constants Used for PID and tuning
 
-    //Drive Feedforward
+    //Drive Feedforward and PID
+    public static final double kDriveP = .02;
+    public static final double kDriveD = 0;
     public static final double ksVolts = 0;
     public static final double kvVoltSecondsPerMeter = 0;
     public static final double kaVoltSecondsSquaredPerMeter = 0;
@@ -33,24 +35,26 @@ public final class ConstantsPID {
     public static final double trackWidthMeters = 1;
     public static final DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(trackWidthMeters);
 
-    public static final double kDriveP = .02;
-
+    //ColorWheel PID
     public static final double colorWheelP = 1;
     public static final double colorWheelI = 1;
     public static final double colorWheelD = 1;
     public static final double colorWheelTolerance = 1;
     
-    //AutoAim PID
+    //Pan PID
     public static final double kPanP = .01;
     public static final double kPanI = 0;
     public static final double kPanD = .001;
+    public static final double panTolerance = 3;
+
+    //Tilt PID
     public static final double kTiltP = .001;
     public static final double kTiltI = 0;
     public static final double kTiltD = .0001;
-    public static final double tiltTolerance = 2;
-    public static final double panTolerance = 3;
+    public static final double tiltTolerance = 1;
 
-    //Shooter PID
+    //TODO Calculate These
+    //Shooter FeedForward and PID
     public static final double kP = 0.00003;
     public static final double kI = 0;
     public static final double kD = 0.00008;

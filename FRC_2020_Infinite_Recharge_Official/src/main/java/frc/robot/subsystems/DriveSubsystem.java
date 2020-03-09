@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Spark;
@@ -26,7 +25,6 @@ import frc.robot.ConstantsValues;
 
 public class DriveSubsystem extends SubsystemBase {
 
-  //TODO Decide on what encoder types to use
   //Make a drive with voltage subsystem
 
   Spark leftMotors;
@@ -43,8 +41,6 @@ public class DriveSubsystem extends SubsystemBase {
   
   PIDController straightPID;
 
-
-  //TODO Create a gyro properly and decide on which one we need
   AHRS navX;
 
 

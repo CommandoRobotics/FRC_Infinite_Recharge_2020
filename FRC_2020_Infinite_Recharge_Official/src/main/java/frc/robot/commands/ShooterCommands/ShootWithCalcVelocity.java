@@ -33,27 +33,26 @@ public class ShootWithCalcVelocity extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (shooterSubsystem.riserActive) {
-      shooterSubsystem.setShooterTarget(
-        projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
-                                        projectileMath.calculateInitialVelocityAndAngle(
-                                          shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted, false), 
-                                          ConstantsValues.targetHeightLifted)[0]
-      ));
-    } else {
-      shooterSubsystem.setShooterTarget(
-        projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius,
-                                        projectileMath.calculateInitialVelocityAndAngle(
-                                          shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLowered, false), 
-                                          ConstantsValues.targetHeightLowered)[0]
-      ));
-    }
-    
+    //Get the distance from target
+    double limelightDistance = shooterSubsystem.getLimelightDis(ConstantsValues.targetHeightLifted, false);
+
+    //Get the scaled velocity based on this distance
+    double[] scaledVelocity = projectileMath.scaleVelocity(projectileMath.calculateInitialVelocityAndAngle(limelightDistance, ConstantsValues.targetHeightLifted),
+                                                           limelightDistance,
+                                                           projectileMath.METRIC_MODE);
+
+    //Then find the targetRPM using wheel radius and the target M/sec
+    double targetRPM = projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius, scaledVelocity[2]);
+
+    //Now set the shooter target to that RPM
+    shooterSubsystem.setShooterTarget(targetRPM);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    shooterSubsystem.setShooterTarget(0);
+    shooterSubsystem.stopShooter();
   }
 
   // Returns true when the command should end.

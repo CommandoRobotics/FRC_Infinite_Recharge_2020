@@ -8,7 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -65,7 +64,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    
 
   }
 
@@ -109,11 +107,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    if (Timer.getMatchTime() < 1) {
-      m_robotContainer.scheduleClimbLock();
-    }
-
-    m_robotContainer.checkAutoToggles();
   }
 
   @Override

@@ -5,41 +5,40 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.IndexCommands;
+package frc.robot.commands.DEBUG;
 
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.IndexSubsystem;
 
-public class ExpellAllInIndex extends CommandBase {
-  
-  IndexSubsystem indexSubsystem;
-  boolean finished;
+public class ToggleLimelightLEDs extends CommandBase {
 
-  public ExpellAllInIndex(IndexSubsystem indexSubsystem) {
-    addRequirements(indexSubsystem);
+  NetworkTable limelight;
+
+  public ToggleLimelightLEDs(NetworkTable limelight) {
+    this.limelight = limelight;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    limelight.getEntry("pipeline").setNumber(1);
+    System.out.println("REACHED pipeline");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    indexSubsystem.expellAll();
-    finished = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    indexSubsystem.stopAllIndexMotors();
+    limelight.getEntry("ledMode").setNumber(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finished;
+    return false;
   }
 }
