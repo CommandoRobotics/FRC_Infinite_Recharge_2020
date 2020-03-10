@@ -24,6 +24,8 @@ public final class ConstantsPID {
     //Drive Feedforward and PID
     public static final double kDriveP = .02;
     public static final double kDriveD = 0;
+    public static final double kDriveEncTolerance = 2;
+    public static final double kDriveVelocityTolerance = 1;
     public static final double ksVolts = 0;
     public static final double kvVoltSecondsPerMeter = 0;
     public static final double kaVoltSecondsSquaredPerMeter = 0;

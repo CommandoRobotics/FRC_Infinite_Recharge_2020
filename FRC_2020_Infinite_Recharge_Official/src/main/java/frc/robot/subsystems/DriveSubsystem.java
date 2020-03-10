@@ -39,7 +39,8 @@ public class DriveSubsystem extends SubsystemBase {
   double previousOutputLeftPercent;
   double previousOutputRightPercent;
   
-  PIDController straightPID;
+  PIDController alwaysStraightPID;
+  double targetAngle;
 
   AHRS navX;
 
@@ -63,7 +64,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     dOdometry = new DifferentialDriveOdometry(Rotation2d.fromDegrees(getHeading()));
 
-    straightPID = new PIDController(ConstantsPID.kDriveP, 0,0);
+    alwaysStraightPID = new PIDController(ConstantsPID.kDriveP, 0, ConstantsPID.kDriveD);
+    alwaysStraightPID.setTolerance(.5);
   }
 
   //BASIC DRIVE METHODS
@@ -105,6 +107,18 @@ public class DriveSubsystem extends SubsystemBase {
   /**Drives in Arcade Mode with direct inputs */
   public void driveArcade(double power, double rotation) {
     drive.arcadeDrive(power, rotation);   
+  }
+  
+  public void setTargetStraightAngle(double targetAngle) {
+    this.targetAngle = targetAngle;
+  }
+
+  public void driveStraightWithPIDCorrection(double leftPower, double rightPower) {
+    alwaysStraightPID.setSetpoint(targetAngle);
+    driveTank(
+      leftPower + alwaysStraightPID.calculate(navX.getYaw()),
+      rightPower - alwaysStraightPID.calculate(navX.getYaw())
+    );
   }
 
    /**
