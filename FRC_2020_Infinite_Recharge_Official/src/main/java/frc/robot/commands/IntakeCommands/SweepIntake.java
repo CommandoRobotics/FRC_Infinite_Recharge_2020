@@ -5,21 +5,19 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.IntakeCommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LifterSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 
-public class ToggleLifter extends CommandBase {
-  /**
-   * Creates a new ToggleLifter.
-   */
-  private LifterSubsystem lifterSubsystem;
-  private boolean finished = false;
+public class SweepIntake extends CommandBase {
 
-  public ToggleLifter(LifterSubsystem sub) {
-    lifterSubsystem = sub;
-    addRequirements(sub);
+  IntakeSubsystem intakeSubsystem;
+
+  public SweepIntake(IntakeSubsystem intakeSubsystem) {
+    this.intakeSubsystem = intakeSubsystem;
+    addRequirements(intakeSubsystem);
+
   }
 
   // Called when the command is initially scheduled.
@@ -30,18 +28,18 @@ public class ToggleLifter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    lifterSubsystem.toggleLifter();
-    finished = true;
+    intakeSubsystem.sweep();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    intakeSubsystem.stopIntake();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finished;
+    return false;
   }
 }

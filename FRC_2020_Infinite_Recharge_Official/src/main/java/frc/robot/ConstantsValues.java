@@ -20,24 +20,67 @@ public final class ConstantsValues {
     //Constants used as variables for things like speeds etc.
     
     //VARIABLES
-    //Distance Per Pulses
-    public static final int driveDisPerPulse = 0;
-    public static final double shooterInDisPerPulse = 0;
-    public static final double shooterMeterDisPerPulse = 0;
+    //Distance Per Pulses and PPR
+    public static final int drivePPR = 2048;
+    public static final double driveDisPerPulse = drivePPR/(6*Math.PI);
+    public static final double shooterTInDisPerPulse = 0;
+    public static final int shooterCPR = 8192;
+    public static final double shooterBInDisPerPulse = 0;
+    public static final double shooterTMeterDisPerPulse = 0;
     public static final double tiltDisPerPulse = 0;
     public static final double panDisPerPulse = 0;
+    public static final double tiltCounterTicks = 179;
+    public static final double panEncPPR = 4096;
+    public static final double colorMotorDisPerPulse = 0;
+    public static final double colorWheelEncPPR = 1;
 
-    //Min speeds
+    //Max and min speeds and angles
     public static final double genericMinSpeed = .1;
-    public static final double shooterMinSpeed = .1;
+    public static final double shooterTMinSpeed = .1;
+    public static final double shooterBMinSpeed = .1;
     public static final double loaderMinSpeed = .1;
     public static final double panMinSpeed = .1;
     public static final double tiltMinSpeed = .1;
+    public static final double minTiltAngle = 46;
+    public static final double maxTiltAngle = 80;
+    public static final double minPanAngle = -90;
+    public static final double maxPanAngle = 90;
+    public static final double tiltDefaultPos = 46;
+    
+    //Drive Constants
+    public static final boolean gyroReversed = false;
+    public static final boolean rightEncReversed = false;
+    public static final double driveRampRate = .1;
 
+    // Home Speeds
+    public static final double tiltHomeSpeed = -0.3;
+    public static final double panHomeSpeed = 0.3;
+
+    //Index Speeds
+    public static final double funnelInSpeed = .5;
+    public static final double indexInSpeed = 1;
+
+    //Climb Speeds
+    public static final double climbDriveSpeed = .8;
 
     //Misc.
-    public static final double intakeSpeed = 0.5;
+    public static final double intakeSpeed = 0.7;
+    public static final double sweepSpeed = -0.7;
+    public static final double expellSpeed = 0.7;
     public static final double axisThreshold = .08;
+    public static final double acceleration = -9.8; 
+    public static final double negativeTargetVelocity = -.25;    
+    public static final double targetHeightLowered = 2; //.66294
+    public static final double targetHeightLifted = 1.9;
+    public static final double limlightAngleLow = 15;
+    public static final double limlightAngleHigh = 15;
+    public static final double funnelLowSpeed = 0.5;
     
+    public static final double distanceFromCenterOfColorWheelInInches = 0;
+    public static final int colorWheelGearboxRatio = 1; // As x:1
+    public static final int colorWheelDiameterInInches = 3; // The diameter of the wheel that is touching the control panel, given in inches.
+    public static final int colorWheelEncoderCountsPerRevolution =1000;
+    public static final double colorWheelRotationsToSpinWhenPositioning = 4;
+    public static final double shooterWheelRadius = 1;
     
 }

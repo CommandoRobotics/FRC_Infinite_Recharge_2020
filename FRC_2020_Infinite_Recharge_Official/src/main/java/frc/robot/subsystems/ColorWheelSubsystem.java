@@ -10,17 +10,20 @@ package frc.robot.subsystems;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.ConstantsPorts;
 
 public class ColorWheelSubsystem extends SubsystemBase {
   
   Spark colorSensorTurner;
   Encoder colorEncoder;
   ColorSensorV3 colorSensor;
+  Solenoid colorPiston;
 
   public ColorWheelSubsystem() {
-      //FOR ISAAC INGRAM 
+      colorPiston = new Solenoid(ConstantsPorts.colorWheelPistonPort);
   }
 
   @Override

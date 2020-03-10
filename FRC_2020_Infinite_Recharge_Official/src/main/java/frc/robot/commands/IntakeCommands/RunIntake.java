@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.IntakeCommands;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
