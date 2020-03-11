@@ -1,0 +1,5 @@
+sudo: required
+language: java
+
+script:
+  ./FRC_2020_Infinite_Recharge_Official/gradlew build
