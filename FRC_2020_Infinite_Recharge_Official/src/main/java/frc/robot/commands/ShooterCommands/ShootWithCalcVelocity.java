@@ -10,7 +10,6 @@ package frc.robot.commands.ShooterCommands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.ConstantsValues;
 import frc.robot.APIs.ProjectileMathAPI;
-import frc.robot.subsystems.IndexSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ShootWithCalcVelocity extends CommandBase {
@@ -51,9 +50,7 @@ public class ShootWithCalcVelocity extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (!interrupted) {
-      shooterSubsystem.setLights(false);
-    }
+    shooterSubsystem.setLights(false);
     shooterSubsystem.setShooterRPMTarget(0);
     shooterSubsystem.stopShooter();
   }

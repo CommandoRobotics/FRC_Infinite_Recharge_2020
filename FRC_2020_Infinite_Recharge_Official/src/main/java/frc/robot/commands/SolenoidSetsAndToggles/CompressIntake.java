@@ -18,7 +18,6 @@ public class CompressIntake extends SequentialCommandGroup {
   /**
    * Creates a new CompressIntake.
    */
-  //TODO test this command
   public CompressIntake(LifterSubsystem lifterSubsystem) {
     addCommands(
       //Retract the pannel first

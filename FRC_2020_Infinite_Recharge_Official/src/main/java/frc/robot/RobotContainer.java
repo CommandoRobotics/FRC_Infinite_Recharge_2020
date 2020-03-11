@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import java.security.PrivateKey;
-
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.*;
@@ -29,6 +27,7 @@ import frc.robot.subsystems.*;
 import frc.robot.subsystems.ShooterSubsystem.ShooterMode;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.commands.SolenoidSetsAndToggles.CompressIntake;
 import frc.robot.commands.SolenoidSetsAndToggles.ReleaseIntake;
@@ -178,10 +177,14 @@ public class RobotContainer {
       .whenInactive(indexSubsystem::stopAllIndexMotors);
 
 
-    //Right Trigger: Set the Target Speed based on the ShooterMode TODO if Auto aim active
+    //Right Trigger: Set the Target Speed based on the ShooterMode (I FREAKING LOVE COMMAND BASED) TODO if Auto aim active
     //TODO ADD LIGHTS TO AUTOAIM AND SHOOTER SUBSYSTEM TO GO TO RED, BLINKING GREEN, TO GREEN AND A DEFAULT COLOR
+    //TODO for the limelight LEDs I might just switch them on and off with an InstantCommand to avoid dealing with interuptibility
     //When trigger not pressed, kill the shooter
-    operatorRightTrigger.whenInactive(shooterSubsystem::stopShooter, shooterSubsystem);
+    operatorRightTrigger.whenInactive(
+      new ParallelCommandGroup(
+                          new InstantCommand(shooterSubsystem::stopShooter, shooterSubsystem),
+                          new InstantCommand(autoAimSubsystem::stopPanner, autoAimSubsystem)));
 
     //If in manual mode, set the shooter using cycleSpeeds (the ALT command of Right Bumper)
     operatorRightTrigger.and(shooterManualMode)
@@ -189,7 +192,8 @@ public class RobotContainer {
     
     //If in AutoAim mode, set the shooter using the projectileMath command/API and the limelight
     operatorRightTrigger.and(shooterAutoAimMode)
-      .whileActiveContinuous(new ShootWithCalcVelocity(shooterSubsystem), true);
+      .whileActiveContinuous(new ShootWithCalcVelocity(shooterSubsystem), true)
+      .whileActiveContinuous(new AutoPan(autoAimSubsystem), true);
 
     //If in trench mode, set the shooter to the predetermined trenchRPM
     operatorRightTrigger.and(shooterTrenchMode)
