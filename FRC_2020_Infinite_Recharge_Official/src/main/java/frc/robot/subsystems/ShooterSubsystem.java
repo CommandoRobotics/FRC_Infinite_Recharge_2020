@@ -26,6 +26,22 @@ import frc.robot.ConstantsValues;
 
 public class ShooterSubsystem extends SubsystemBase {
 
+  public enum ShooterMode {
+    manual("Manual Mode"),
+    autoVelocity("AutoVelocity Mode"),
+    fromTrench("Trench Mode"),
+    closeAndPersonal("Up Close And Personal");
+
+    @SuppressWarnings({"MemberName", "PMD.SingularField"})
+    public final String value;
+
+    ShooterMode(String value) {
+      this.value = value;
+    }
+  }
+
+  ShooterMode shooterMode = ShooterMode.manual;
+
   CANSparkMax shooterTopMaster;
   VictorSPX shooterTopSlave;
   CANSparkMax shooterBottomMaster;
@@ -73,20 +89,19 @@ public class ShooterSubsystem extends SubsystemBase {
     topPIDController.setI(ConstantsPID.kITop);
     topPIDController.setD(ConstantsPID.kDTop);
     topPIDController.setIZone(ConstantsPID.kIZoneTop);
-    topPIDController.setFF(ConstantsPID.kFFTop);
     topPIDController.setOutputRange(ConstantsPID.kMinTop, ConstantsPID.kMaxTop);
 
     bottomPIDController.setP(ConstantsPID.kPBottom);
     bottomPIDController.setI(ConstantsPID.kIBottom);
     bottomPIDController.setD(ConstantsPID.kDBottom);
     bottomPIDController.setIZone(ConstantsPID.kIZoneBottom);
-    bottomPIDController.setFF(ConstantsPID.kFFBottom);
     bottomPIDController.setOutputRange(ConstantsPID.kMinBottom, ConstantsPID.kMaxBottom);
 
     loaderMinSpeed = ConstantsValues.loaderMinSpeed;
     shooterTopMinSpeed = ConstantsValues.shooterTMinSpeed;
 
-    //topFF = new SimpleMotorFeedforward(ConstantsPID.ks, kv)
+    topFF = new SimpleMotorFeedforward(ConstantsPID.kSTop, ConstantsPID.kVTop, ConstantsPID.kATop);
+    bottomFF = new SimpleMotorFeedforward(ConstantsPID.kSBottom, ConstantsPID.kVBottom, ConstantsPID.kABottom);
 
     limelight = m_limelight;
   }
@@ -94,7 +109,7 @@ public class ShooterSubsystem extends SubsystemBase {
   /**Set the shooterTop to a certain inputted speed
    * given that the input speed is greater than the minSpeed
    */
-  public void setShooter(double speed) {
+  public void setShooterSpeed(double speed) {
     if (speed > shooterTopMinSpeed) {
       shooterTopMaster.set(speed);
       shooterBottomMaster.set(speed * .9);
@@ -105,12 +120,24 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void setShooterCycleSpeeds() {
-    shooterTopMaster.set(cycleSpeed);
-    shooterBottomMaster.set(cycleSpeed * .9);
+    shooterTopMaster.set(cycleSpeed * .9);
+    shooterBottomMaster.set(cycleSpeed);
+  }
+
+  /**Sets the shooter RPM and feedforward vlaues for that target RPM*/
+  public void setShooterRPMTarget(double targetRPM) {
+    topPIDController.setFF(topFF.calculate(targetRPM*.9/60));
+    bottomPIDController.setFF(bottomFF.calculate(targetRPM/60));
+    topPIDController.setReference(targetRPM*.9, ControlType.kVelocity);
+    bottomPIDController.setReference(targetRPM, ControlType.kVelocity);
+    SmartDashboard.putNumber("TARGET TOP RPM", targetRPM * .9);
+    SmartDashboard.putNumber("TARGET BOTOM RPM", targetRPM);
   }
 
   /**Stops the shooter motors */
   public void stopShooter() {
+    topPIDController.setReference(0, ControlType.kVelocity);
+    bottomPIDController.setReference(0, ControlType.kVelocity);
     shooterTopMaster.stopMotor();
     shooterBottomMaster.stopMotor();
   }
@@ -131,13 +158,6 @@ public class ShooterSubsystem extends SubsystemBase {
   /**Overrides the min speed the loader will run */
   public void setMinLoaderSpeed(double speed) {
     loaderMinSpeed = speed;
-  }
-
-  public void setShooterTarget(double targetRPM) {
-    topPIDController.setReference(targetRPM, ControlType.kVelocity);
-    bottomPIDController.setReference(targetRPM *.9, ControlType.kVelocity);
-    SmartDashboard.putNumber("TARGET RPM", targetRPM);
-    SmartDashboard.putNumber("TARGET OUTPUT", shooterTopMaster.getClosedLoopRampRate());
   }
 
   //LIMELIGHT THINGS
@@ -195,14 +215,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void cycleSpeeds() {
     if (cycleSpeed == 0) {
-      cycleSpeed = .1;
-    } else if (cycleSpeed == .1) {
-      cycleSpeed = .25;
-    } else if (cycleSpeed == .25){
-      cycleSpeed = .35;
-    } else if (cycleSpeed == .35) {
-      cycleSpeed = .40;
-    } else if (cycleSpeed == .40) {
+      cycleSpeed = .2;
+    } else if (cycleSpeed == .2){
+      cycleSpeed = .3;
+    } else if (cycleSpeed == .3) {
+      cycleSpeed = .4;
+    } else if (cycleSpeed == .4) {
       cycleSpeed = .5;
     } else if (cycleSpeed == .5) {
       cycleSpeed = .75;
@@ -211,8 +229,28 @@ public class ShooterSubsystem extends SubsystemBase {
     } else if (cycleSpeed == 1) {
       cycleSpeed = 0;
     }
-
   }
+
+  public void cycleShooterMode() {
+    if (shooterMode == ShooterMode.manual) {
+      shooterMode = ShooterMode.autoVelocity;
+    } else if (shooterMode == ShooterMode.autoVelocity) {
+      shooterMode = ShooterMode.fromTrench;
+    } else if (shooterMode == ShooterMode.fromTrench) {
+      shooterMode = ShooterMode.closeAndPersonal;
+    } else if (shooterMode == ShooterMode.closeAndPersonal) {
+      shooterMode = ShooterMode.manual;
+    }
+  }
+
+  public void setShooterMode(ShooterMode shooterMode) {
+    this.shooterMode = shooterMode;
+  }
+
+  public ShooterMode getShooterMode() {
+    return shooterMode;
+  }
+
 
   
 
@@ -227,5 +265,6 @@ public class ShooterSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("shooterRPM Bottom", shooterBottomEnc.getVelocity());
     SmartDashboard.putNumber("Current SPEED", cycleSpeed);
     SmartDashboard.putNumber("Limelight LED mode", limelight.getEntry("pipeline").getDouble(3));
+    SmartDashboard.putString("Shooter Mode", shooterMode.value);
   }
 }

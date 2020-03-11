@@ -19,6 +19,7 @@ import frc.robot.commands.ShooterCommands.*;
 import frc.robot.Triggers.*;
 import frc.robot.Triggers.TriggerPOV.POVDirection;
 import frc.robot.commands.AutoMain;
+import frc.robot.commands.DEBUG.SetShooter_DEBUG;
 import frc.robot.commands.DriveCommands.DriveStraightTime;
 import frc.robot.commands.DriveCommands.DriveTank;
 import frc.robot.commands.IntakeCommands.SweepIntake;
@@ -64,6 +65,7 @@ public class RobotContainer {
   
   //Buttons and triggers (mostly Objects created for ALT commands)
   private final TriggerTrigger operatorLeftTrigger = new TriggerTrigger(operatorController, Hand.kLeft, .1);
+  private final TriggerTrigger operatorRightTrigger = new TriggerTriggeropwercontroller, hand, deadZone)
   private final JoystickButton operatorBButton = new JoystickButton(operatorController, Button.kB.value);
   private final JoystickButton operatorYButton = new JoystickButton(operatorController, Button.kY.value);
 
@@ -90,7 +92,7 @@ public class RobotContainer {
     //autoAimSubsystem.setDefaultCommand(new AutoPan(autoAimSubsystem));
 
     //Make sure our PID targets are set to 0 so we dont get some wierd instant running
-    shooterSubsystem.setShooterTarget(0);
+    shooterSubsystem.setShooterRPMTarget(0);
 
     //And then finally wrap up our button binds
     configureButtonBindings();
@@ -247,10 +249,6 @@ public class RobotContainer {
       .whenActive(climbSubsystem::resetRopeRelease, climbSubsystem);
   }
 
-  public void disableLimelight() {
-    autoAimSubsystem.setLimeCameraMode(false);
-  }
-
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -258,7 +256,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DriveStraightTime(-.3, -.3, 5, driveSubsystem);
+    return new SetShooter_DEBUG(shooterSubsystem);//.andThen(new DriveStraightTime(-.3, -.3, 5, driveSubsystem));
     //return new AutoMain(driveSubsystem, shooterSubsystem, indexSubsystem, intakeSubsystem, lifterSubsystem);
   }
 }

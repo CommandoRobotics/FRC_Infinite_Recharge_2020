@@ -22,7 +22,7 @@ public class StopShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterSubsystem.setShooterTarget(0);
+    shooterSubsystem.setShooterRPMTarget(0);
     shooterSubsystem.stopShooter();
   }
 

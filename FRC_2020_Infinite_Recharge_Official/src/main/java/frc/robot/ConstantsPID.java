@@ -65,6 +65,9 @@ public final class ConstantsPID {
     public static final double kMaxTop = 1;
     public static final double kMinTop = -1;
     public static final double kSTop = .022;
+    public static final double kVTop = 0;
+    public static final double kATop = 0;
+    
 
     public static final double kPBottom = 0.181;
     public static final double kIBottom = 0;
@@ -73,4 +76,7 @@ public final class ConstantsPID {
     public static final double kFFBottom = 0;
     public static final double kMaxBottom = 1;
     public static final double kMinBottom = -1;
+    public static final double kSBottom = 0;
+    public static final double kVBottom = 0;
+    public static final double kABottom = 0;
 }

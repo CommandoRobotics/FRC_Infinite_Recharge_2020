@@ -45,13 +45,13 @@ public class ShootWithCalcVelocity extends CommandBase {
     double targetRPM = projectileMath.fromMPerSecToRPM(ConstantsValues.shooterWheelRadius, scaledVelocity[2]);
 
     //Now set the shooter target to that RPM
-    shooterSubsystem.setShooterTarget(targetRPM);
+    shooterSubsystem.setShooterRPMTarget(targetRPM);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.setShooterTarget(0);
+    shooterSubsystem.setShooterRPMTarget(0);
     shooterSubsystem.stopShooter();
   }
 

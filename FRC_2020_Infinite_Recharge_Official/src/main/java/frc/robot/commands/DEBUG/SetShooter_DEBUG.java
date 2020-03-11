@@ -28,13 +28,13 @@ public class SetShooter_DEBUG extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooterSubsystem.setShooterTarget(SmartDashboard.getNumber("ShooterSpeed", 0));
+    shooterSubsystem.setShooterRPMTarget(SmartDashboard.getNumber("ShooterTargetRPM", 0));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    shooterSubsystem.setShooterTarget(0);
+    shooterSubsystem.setShooterRPMTarget(0);
     shooterSubsystem.stopShooter();
   }
 

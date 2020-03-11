@@ -31,7 +31,7 @@ public class AutoMain extends SequentialCommandGroup {
     addCommands(
 
       //Set the shooter to .45 power
-      new InstantCommand(() -> shooterSubsystem.setShooter(.47), shooterSubsystem),
+      new InstantCommand(() -> shooterSubsystem.setShooterSpeed(.47), shooterSubsystem),
 
       //Wait one seconds to charge up
       new WaitCommand(1),
