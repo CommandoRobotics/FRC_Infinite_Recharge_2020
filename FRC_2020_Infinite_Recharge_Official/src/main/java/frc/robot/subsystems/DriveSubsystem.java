@@ -74,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
     double targetRight = previousOutputRightPercent;
 
     if (Math.abs(askingLeftPower - previousOutputLeftPercent) < ConstantsValues.driveRampRate) {
-      targetLeft = targetLeft + (askingLeftPower - previousOutputLeftPercent);
+      targetLeft = askingLeftPower;
     } else {
       if (askingLeftPower > previousOutputLeftPercent) {
         targetLeft = targetLeft + ConstantsValues.driveRampRate;
@@ -84,7 +84,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     if (Math.abs(askingRightPower - previousOutputRightPercent) < ConstantsValues.driveRampRate) {
-      targetRight = targetRight + (askingRightPower - previousOutputRightPercent);
+      targetRight = askingRightPower;
     } else {
       if (askingRightPower > previousOutputRightPercent) {
         targetRight = targetRight + ConstantsValues.driveRampRate;
