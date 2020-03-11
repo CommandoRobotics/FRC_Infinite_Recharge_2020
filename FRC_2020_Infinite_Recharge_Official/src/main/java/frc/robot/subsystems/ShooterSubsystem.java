@@ -17,6 +17,7 @@ import com.revrobotics.EncoderType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.ConstantsPID;
@@ -37,6 +38,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   CANPIDController topPIDController;
   CANPIDController bottomPIDController;
+
+  SimpleMotorFeedforward topFF;
+  SimpleMotorFeedforward bottomFF;
 
   double shooterTopMinSpeed;
   double loaderMinSpeed;
@@ -65,22 +69,24 @@ public class ShooterSubsystem extends SubsystemBase {
     topPIDController.setFeedbackDevice(shooterTopEnc);
     bottomPIDController.setFeedbackDevice(shooterBottomEnc);
 
-    topPIDController.setP(ConstantsPID.kP);
-    topPIDController.setI(ConstantsPID.kI);
-    topPIDController.setD(ConstantsPID.kD);
-    topPIDController.setIZone(ConstantsPID.kIZone);
-    topPIDController.setFF(ConstantsPID.kFF);
-    topPIDController.setOutputRange(ConstantsPID.kMin, ConstantsPID.kMax);
+    topPIDController.setP(ConstantsPID.kPTop);
+    topPIDController.setI(ConstantsPID.kITop);
+    topPIDController.setD(ConstantsPID.kDTop);
+    topPIDController.setIZone(ConstantsPID.kIZoneTop);
+    topPIDController.setFF(ConstantsPID.kFFTop);
+    topPIDController.setOutputRange(ConstantsPID.kMinTop, ConstantsPID.kMaxTop);
 
-    bottomPIDController.setP(ConstantsPID.kP);
-    bottomPIDController.setI(ConstantsPID.kI);
-    bottomPIDController.setD(ConstantsPID.kD);
-    bottomPIDController.setIZone(ConstantsPID.kIZone);
-    bottomPIDController.setFF(ConstantsPID.kFF);
-    bottomPIDController.setOutputRange(ConstantsPID.kMin, ConstantsPID.kMax);
+    bottomPIDController.setP(ConstantsPID.kPBottom);
+    bottomPIDController.setI(ConstantsPID.kIBottom);
+    bottomPIDController.setD(ConstantsPID.kDBottom);
+    bottomPIDController.setIZone(ConstantsPID.kIZoneBottom);
+    bottomPIDController.setFF(ConstantsPID.kFFBottom);
+    bottomPIDController.setOutputRange(ConstantsPID.kMinBottom, ConstantsPID.kMaxBottom);
 
     loaderMinSpeed = ConstantsValues.loaderMinSpeed;
     shooterTopMinSpeed = ConstantsValues.shooterTMinSpeed;
+
+    //topFF = new SimpleMotorFeedforward(ConstantsPID.ks, kv)
 
     limelight = m_limelight;
   }

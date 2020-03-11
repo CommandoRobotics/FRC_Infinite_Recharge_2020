@@ -57,11 +57,20 @@ public final class ConstantsPID {
 
     //TODO Calculate These
     //Shooter FeedForward and PID
-    public static final double kP = 0.00003;
-    public static final double kI = 0;
-    public static final double kD = 0.00008;
-    public static final double kIZone = 0;
-    public static final double kFF = 0.000009;
-    public static final double kMax = 1;
-    public static final double kMin = 0;
+    public static final double kPTop = 0.181;
+    public static final double kITop = 0;
+    public static final double kDTop = 0;
+    public static final double kIZoneTop = 0;
+    public static final double kFFTop = 0;
+    public static final double kMaxTop = 1;
+    public static final double kMinTop = -1;
+    public static final double kSTop = .022;
+
+    public static final double kPBottom = 0.181;
+    public static final double kIBottom = 0;
+    public static final double kDBottom = 0;
+    public static final double kIZoneBottom = 0;
+    public static final double kFFBottom = 0;
+    public static final double kMaxBottom = 1;
+    public static final double kMinBottom = -1;
 }

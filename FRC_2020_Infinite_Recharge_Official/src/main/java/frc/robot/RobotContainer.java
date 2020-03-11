@@ -19,6 +19,7 @@ import frc.robot.commands.ShooterCommands.*;
 import frc.robot.Triggers.*;
 import frc.robot.Triggers.TriggerPOV.POVDirection;
 import frc.robot.commands.AutoMain;
+import frc.robot.commands.DriveCommands.DriveStraightTime;
 import frc.robot.commands.DriveCommands.DriveTank;
 import frc.robot.commands.IntakeCommands.SweepIntake;
 import frc.robot.subsystems.*;
@@ -257,6 +258,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new AutoMain(driveSubsystem, shooterSubsystem, indexSubsystem, intakeSubsystem, lifterSubsystem);
+    return new DriveStraightTime(-.3, -.3, 5, driveSubsystem);
+    //return new AutoMain(driveSubsystem, shooterSubsystem, indexSubsystem, intakeSubsystem, lifterSubsystem);
   }
 }
