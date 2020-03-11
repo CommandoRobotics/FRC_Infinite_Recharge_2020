@@ -18,7 +18,7 @@ public class TriggerShooterMode extends Trigger {
 
     @Override
     public boolean get() {
-        return (modeToCheckFor == shooterSubsystem.getshooterMode());
+        return (modeToCheckFor == shooterSubsystem.getShooterMode());
     }
 
     

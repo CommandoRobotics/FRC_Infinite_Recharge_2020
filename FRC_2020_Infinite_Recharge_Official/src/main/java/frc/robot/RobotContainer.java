@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.security.PrivateKey;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.*;
@@ -24,6 +26,7 @@ import frc.robot.commands.DriveCommands.DriveStraightTime;
 import frc.robot.commands.DriveCommands.DriveTank;
 import frc.robot.commands.IntakeCommands.SweepIntake;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.ShooterSubsystem.ShooterMode;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -65,9 +68,13 @@ public class RobotContainer {
   
   //Buttons and triggers (mostly Objects created for ALT commands)
   private final TriggerTrigger operatorLeftTrigger = new TriggerTrigger(operatorController, Hand.kLeft, .1);
-  private final TriggerTrigger operatorRightTrigger = new TriggerTriggeropwercontroller, hand, deadZone)
+  private final TriggerTrigger operatorRightTrigger = new TriggerTrigger(operatorController, Hand.kRight, .1);
   private final JoystickButton operatorBButton = new JoystickButton(operatorController, Button.kB.value);
   private final JoystickButton operatorYButton = new JoystickButton(operatorController, Button.kY.value);
+  private final TriggerShooterMode shooterManualMode = new TriggerShooterMode(ShooterMode.manual, shooterSubsystem);
+  private final TriggerShooterMode shooterAutoVelocityMode = new TriggerShooterMode(ShooterMode.autoVelocity, shooterSubsystem);
+  private final TriggerShooterMode shooterTrenchMode = new TriggerShooterMode(ShooterMode.fromTrench, shooterSubsystem);
+  private final TriggerShooterMode shooterCloseAndPersonalMode = new TriggerShooterMode(ShooterMode.closeAndPersonal, shooterSubsystem);
 
   private final TriggerPOV operatorPOVDown = new TriggerPOV(operatorController, POVDirection.kDown);
 
@@ -171,9 +178,11 @@ public class RobotContainer {
 
 
     //Right Trigger: Set the Target Speed based on the cycleSpeedSelector or TODO if Auto aim active
-    new TriggerTrigger(operatorController, Hand.kRight, .1)
-      .whenActive(shooterSubsystem::setShooterCycleSpeeds, shooterSubsystem)
-      .whenInactive(shooterSubsystem::stopShooter, shooterSubsystem);
+
+
+    // new TriggerTrigger(operatorController, Hand.kRight, .1)
+    //   .whenActive(shooterSubsystem::setShooterCycleSpeeds, shooterSubsystem)
+    //   .whenInactive(shooterSubsystem::stopShooter, shooterSubsystem);
 
 
     //Left Bumper: Run funnel at a lowerish speed
