@@ -213,7 +213,8 @@ public class RobotContainer {
 
 
     //Right Bumper: Cycle between all target speeds
-    operatorRightBumper.whenActive(shooterSubsystem::cycleShooterMode, shooterSubsystem);
+    operatorRightBumper.and(operatorPOVDown.negate())
+    .whenActive(shooterSubsystem::cycleShooterMode, shooterSubsystem);
 
 
     //A Button: Run the AutoAim Home command to start the automatic aim recenter
