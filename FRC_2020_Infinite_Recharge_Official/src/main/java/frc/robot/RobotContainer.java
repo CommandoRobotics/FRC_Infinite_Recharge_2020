@@ -71,8 +71,9 @@ public class RobotContainer {
   private final TriggerTrigger operatorRightTrigger = new TriggerTrigger(operatorController, Hand.kRight, .1);
   private final JoystickButton operatorBButton = new JoystickButton(operatorController, Button.kB.value);
   private final JoystickButton operatorYButton = new JoystickButton(operatorController, Button.kY.value);
+  private final JoystickButton operatorRightBumper = new JoystickButton(operatorController, Button.kBumperRight.value);
   private final TriggerShooterMode shooterManualMode = new TriggerShooterMode(ShooterMode.manual, shooterSubsystem);
-  private final TriggerShooterMode shooterAutoVelocityMode = new TriggerShooterMode(ShooterMode.autoVelocity, shooterSubsystem);
+  private final TriggerShooterMode shooterAutoAimMode = new TriggerShooterMode(ShooterMode.autoAim, shooterSubsystem);
   private final TriggerShooterMode shooterTrenchMode = new TriggerShooterMode(ShooterMode.fromTrench, shooterSubsystem);
   private final TriggerShooterMode shooterCloseAndPersonalMode = new TriggerShooterMode(ShooterMode.closeAndPersonal, shooterSubsystem);
 
@@ -177,12 +178,28 @@ public class RobotContainer {
       .whenInactive(indexSubsystem::stopAllIndexMotors);
 
 
-    //Right Trigger: Set the Target Speed based on the cycleSpeedSelector or TODO if Auto aim active
+    //Right Trigger: Set the Target Speed based on the ShooterMode TODO if Auto aim active
+    //TODO ADD LIGHTS TO AUTOAIM AND SHOOTER SUBSYSTEM TO GO TO RED, BLINKING GREEN, TO GREEN AND A DEFAULT COLOR
+    //When trigger not pressed, kill the shooter
+    operatorRightTrigger.whenInactive(shooterSubsystem::stopShooter, shooterSubsystem);
 
+    //If in manual mode, set the shooter using cycleSpeeds (the ALT command of Right Bumper)
+    operatorRightTrigger.and(shooterManualMode)
+      .whenActive(shooterSubsystem::setShooterCycleSpeeds, shooterSubsystem);
+    
+    //If in AutoAim mode, set the shooter using the projectileMath command/API and the limelight
+    operatorRightTrigger.and(shooterAutoAimMode)
+      .whileActiveContinuous(new ShootWithCalcVelocity(shooterSubsystem), true);
 
-    // new TriggerTrigger(operatorController, Hand.kRight, .1)
-    //   .whenActive(shooterSubsystem::setShooterCycleSpeeds, shooterSubsystem)
-    //   .whenInactive(shooterSubsystem::stopShooter, shooterSubsystem);
+    //If in trench mode, set the shooter to the predetermined trenchRPM
+    operatorRightTrigger.and(shooterTrenchMode)
+      .whenActive(() -> shooterSubsystem.setShooterRPMTarget(ConstantsValues.trenchRPM), shooterSubsystem);
+
+    //If in closeAndPersonal mode, set the shooter to the predetermined up close RPM
+    operatorRightTrigger.and(shooterCloseAndPersonalMode)
+      .whenActive(() -> shooterSubsystem.setShooterRPMTarget(ConstantsValues.closeAndPersonalRPM), shooterSubsystem);
+      //TODO add in autoAim code as well .whileActiveContinuous(new angleForCloseAndPersonal)
+
 
 
     //Left Bumper: Run funnel at a lowerish speed
@@ -192,8 +209,7 @@ public class RobotContainer {
 
 
     //Right Bumper: Cycle between all target speeds
-    new JoystickButton(operatorController, Button.kBumperRight.value)
-      .whenActive(shooterSubsystem::cycleSpeeds, shooterSubsystem);
+    operatorRightBumper.whenActive(shooterSubsystem::cycleShooterMode, shooterSubsystem);
 
 
     //A Button: Run the AutoAim Home command to start the automatic aim recenter
@@ -256,6 +272,10 @@ public class RobotContainer {
     //POVDown and B Button: Resets the rope release to its starting position
     operatorPOVDown.and(operatorBButton)
       .whenActive(climbSubsystem::resetRopeRelease, climbSubsystem);
+
+    //POVDown and Right Bumper: Cycle between all manual target speeds 
+    operatorPOVDown.and(operatorRightBumper)
+      .whenActive(shooterSubsystem::cycleSpeeds, shooterSubsystem);
   }
 
   /**

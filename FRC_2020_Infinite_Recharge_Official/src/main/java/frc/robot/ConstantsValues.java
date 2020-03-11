@@ -56,6 +56,10 @@ public final class ConstantsValues {
     public static final double tiltHomeSpeed = -0.3;
     public static final double panHomeSpeed = 0.3;
 
+    //ShooterMode target RPMs
+    public static final double trenchRPM = 9000;
+    public static final double closeAndPersonalRPM = 5000;
+
     //Index Speeds
     public static final double funnelInSpeed = .5;
     public static final double indexInSpeed = 1;

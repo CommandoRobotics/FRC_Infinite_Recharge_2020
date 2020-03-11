@@ -16,18 +16,18 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ShootWithCalcVelocity extends CommandBase {
 
   ShooterSubsystem shooterSubsystem;
-  IndexSubsystem indexSubsystem;
   ProjectileMathAPI projectileMath;
   
-  public ShootWithCalcVelocity(ShooterSubsystem m_shooterSubsystem, IndexSubsystem m_indexSubsystem) {
+  public ShootWithCalcVelocity(ShooterSubsystem m_shooterSubsystem) {
     shooterSubsystem = m_shooterSubsystem;
-    indexSubsystem = m_indexSubsystem;
-    addRequirements(m_shooterSubsystem, m_indexSubsystem);
+    addRequirements(m_shooterSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    shooterSubsystem.setLights(true);
+    System.out.println("Starting AutoVelocity");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -51,6 +51,9 @@ public class ShootWithCalcVelocity extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    if (!interrupted) {
+      shooterSubsystem.setLights(false);
+    }
     shooterSubsystem.setShooterRPMTarget(0);
     shooterSubsystem.stopShooter();
   }

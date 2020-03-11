@@ -28,7 +28,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public enum ShooterMode {
     manual("Manual Mode"),
-    autoVelocity("AutoVelocity Mode"),
+    autoAim("AutoAim Mode"),
     fromTrench("Trench Mode"),
     closeAndPersonal("Up Close And Personal");
 
@@ -130,8 +130,8 @@ public class ShooterSubsystem extends SubsystemBase {
     bottomPIDController.setFF(bottomFF.calculate(targetRPM/60));
     topPIDController.setReference(targetRPM*.9, ControlType.kVelocity);
     bottomPIDController.setReference(targetRPM, ControlType.kVelocity);
-    SmartDashboard.putNumber("TARGET TOP RPM", targetRPM * .9);
-    SmartDashboard.putNumber("TARGET BOTOM RPM", targetRPM);
+    SmartDashboard.putNumber("TOP TARGET RPM", targetRPM * .9);
+    SmartDashboard.putNumber("BOTOM TARGET RPM", targetRPM);
   }
 
   /**Stops the shooter motors */
@@ -233,8 +233,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void cycleShooterMode() {
     if (shooterMode == ShooterMode.manual) {
-      shooterMode = ShooterMode.autoVelocity;
-    } else if (shooterMode == ShooterMode.autoVelocity) {
+      shooterMode = ShooterMode.autoAim;
+    } else if (shooterMode == ShooterMode.autoAim) {
       shooterMode = ShooterMode.fromTrench;
     } else if (shooterMode == ShooterMode.fromTrench) {
       shooterMode = ShooterMode.closeAndPersonal;
@@ -261,10 +261,10 @@ public class ShooterSubsystem extends SubsystemBase {
                            shooterBottomMaster.get());
     shooterTopSlave.set(ControlMode.PercentOutput, 
                         shooterTopMaster.get());
-    SmartDashboard.putNumber("shooterRPM Top", shooterBottomEnc.getVelocity());
-    SmartDashboard.putNumber("shooterRPM Bottom", shooterBottomEnc.getVelocity());
-    SmartDashboard.putNumber("Current SPEED", cycleSpeed);
-    SmartDashboard.putNumber("Limelight LED mode", limelight.getEntry("pipeline").getDouble(3));
     SmartDashboard.putString("Shooter Mode", shooterMode.value);
+    SmartDashboard.putNumber("shooterRPM Top", shooterTopEnc.getVelocity());
+    SmartDashboard.putNumber("shooterRPM Bottom", shooterBottomEnc.getVelocity());
+    SmartDashboard.putNumber("Current Manual Speed", cycleSpeed);
+    SmartDashboard.putNumber("Limelight LED mode", limelight.getEntry("pipeline").getDouble(3));
   }
 }
