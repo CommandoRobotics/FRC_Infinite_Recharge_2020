@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ShooterCommands.*;
 import frc.robot.Triggers.*;
-import frc.robot.Triggers.TriggerPOV.POVDirection;
 import frc.robot.commands.AutoMain;
 import frc.robot.commands.DEBUG.SetShooter_DEBUG;
 import frc.robot.commands.DriveCommands.DriveStraightTime;
@@ -76,7 +75,7 @@ public class RobotContainer {
   private final TriggerShooterMode shooterTrenchMode = new TriggerShooterMode(ShooterMode.fromTrench, shooterSubsystem);
   private final TriggerShooterMode shooterCloseAndPersonalMode = new TriggerShooterMode(ShooterMode.closeAndPersonal, shooterSubsystem);
 
-  private final TriggerPOV operatorPOVDown = new TriggerPOV(operatorController, POVDirection.kDown);
+  private final frc.robot.Triggers.TriggerPOV operatorPOVDown = new frc.robot.Triggers.TriggerPOV(operatorController, TriggerPOV.POVDirection.kDown);
 
 
  

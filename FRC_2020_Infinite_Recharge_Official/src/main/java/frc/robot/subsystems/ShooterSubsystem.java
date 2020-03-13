@@ -71,7 +71,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterTopMaster = new CANSparkMax(ConstantsPorts.shooterTopMasterID, MotorType.kBrushed);
     shooterBottomMaster = new CANSparkMax(ConstantsPorts.shooterBottomMasterID, MotorType.kBrushed);
     shooterTopEnc = shooterTopMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
-    shooterTopEnc.setInverted(false);
+    shooterTopEnc.setInverted(true);
     shooterBottomEnc = shooterBottomMaster.getEncoder(EncoderType.kQuadrature, ConstantsValues.shooterCPR);
     shooterTopMaster.restoreFactoryDefaults();
     shooterBottomMaster.restoreFactoryDefaults();
@@ -100,10 +100,15 @@ public class ShooterSubsystem extends SubsystemBase {
     loaderMinSpeed = ConstantsValues.loaderMinSpeed;
     shooterTopMinSpeed = ConstantsValues.shooterTMinSpeed;
 
-    topFF = new SimpleMotorFeedforward(ConstantsPID.kSTop, ConstantsPID.kVTop, ConstantsPID.kATop);
-    bottomFF = new SimpleMotorFeedforward(ConstantsPID.kSBottom, ConstantsPID.kVBottom, ConstantsPID.kABottom);
+    topFF = new SimpleMotorFeedforward(ConstantsPID.kSTop, ConstantsPID.kVTop);
+    bottomFF = new SimpleMotorFeedforward(ConstantsPID.kSBottom, ConstantsPID.kVBottom);
 
     limelight = m_limelight;
+
+    SmartDashboard.putNumber("TOPP", .000015);
+    SmartDashboard.putNumber("BottomP", .000015);
+    SmartDashboard.putNumber("BottomD", 0);
+    SmartDashboard.putNumber("TopD", 0);
   }
 
   /**Set the shooterTop to a certain inputted speed
@@ -126,11 +131,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   /**Sets the shooter RPM and feedforward vlaues for that target RPM*/
   public void setShooterRPMTarget(double targetRPM) {
-    topPIDController.setFF(topFF.calculate(targetRPM*.9/60));
-    bottomPIDController.setFF(bottomFF.calculate(targetRPM/60));
-    topPIDController.setReference(targetRPM*.9, ControlType.kVelocity);
+    topPIDController.setFF(.0000055);
+    bottomPIDController.setFF(.00004);
+    topPIDController.setReference(targetRPM, ControlType.kVelocity);
     bottomPIDController.setReference(targetRPM, ControlType.kVelocity);
-    SmartDashboard.putNumber("TOP TARGET RPM", targetRPM * .9);
+    SmartDashboard.putNumber("TOP TARGET RPM", targetRPM);
     SmartDashboard.putNumber("BOTOM TARGET RPM", targetRPM);
   }
 
@@ -258,13 +263,20 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     shooterBottomSlave.set(ControlMode.PercentOutput,
-                           shooterBottomMaster.get());
+                           shooterBottomMaster.getAppliedOutput());
     shooterTopSlave.set(ControlMode.PercentOutput, 
-                        shooterTopMaster.get());
+                        shooterTopMaster.getAppliedOutput());
     SmartDashboard.putString("Shooter Mode", shooterMode.value);
     SmartDashboard.putNumber("shooterRPM Top", shooterTopEnc.getVelocity());
     SmartDashboard.putNumber("shooterRPM Bottom", shooterBottomEnc.getVelocity());
     SmartDashboard.putNumber("Current Manual Speed", cycleSpeed);
     SmartDashboard.putNumber("Limelight LED mode", limelight.getEntry("pipeline").getDouble(3));
+    SmartDashboard.putNumber("TopOutput", shooterBottomSlave.getMotorOutputPercent());
+    SmartDashboard.putNumber("BottomOutput", shooterBottomMaster.getAppliedOutput());
+    SmartDashboard.putNumber("FF", topFF.calculate(7000/6000));
+    topPIDController.setP(SmartDashboard.getNumber("TOPP", .000015));
+    bottomPIDController.setP(SmartDashboard.getNumber("BottomP", .000015));
+    bottomPIDController.setD(SmartDashboard.getNumber("BottomD", 0));
+    topPIDController.setD(SmartDashboard.getNumber("TopD", 0));
   }
 }
