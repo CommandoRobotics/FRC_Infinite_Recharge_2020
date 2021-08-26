@@ -105,7 +105,6 @@ public class RobotContainer {
 
 
     //DRIVER Binds
-    
 
     //Left Trigger: Sweep The Haters and the Ball Breakers away
     new TriggerTrigger(driverController, Hand.kLeft, .1)
@@ -118,29 +117,25 @@ public class RobotContainer {
       .whenActive(new InstantCommand(intakeSubsystem::intakeCells, intakeSubsystem))
       .whenInactive(new InstantCommand(intakeSubsystem::stopIntake, intakeSubsystem));
 
-
-    //Left Bumper: Release Lifter and Panel
+      //Left Bumper: Release Lifter and Panel
     new JoystickButton(driverController, Button.kBumperLeft.value)
-      .whenActive(new ReleaseIntake(lifterSubsystem));
-
+    .whenActive(new ReleaseIntake(lifterSubsystem));
 
     //Right Bumper: Retract the Lifter and Panel
     new JoystickButton(driverController, Button.kBumperRight.value)
       .whenActive(new CompressIntake(lifterSubsystem));
 
-
     //X Button: Toggle the lifter only
     new JoystickButton(driverController, Button.kX.value)
       .whenActive(lifterSubsystem::toggleLifter, lifterSubsystem);
 
-     
+   
     //B Button: Toggle the Panel only
     new JoystickButton(driverController, Button.kB.value)
       .whenActive(lifterSubsystem::togglePanel, lifterSubsystem);
 
 
     //OPERATOR BINDS
-
 
     //Left Stick X: Manual Pan for target
      new TriggerThumbstickDirectional(operatorController, Axis.kLeftX, false, .15)
@@ -183,67 +178,6 @@ public class RobotContainer {
     new JoystickButton(operatorController, Button.kBumperRight.value)
       .whenActive(shooterSubsystem::cycleSpeeds, shooterSubsystem);
 
-
-    //A Button: Run the AutoAim Home command to start the automatic aim recenter
-    new JoystickButton(operatorController, Button.kA.value)
-      .whenActive(new HomeShooter(autoAimSubsystem), false);
-
-
-    //Y Button: Release climb  (CURRENTLY UNUSED BUT STILL ON THE BOT)
-    operatorYButton.whenActive(climbSubsystem::releaseSpring, climbSubsystem);
-
-
-    //B Button: Release Rope on the climb (CURRENTLY UNUSED BUT STILL ON THE BOT)
-    operatorBButton.whenActive(climbSubsystem::releaseRope, climbSubsystem);
-
-
-    //Start Button: Toggles the Limelight to start running
-    new JoystickButton(operatorController, Button.kStart.value)
-      .toggleWhenPressed(new AutoPan(autoAimSubsystem).alongWith(new PrintCommand("Starting AutoPan")));
-
-
-    // new TriggerPOV(operatorController, POVDirection.kLeft)
-    //   .whenActive(() -> shooterSubsystem.setShooterTarget(7000), shooterSubsystem)
-    //   .whenInactive(new SequentialCommandGroup(
-    //     new InstantCommand(() -> shooterSubsystem.setShooterTarget(0), shooterSubsystem),
-    //     new InstantCommand(() -> shooterSubsystem.stopShooter(), shooterSubsystem)));
-
-    //     new TriggerPOV(operatorController, POVDirection.kRight)
-    //     .whenActive(() -> shooterSubsystem.setShooterTarget(2000), shooterSubsystem)
-    //     .whenInactive(new SequentialCommandGroup(
-    //       new InstantCommand(() -> shooterSubsystem.setShooterTarget(0), shooterSubsystem),
-    //       new InstantCommand(() -> shooterSubsystem.stopShooter(), shooterSubsystem)));
-
-    //CTRL PANEL COMMANDS ARE UNUSED
-    //TODO Menu: Tgl Auto Velocity
-
-    //TODO Back: Tgl Auto Aim
-
-    //TODO POV up: Tgl the ctrl panel piston (CURRENTLY UNUSED)
-
-    //TODO POV Left: Run Rotate (Ctrl Panel)
-
-    //TODO POV Right: Run Position (Ctrl Panel)
-
-
-    //POV Down: Our alt trigger. Dont acutally run a command with this
-    //Rather use .and() on a button/trigger with this to activate a command
-
-    //ALT COMMANDS
-
-    //POVDown and Y Button: lock the climb spring
-    operatorPOVDown.and(operatorYButton)
-      .whenActive(climbSubsystem::lockSpring, climbSubsystem);
-
-
-    //POVDown and Left Trigger: Reverse the Index to funnel balls out
-    operatorPOVDown.and(operatorLeftTrigger)
-      .whenActive(indexSubsystem::reverseIndex, indexSubsystem);
-
-
-    //POVDown and B Button: Resets the rope release to its starting position
-    operatorPOVDown.and(operatorBButton)
-      .whenActive(climbSubsystem::resetRopeRelease, climbSubsystem);
   }
 
   public void disableLimelight() {
