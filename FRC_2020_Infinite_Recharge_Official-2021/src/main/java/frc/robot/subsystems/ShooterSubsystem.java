@@ -195,14 +195,8 @@ public class ShooterSubsystem extends SubsystemBase {
     } else if (cycleSpeed == .25){
       cycleSpeed = .35;
     } else if (cycleSpeed == .35) {
-      cycleSpeed = .40;
-    } else if (cycleSpeed == .40) {
-      cycleSpeed = .5;
-    } else if (cycleSpeed == .5) {
-      cycleSpeed = .75;
-    } else if (cycleSpeed == .75) {
-      cycleSpeed = 1;
-    } else if (cycleSpeed == 1) {
+      cycleSpeed = .45;
+    } else if (cycleSpeed == .45) {
       cycleSpeed = 0;
     }
 
