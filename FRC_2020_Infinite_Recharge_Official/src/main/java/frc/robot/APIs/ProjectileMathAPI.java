@@ -56,6 +56,8 @@ public class ProjectileMathAPI {
      * This takes a distance from a target and returns a scaled velocity given bycalculateInitialVelocityAndAngle(). 
      * This is used to slightly over adjust the speed to ensure proper travel as drag and wheel slow down is not
      * factored into calculateInitialVelocityAndAngle(). Scales differently depending on distance
+     *
+     *Note: this code is untested, and you could theoretically scale angle instead of/intandem with velocity
      * 
      * @param velocityAndAngle The double array from calculateInitialVelocityAndAngle()
      * @param distanceToTarget The direct distance to the target read directly from the limelight
